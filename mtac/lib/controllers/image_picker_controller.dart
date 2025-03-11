@@ -7,7 +7,7 @@ class ImagePickerController extends GetxController {
   var selectedImages = <File>[].obs;
   var checkDistance = false.obs;
 
- // selected library
+  // selected library
   Future<void> pickMultipleImages() async {
     final List<XFile>? images = await _picker.pickMultiImage();
     if (images != null) {
@@ -34,5 +34,11 @@ class ImagePickerController extends GetxController {
       checkDistance.value = selectedImages.isNotEmpty;
       //selectedImages.refresh();
     }
+  }
+
+  //
+  void removeImage(int index) {
+    selectedImages.removeAt(index);
+    checkDistance.value = selectedImages.isNotEmpty;
   }
 }

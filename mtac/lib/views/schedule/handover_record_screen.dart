@@ -10,6 +10,7 @@ import 'package:mtac/data/schedule_screen/item_info_waste.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:mtac/widgets/bottom_image_source_sheet.dart';
+import 'package:mtac/widgets/schedule_widget/bottom_preview_image_sheet.dart';
 
 class HandoverRecordScreen extends StatelessWidget {
   HandoverRecordScreen({super.key});
@@ -29,9 +30,28 @@ class HandoverRecordScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: Text(
-          txtTitleHR,
-          style: PrimaryFont.bold(24).copyWith(color: const Color(0xFF0A4564)),
+        title: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Color(0xFF0A4564),
+                size: 20,
+              ),
+            ),
+            Expanded(
+              child: Text(
+                txtTitleHR,
+                style: PrimaryFont.bold(24).copyWith(
+                  color: const Color(0xFF0A4564),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
         ),
         centerTitle: true,
       ),
@@ -45,21 +65,21 @@ class HandoverRecordScreen extends StatelessWidget {
               children: [
                 const _HeaderHandoverRecordScreen(),
                 _BodyHandoverRecordScreen(
-                wasteControllers: wasteControllers, 
-                sHeightBody: size.height * 0.28,
-                sHeightItem: size.height * 0.04,
-                sWidthSizeBox: size.width *0.025, 
-                sWidthNameWaste: size.width * 0.25, 
-                sWidthCodeWaste: size.width * 0.19, 
-                sWidthStatusWaste: size.width * 0.2, 
-                sWidthNumberWaste: size.width * 0.18),
+                    wasteControllers: wasteControllers,
+                    sHeightBody: size.height * 0.28,
+                    sHeightItem: size.height * 0.04,
+                    sWidthSizeBox: size.width * 0.025,
+                    sWidthNameWaste: size.width * 0.25,
+                    sWidthCodeWaste: size.width * 0.19,
+                    sWidthStatusWaste: size.width * 0.2,
+                    sWidthNumberWaste: size.width * 0.17),
                 const SizedBox(
                   height: 25,
                 ),
                 _BottomHandoverRecordSceen(
-                  imageController: imageController,
-                  sWidthCon: size.width * 0.28,
-                  sHeightCon: size.height * 0.18),
+                    imageController: imageController,
+                    sWidthCon: size.width * 0.28,
+                    sHeightCon: size.height * 0.18),
                 const SizedBox(
                   height: 30,
                 ),
@@ -69,22 +89,22 @@ class HandoverRecordScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const _HeaderHandoverRecordScreen(),
-               _BodyHandoverRecordScreen(
-                wasteControllers: wasteControllers, 
-                sHeightBody: size.height * 0.28,
-                sHeightItem: size.height * 0.1, 
-                sWidthSizeBox: size.width *0.07, 
-                sWidthNameWaste: size.width * 0.26, 
-                sWidthCodeWaste: size.width * 0.22, 
-                sWidthStatusWaste: size.width * 0.23, 
-                sWidthNumberWaste: size.width * 0.14),
+                _BodyHandoverRecordScreen(
+                    wasteControllers: wasteControllers,
+                    sHeightBody: size.height * 0.28,
+                    sHeightItem: size.height * 0.1,
+                    sWidthSizeBox: size.width * 0.07,
+                    sWidthNameWaste: size.width * 0.26,
+                    sWidthCodeWaste: size.width * 0.22,
+                    sWidthStatusWaste: size.width * 0.23,
+                    sWidthNumberWaste: size.width * 0.14),
                 const SizedBox(
                   height: 25,
                 ),
                 _BottomHandoverRecordSceen(
-                  imageController: imageController,
-                  sWidthCon: size.width * 0.3,
-                  sHeightCon: size.height * 0.35),
+                    imageController: imageController,
+                    sWidthCon: size.width * 0.3,
+                    sHeightCon: size.height * 0.35),
                 const SizedBox(
                   height: 30,
                 ),
@@ -100,11 +120,14 @@ class HandoverRecordScreen extends StatelessWidget {
 class _BottomHandoverRecordSceen extends StatelessWidget {
   const _BottomHandoverRecordSceen({
     super.key,
-    required this.imageController, required this.sWidthCon, required this.sHeightCon,
+    required this.imageController,
+    required this.sWidthCon,
+    required this.sHeightCon,
   });
 
   final ImagePickerController imageController;
   final double sWidthCon, sHeightCon;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -163,37 +186,60 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
                   ? const SizedBox(width: 50)
                   : const SizedBox()),
               Obx(() {
-                if (imageController.selectedImages.isEmpty) {
-                  return const SizedBox();
-                }
-                return Stack(
-                  alignment: Alignment.center,
-                  clipBehavior: Clip.none,
-                  children: imageController.selectedImages
-                      .asMap()
-                      .entries
-                      .map((entry) {
-                    int index = entry.key;
-                    File imageFile = entry.value;
-                    double rotationAngle = (index - 2) * 0.08;
+                return GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20)),
+                    ),
+                    builder: (_) => const BottomPreviewImageSheet(),
+                  );
+                  },
+                  child: Stack(
+                    alignment: Alignment.center,
+                    clipBehavior: Clip.none,
+                    children: imageController.selectedImages
+                        .asMap()
+                        .entries
+                        .map((entry) {
+                      int index = entry.key;
+                      File imageFile = entry.value;
+                      double rotationAngle = (index - 2) * 0.08;
 
-                    return Transform.rotate(
-                      angle: rotationAngle,
-                      child: Container(
-                        width: sWidthCon,
-                        height: sHeightCon,
-                        margin: EdgeInsets.only(left: index * 0.1),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blue),
-                          borderRadius: BorderRadius.circular(5),
-                          image: DecorationImage(
-                            image: FileImage(imageFile),
-                            fit: BoxFit.cover,
+                      return Dismissible(
+                        key: Key(imageFile.path), // Định danh ảnh duy nhất
+                        direction: DismissDirection.startToEnd,
+                        onDismissed: (direction) {
+                          imageController.removeImage(index);
+                        },
+                        background: Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          color: Colors.red,
+                          child: const Icon(Icons.delete, color: Colors.white),
+                        ),
+                        child: Transform.rotate(
+                          angle: rotationAngle,
+                          child: Container(
+                            width: sWidthCon,
+                            height: sHeightCon,
+                            margin: EdgeInsets.only(left: index * 0.1),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blue),
+                              borderRadius: BorderRadius.circular(5),
+                              image: DecorationImage(
+                                image: FileImage(imageFile),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(),
+                      );
+                    }).toList(),
+                  ),
                 );
               })
             ],
@@ -226,11 +272,24 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
 class _BodyHandoverRecordScreen extends StatelessWidget {
   const _BodyHandoverRecordScreen({
     super.key,
-    required this.wasteControllers, required this.sHeightItem, required this.sWidthNameWaste, required this.sWidthCodeWaste, required this.sWidthStatusWaste, required this.sWidthNumberWaste, required this.sHeightBody, required this.sWidthSizeBox,
+    required this.wasteControllers,
+    required this.sHeightItem,
+    required this.sWidthNameWaste,
+    required this.sWidthCodeWaste,
+    required this.sWidthStatusWaste,
+    required this.sWidthNumberWaste,
+    required this.sHeightBody,
+    required this.sWidthSizeBox,
   });
 
   final List<DropdownController> wasteControllers;
-  final double sHeightBody, sHeightItem, sWidthNameWaste, sWidthCodeWaste, sWidthStatusWaste, sWidthNumberWaste, sWidthSizeBox;
+  final double sHeightBody,
+      sHeightItem,
+      sWidthNameWaste,
+      sWidthCodeWaste,
+      sWidthStatusWaste,
+      sWidthNumberWaste,
+      sWidthSizeBox;
 
   @override
   Widget build(BuildContext context) {
