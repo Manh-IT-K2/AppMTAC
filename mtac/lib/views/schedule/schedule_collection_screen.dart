@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mtac/common/responsive_builder.dart';
 import 'package:mtac/constants/text.dart';
 import 'package:mtac/data/schedule_screen/item_trip_collection.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
+import 'package:sizer/sizer.dart';
 
 class ScheduleCollectionScreen extends StatelessWidget {
   const ScheduleCollectionScreen({super.key});
@@ -21,10 +21,10 @@ class ScheduleCollectionScreen extends StatelessWidget {
               onTap: () {
                 Get.back();
               },
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_back_ios,
                 color: Colors.black,
-                size: 20,
+                size: 5.w,
               ),
             ),
             Expanded(
@@ -39,20 +39,12 @@ class ScheduleCollectionScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: false,
       ),
-      body: const ResponsiveBuilder(
-        portrait: Column(
+      body: const Column(
           children: [
             _HeaderScheduleCollectionScreen(),
             _BodyScheduleCollectionScreen(),
           ],
         ),
-        landscape: Column(
-          children: [
-            _HeaderScheduleCollectionScreen(),
-            _BodyScheduleCollectionScreen(),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -93,17 +85,17 @@ class _HeaderScheduleCollectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: 5.h,
       color: kSecondaryColor,
       child: Row(
         children: [
           const SizedBox(
             width: 12,
           ),
-          const Icon(
+          Icon(
             Icons.error,
             color: kPrimaryColor,
-            size: 20,
+            size: 5.w,
           ),
           const SizedBox(
             width: 12,
@@ -145,10 +137,10 @@ class _ItemTripCollection extends StatelessWidget {
               const SizedBox(
                 width: 12,
               ),
-              const Icon(
+              Icon(
                 Icons.fire_truck_outlined,
                 color: Colors.black,
-                size: 20,
+                size: 5.w,
               ),
               const SizedBox(
                 width: 5,
@@ -186,10 +178,10 @@ class _ItemTripCollection extends StatelessWidget {
                 txtGlandHead,
                 style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
-              const Icon(
+              Icon(
                 Icons.forward_outlined,
                 color: Colors.black,
-                size: 20,
+                size: 3.w,
               ),
               Text(
                 txtGlandEnd,
@@ -275,7 +267,8 @@ class _ItemTripCollection extends StatelessWidget {
                 width: 12,
               ),
               SizedBox(
-                width: 130,
+                width: 35.w,
+                height: 5.h,
                 child: OutlinedButton(
                   onPressed: onTapDetail,
                   style: OutlinedButton.styleFrom(
@@ -295,18 +288,21 @@ class _ItemTripCollection extends StatelessWidget {
                 width: 12,
               ),
               Expanded(
-                child: OutlinedButton(
-                  onPressed: onTapSchedule,
-                  style: OutlinedButton.styleFrom(
-                      side: const BorderSide(
-                        color: kPrimaryColor,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      )),
-                  child: Text(
-                    txtButScheduleSC,
-                    style: PrimaryFont.bodyTextBold().copyWith(color: kPrimaryColor),
+                child: SizedBox(
+                  height: 5.h,
+                  child: OutlinedButton(
+                    onPressed: onTapSchedule,
+                    style: OutlinedButton.styleFrom(
+                        side: const BorderSide(
+                          color: kPrimaryColor,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        )),
+                    child: Text(
+                      txtButScheduleSC,
+                      style: PrimaryFont.bodyTextBold().copyWith(color: kPrimaryColor),
+                    ),
                   ),
                 ),
               ),

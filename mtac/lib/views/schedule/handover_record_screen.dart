@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mtac/common/responsive_builder.dart';
 import 'package:mtac/constants/text.dart';
 import 'package:mtac/controllers/dropdown_controllser.dart';
 import 'package:mtac/controllers/image_picker_controller.dart';
@@ -11,6 +10,7 @@ import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:mtac/widgets/bottom_image_source_sheet.dart';
 import 'package:mtac/widgets/schedule_widget/bottom_preview_image_sheet.dart';
+import 'package:sizer/sizer.dart';
 
 class HandoverRecordScreen extends StatelessWidget {
   HandoverRecordScreen({super.key});
@@ -25,7 +25,7 @@ class HandoverRecordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final size = context.screenSize;
+    //final size = context.screenSize;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -36,10 +36,10 @@ class HandoverRecordScreen extends StatelessWidget {
               onTap: () {
                 Get.back();
               },
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_back_ios,
-                color: Color(0xFF0A4564),
-                size: 20,
+                color: const Color(0xFF0A4564),
+                size: 5.w,
               ),
             ),
             Expanded(
@@ -59,58 +59,30 @@ class HandoverRecordScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 12),
-          child: ResponsiveBuilder(
-            portrait: Column(
+          child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const _HeaderHandoverRecordScreen(),
                 _BodyHandoverRecordScreen(
                     wasteControllers: wasteControllers,
-                    sHeightBody: size.height * 0.28,
-                    sHeightItem: size.height * 0.04,
-                    sWidthSizeBox: size.width * 0.025,
-                    sWidthNameWaste: size.width * 0.25,
-                    sWidthCodeWaste: size.width * 0.19,
-                    sWidthStatusWaste: size.width * 0.2,
-                    sWidthNumberWaste: size.width * 0.17),
+                    sHeightBody: 20.h,
+                    sHeightItem: 5.h,
+                    sWidthSizeBox: 4.w,
+                    sWidthNameWaste: 24.w,
+                    sWidthCodeWaste: 20.w,
+                    sWidthStatusWaste: 20.w,),
                 const SizedBox(
                   height: 25,
                 ),
                 _BottomHandoverRecordSceen(
                     imageController: imageController,
-                    sWidthCon: size.width * 0.28,
-                    sHeightCon: size.height * 0.18),
+                    sWidthCon: 30.w,
+                    sHeightCon: 20.h),
                 const SizedBox(
                   height: 30,
                 ),
               ],
             ),
-            landscape: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const _HeaderHandoverRecordScreen(),
-                _BodyHandoverRecordScreen(
-                    wasteControllers: wasteControllers,
-                    sHeightBody: size.height * 0.28,
-                    sHeightItem: size.height * 0.1,
-                    sWidthSizeBox: size.width * 0.07,
-                    sWidthNameWaste: size.width * 0.26,
-                    sWidthCodeWaste: size.width * 0.22,
-                    sWidthStatusWaste: size.width * 0.23,
-                    sWidthNumberWaste: size.width * 0.14),
-                const SizedBox(
-                  height: 25,
-                ),
-                _BottomHandoverRecordSceen(
-                    imageController: imageController,
-                    sWidthCon: size.width * 0.3,
-                    sHeightCon: size.height * 0.35),
-                const SizedBox(
-                  height: 30,
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );
@@ -150,7 +122,7 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
         ),
         Container(
           width: double.infinity,
-          height: 180,
+          height: 25.h,
           decoration: BoxDecoration(
               color: const Color(0xFFF4F4F4),
               borderRadius: BorderRadius.circular(10)),
@@ -175,14 +147,16 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
                     color: const Color(0xFFD9D9D9),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Text(
-                    "+",
-                    style: TextStyle(
-                      fontSize: 100,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w100
+                  child: Center(
+                    child: Text(
+                      "+",
+                      style: TextStyle(
+                        fontSize: 17.w,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w100
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
@@ -261,7 +235,7 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 elevation: 5,
-                minimumSize: const Size(300, 50)),
+                minimumSize: Size(0, 5.h)),
             child: Text(
               txtButSendHR,
               style: PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
@@ -281,7 +255,6 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
     required this.sWidthNameWaste,
     required this.sWidthCodeWaste,
     required this.sWidthStatusWaste,
-    required this.sWidthNumberWaste,
     required this.sHeightBody,
     required this.sWidthSizeBox,
   });
@@ -292,7 +265,6 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
       sWidthNameWaste,
       sWidthCodeWaste,
       sWidthStatusWaste,
-      sWidthNumberWaste,
       sWidthSizeBox;
 
   @override
@@ -401,8 +373,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                       const SizedBox(
                         width: 12,
                       ),
-                      SizedBox(
-                        width: sWidthNumberWaste,
+                      Expanded(
                         child: Text(
                           item["sNumber"]!,
                           style: PrimaryFont.bodyTextLight()
@@ -410,6 +381,9 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
+                      ),
+                      const SizedBox(
+                        width: 12,
                       ),
                     ],
                   ),

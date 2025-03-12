@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/controllers/nav_controller.dart';
+import 'package:mtac/utils/theme_text.dart';
+import 'package:sizer/sizer.dart';
 
 class BottomNavBar extends StatelessWidget {
   BottomNavBar({super.key});
@@ -29,6 +31,9 @@ class BottomNavBar extends StatelessWidget {
           onTap: navController.changeIndex,
           selectedItemColor: kPrimaryColor,
           unselectedItemColor: Colors.grey,
+          iconSize: 5.w,
+          selectedLabelStyle: PrimaryFont.bodyTextMedium().copyWith(color: Colors.grey),
+          unselectedLabelStyle: PrimaryFont.bodyTextMedium().copyWith(color: kPrimaryColor),
         ),
       ),
     );
