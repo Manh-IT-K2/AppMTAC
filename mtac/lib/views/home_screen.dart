@@ -20,12 +20,12 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Chào, Trần Đức Thanh",
-                style: PrimaryFont.bold(20).copyWith(color: Colors.black)),
+                style: PrimaryFont.headerTextBold().copyWith(color: Colors.black)),
             const SizedBox(
               height: 6,
             ),
             Text(txtMTAC,
-                style: PrimaryFont.light(14).copyWith(color: Colors.black)),
+                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black)),
             const SizedBox(
               height: 4,
             ),
@@ -102,10 +102,9 @@ class _BottomHomeScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           txtInviteTransport,
-          style: TextStyle(
-              color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+          style: PrimaryFont.headerTextBold().copyWith(color: Colors.black),
         ),
         const SizedBox(
           height: 12,
@@ -220,7 +219,7 @@ class _HeaderHomeScreen extends StatelessWidget {
               Flexible(
                 child: Text(
                   "100,000,000,000 đ",
-                  style: PrimaryFont.medium(14).copyWith(color: kPrimaryColor),
+                  style: PrimaryFont.bodyTextMedium().copyWith(color: kPrimaryColor),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -382,10 +381,7 @@ class _ItemInviteTransport extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
               text,
-              style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+              style:PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -429,10 +425,7 @@ class _ItemFunction extends StatelessWidget {
                     ),
                     child: Text(
                       numberNoti,
-                      style: const TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white),
+                      style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -451,10 +444,7 @@ class _ItemFunction extends StatelessWidget {
           ),
           Text(
             text,
-            style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-                color: Colors.black),
+            style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
           ),
         ],
       ),
@@ -476,22 +466,14 @@ class _TextSchedule extends StatelessWidget {
       children: [
         Text(
           number,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w900,
-            color: Colors.black,
-          ),
+          style: PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
         ),
         const SizedBox(
           width: 5,
         ),
         Text(
           text,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.normal,
-            color: Colors.black,
-          ),
+          style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
         ),
       ],
     );

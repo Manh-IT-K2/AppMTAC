@@ -31,7 +31,7 @@ class ScheduleCollectionScreen extends StatelessWidget {
               child: Text(
                 txtTitleSC,
                 textAlign: TextAlign.center,
-                style: PrimaryFont.medium(16).copyWith(color: Colors.black),
+                style: PrimaryFont.headerTextBold().copyWith(color: Colors.black),
               ),
             ),
           ],
@@ -110,7 +110,7 @@ class _HeaderScheduleCollectionScreen extends StatelessWidget {
           ),
           Text(
             txtSubTitleSC,
-            style: PrimaryFont.light(14).copyWith(color: Colors.black),
+            style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
           ),
         ],
       ),
@@ -155,12 +155,12 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtTripSC,
-                style: PrimaryFont.medium(14).copyWith(color: Colors.black),
+                style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
               const Spacer(),
               Text(
                 txtCode,
-                style: PrimaryFont.medium(14).copyWith(color: Colors.black),
+                style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
               const SizedBox(
                 width: 12,
@@ -179,12 +179,12 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtGlandSC,
-                style: PrimaryFont.light(14).copyWith(color: Colors.black),
+                style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
               const Spacer(),
               Text(
                 txtGlandHead,
-                style: PrimaryFont.light(14).copyWith(color: Colors.black),
+                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               const Icon(
                 Icons.forward_outlined,
@@ -193,7 +193,7 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtGlandEnd,
-                style: PrimaryFont.light(14).copyWith(color: Colors.black),
+                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               const SizedBox(
                 width: 12,
@@ -210,12 +210,12 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtTypSC,
-                style: PrimaryFont.light(14).copyWith(color: Colors.black),
+                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               const Spacer(),
               Text(
                 txtType,
-                style: PrimaryFont.light(14).copyWith(color: Colors.black),
+                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               const SizedBox(
                 width: 12,
@@ -232,12 +232,12 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtDaySC,
-                style: PrimaryFont.light(14).copyWith(color: Colors.black),
+                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               const Spacer(),
               Text(
                 txtDay,
-                style: PrimaryFont.light(14).copyWith(color: Colors.black),
+                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               const SizedBox(
                 width: 12,
@@ -254,12 +254,12 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtPriceSC,
-                style: PrimaryFont.medium(14).copyWith(color: Colors.black),
+                style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
               const Spacer(),
               Text(
                 txtPrice,
-                style: PrimaryFont.medium(14).copyWith(color: Colors.black),
+                style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
               const SizedBox(
                 width: 12,
@@ -287,7 +287,7 @@ class _ItemTripCollection extends StatelessWidget {
                       )),
                   child: Text(
                     txtButDetailSC,
-                    style: PrimaryFont.bold(14).copyWith(color: Colors.grey),
+                    style: PrimaryFont.bodyTextBold().copyWith(color: Colors.grey),
                   ),
                 ),
               ),
@@ -306,7 +306,7 @@ class _ItemTripCollection extends StatelessWidget {
                       )),
                   child: Text(
                     txtButScheduleSC,
-                    style: PrimaryFont.bold(14).copyWith(color: kPrimaryColor),
+                    style: PrimaryFont.bodyTextBold().copyWith(color: kPrimaryColor),
                   ),
                 ),
               ),

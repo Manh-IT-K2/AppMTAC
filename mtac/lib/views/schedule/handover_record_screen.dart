@@ -45,7 +45,7 @@ class HandoverRecordScreen extends StatelessWidget {
             Expanded(
               child: Text(
                 txtTitleHR,
-                style: PrimaryFont.bold(24).copyWith(
+                style: PrimaryFont.headerTextBold().copyWith(
                   color: const Color(0xFF0A4564),
                 ),
                 textAlign: TextAlign.center,
@@ -136,14 +136,14 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
       children: [
         Text(
           "• $txtTotalStatuWasteHR R(rắn); L(lỏng)",
-          style: PrimaryFont.light(14).copyWith(color: Colors.black),
+          style: PrimaryFont.bodyTextThin().copyWith(color: Colors.black),
         ),
         const SizedBox(
           height: 5,
         ),
         Text(
           txtImageHR,
-          style: PrimaryFont.bold(14).copyWith(color: Colors.black),
+          style: PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
         ),
         const SizedBox(
           height: 5,
@@ -175,9 +175,13 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
                     color: const Color(0xFFD9D9D9),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Text(
+                  child: const Text(
                     "+",
-                    style: PrimaryFont.thin(100).copyWith(color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: 100,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w100
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -260,7 +264,7 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
                 minimumSize: const Size(300, 50)),
             child: Text(
               txtButSendHR,
-              style: PrimaryFont.bold(16).copyWith(color: Colors.white),
+              style: PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
             ),
           ),
         ),
@@ -300,19 +304,19 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
           children: [
             Text(
               txtNameWasteHR,
-              style: PrimaryFont.bold(14).copyWith(color: Colors.black),
+              style: PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
             ),
             Text(
               txtCodeWasteHR,
-              style: PrimaryFont.bold(14).copyWith(color: Colors.black),
+              style: PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
             ),
             Text(
               txtStatusWasteHR,
-              style: PrimaryFont.bold(14).copyWith(color: Colors.black),
+              style: PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
             ),
             Text(
               txtNumberWasteHR,
-              style: PrimaryFont.bold(14).copyWith(color: Colors.black),
+              style: PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
             ),
           ],
         ),
@@ -342,7 +346,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                         width: sWidthNameWaste,
                         child: Text(
                           item["sName"]!,
-                          style: PrimaryFont.light(14)
+                          style: PrimaryFont.bodyTextLight()
                               .copyWith(color: Colors.black),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -355,7 +359,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                         width: sWidthCodeWaste,
                         child: Text(
                           item["sCode"]!,
-                          style: PrimaryFont.light(14)
+                          style: PrimaryFont.bodyTextLight()
                               .copyWith(color: Colors.black),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -371,7 +375,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                             isExpanded: true,
                             value: wasteControllers[index].selectedValue.value,
                             icon: const Icon(Icons.keyboard_arrow_down),
-                            style: PrimaryFont.bold(14).copyWith(
+                            style: PrimaryFont.bodyTextBold().copyWith(
                               color: Colors.green,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -401,7 +405,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                         width: sWidthNumberWaste,
                         child: Text(
                           item["sNumber"]!,
-                          style: PrimaryFont.light(14)
+                          style: PrimaryFont.bodyTextLight()
                               .copyWith(color: Colors.black),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -430,7 +434,7 @@ class _HeaderHandoverRecordScreen extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             "$txtCodeHR 003437",
-            style: PrimaryFont.light(14).copyWith(color: Colors.black),
+            style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
             textAlign: TextAlign.center,
           ),
         ),
@@ -441,7 +445,7 @@ class _HeaderHandoverRecordScreen extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             txtNoteHR,
-            style: PrimaryFont.light(14).copyWith(color: Colors.black),
+            style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
           ),
         ),
         const SizedBox(
@@ -451,7 +455,7 @@ class _HeaderHandoverRecordScreen extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             "$txtTimeHR 9 giờ 30, ngày 21/02/2025",
-            style: PrimaryFont.light(14).copyWith(color: kPrimaryColor),
+            style: PrimaryFont.bodyTextLight().copyWith(color: kPrimaryColor),
           ),
         ),
         Container(
@@ -462,12 +466,12 @@ class _HeaderHandoverRecordScreen extends StatelessWidget {
               children: [
                 TextSpan(
                   text: txtAddress1HR,
-                  style: PrimaryFont.light(14).copyWith(color: Colors.black),
+                  style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
                 ),
                 TextSpan(
                   text:
                       " Dự Án Nhà máy sử dụng nước Thải Nhiên liệu Thị Nghè TP.HCM giai đoạn 2.",
-                  style: PrimaryFont.bold(14).copyWith(color: Colors.black),
+                  style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
                 ),
               ],
             ),
@@ -483,12 +487,12 @@ class _HeaderHandoverRecordScreen extends StatelessWidget {
               children: [
                 TextSpan(
                   text: txtAddress2HR,
-                  style: PrimaryFont.light(14).copyWith(color: Colors.black),
+                  style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
                 ),
                 TextSpan(
                   text:
                       " Công ty CP Xây Dựng Đê Kè và phát triển Nông Thôn Hải Dương.",
-                  style: PrimaryFont.bold(14).copyWith(color: Colors.black),
+                  style: PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
                 ),
               ],
             ),
@@ -534,7 +538,7 @@ class _ItemInfoWaste extends StatelessWidget {
             width: 95,
             child: Text(
               sName,
-              style: PrimaryFont.light(14).copyWith(color: Colors.black),
+              style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -546,7 +550,7 @@ class _ItemInfoWaste extends StatelessWidget {
             width: 72,
             child: Text(
               sCode,
-              style: PrimaryFont.light(14).copyWith(color: Colors.black),
+              style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -561,7 +565,7 @@ class _ItemInfoWaste extends StatelessWidget {
                 isExpanded: true,
                 value: controller.selectedValue.value,
                 icon: const Icon(Icons.keyboard_arrow_down),
-                style: PrimaryFont.bold(14).copyWith(
+                style: PrimaryFont.bodyTextBold().copyWith(
                   color: Colors.green,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -588,7 +592,7 @@ class _ItemInfoWaste extends StatelessWidget {
             width: 60,
             child: Text(
               sNumber,
-              style: PrimaryFont.light(14).copyWith(color: Colors.black),
+              style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

@@ -17,7 +17,7 @@ class BottomImageSourceSheet extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.image),
           title: Text(txtLibrary,
-              style: PrimaryFont.medium(14).copyWith(color: Colors.black)),
+              style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black)),
           onTap: () {
             imageController.pickMultipleImages();
             Navigator.pop(context);
@@ -27,7 +27,7 @@ class BottomImageSourceSheet extends StatelessWidget {
           leading: const Icon(Icons.camera_alt),
           title: Text(
             txtCamera,
-            style: PrimaryFont.medium(14).copyWith(color: Colors.black),
+            style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
           ),
           onTap: () {
             imageController.pickImageFromCamera();
