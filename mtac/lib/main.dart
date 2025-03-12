@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/routes/app_pages.dart';
 import 'package:mtac/routes/app_routes.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,13 +13,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white
-      ),
-      initialRoute: AppRoutes.MAIN,
-      getPages: AppPages.routes
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+            initialRoute: AppRoutes.MAIN,
+            getPages: AppPages.routes);
+      },
     );
   }
 }
