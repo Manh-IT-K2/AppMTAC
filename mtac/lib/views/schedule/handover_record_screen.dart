@@ -188,7 +188,7 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
                       double rotationAngle = (index - 2) * 0.08;
 
                       return Dismissible(
-                        key: Key(imageFile.path), // Định danh ảnh duy nhất
+                        key: Key(imageFile.path),
                         direction: DismissDirection.startToEnd,
                         onDismissed: (direction) {
                           imageController.removeImage(index);
@@ -235,7 +235,7 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 elevation: 5,
-                minimumSize: Size(0, 5.h)),
+                minimumSize: Size(30.h, 5.h)),
             child: Text(
               txtButSendHR,
               style: PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
