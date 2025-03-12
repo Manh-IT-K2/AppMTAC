@@ -36,10 +36,17 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
-  #
+  # manage status app
   get: ^4.7.2
+
+  # pic image, camera
   image_picker: ^1.1.2
+
+  # responsive
   sizer: ^3.0.4
+  
+  #preview mobile, ios, ipad,destop
+  device_preview: ^1.2.0
 
 
 dev_dependencies:

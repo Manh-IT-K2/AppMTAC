@@ -12,12 +12,13 @@ import 'package:mtac/widgets/bottom_image_source_sheet.dart';
 import 'package:mtac/widgets/schedule_widget/bottom_preview_image_sheet.dart';
 import 'package:sizer/sizer.dart';
 
+// ignore: must_be_immutable
 class HandoverRecordScreen extends StatelessWidget {
   HandoverRecordScreen({super.key});
 
   //
-  final List<DropdownController> wasteControllers =
-      List.generate(infoWasteData.length, (_) => DropdownController());
+  List<DropdownController> wasteControllers = infoWasteData.map((item) => DropdownController(item.status)).toList();
+
   //
   final ImagePickerController imageController =
       Get.put(ImagePickerController());
@@ -60,29 +61,30 @@ class HandoverRecordScreen extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 12),
           child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const _HeaderHandoverRecordScreen(),
-                _BodyHandoverRecordScreen(
-                    wasteControllers: wasteControllers,
-                    sHeightBody: 20.h,
-                    sHeightItem: 5.h,
-                    sWidthSizeBox: 4.w,
-                    sWidthNameWaste: 24.w,
-                    sWidthCodeWaste: 20.w,
-                    sWidthStatusWaste: 20.w,),
-                const SizedBox(
-                  height: 25,
-                ),
-                _BottomHandoverRecordSceen(
-                    imageController: imageController,
-                    sWidthCon: 30.w,
-                    sHeightCon: 20.h),
-                const SizedBox(
-                  height: 30,
-                ),
-              ],
-            ),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const _HeaderHandoverRecordScreen(),
+              _BodyHandoverRecordScreen(
+                wasteControllers: wasteControllers,
+                sHeightBody: 20.h,
+                sHeightItem: 5.h,
+                sWidthSizeBox: 4.w,
+                sWidthNameWaste: 24.w,
+                sWidthCodeWaste: 20.w,
+                sWidthStatusWaste: 20.w,
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              _BottomHandoverRecordSceen(
+                  imageController: imageController,
+                  sWidthCon: 30.w,
+                  sHeightCon: 20.h),
+              const SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -99,7 +101,6 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
 
   final ImagePickerController imageController;
   final double sWidthCon, sHeightCon;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -151,10 +152,9 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
                     child: Text(
                       "+",
                       style: TextStyle(
-                        fontSize: 17.w,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w100
-                      ),
+                          fontSize: 17.w,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w100),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -167,14 +167,14 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(20)),
-                    ),
-                    builder: (_) => const BottomPreviewImageSheet(),
-                  );
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20)),
+                      ),
+                      builder: (_) => const BottomPreviewImageSheet(),
+                    );
                   },
                   child: Stack(
                     alignment: Alignment.center,
@@ -317,7 +317,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                       SizedBox(
                         width: sWidthNameWaste,
                         child: Text(
-                          item["sName"]!,
+                          item.name,
                           style: PrimaryFont.bodyTextLight()
                               .copyWith(color: Colors.black),
                           maxLines: 1,
@@ -330,7 +330,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                       SizedBox(
                         width: sWidthCodeWaste,
                         child: Text(
-                          item["sCode"]!,
+                          item.code,
                           style: PrimaryFont.bodyTextLight()
                               .copyWith(color: Colors.black),
                           maxLines: 1,
@@ -345,7 +345,9 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                         child: Obx(
                           () => DropdownButton<String>(
                             isExpanded: true,
-                            value: wasteControllers[index].selectedValue.value,
+                            value: wasteControllers[index]
+                                .selectedValue
+                                .value,
                             icon: const Icon(Icons.keyboard_arrow_down),
                             style: PrimaryFont.bodyTextBold().copyWith(
                               color: Colors.green,
@@ -375,7 +377,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          item["sNumber"]!,
+                          item.number,
                           style: PrimaryFont.bodyTextLight()
                               .copyWith(color: Colors.black),
                           maxLines: 1,
@@ -440,12 +442,14 @@ class _HeaderHandoverRecordScreen extends StatelessWidget {
               children: [
                 TextSpan(
                   text: txtAddress1HR,
-                  style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                  style:
+                      PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
                 ),
                 TextSpan(
                   text:
                       " Dự Án Nhà máy sử dụng nước Thải Nhiên liệu Thị Nghè TP.HCM giai đoạn 2.",
-                  style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                  style:
+                      PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
                 ),
               ],
             ),
@@ -461,12 +465,14 @@ class _HeaderHandoverRecordScreen extends StatelessWidget {
               children: [
                 TextSpan(
                   text: txtAddress2HR,
-                  style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                  style:
+                      PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
                 ),
                 TextSpan(
                   text:
                       " Công ty CP Xây Dựng Đê Kè và phát triển Nông Thôn Hải Dương.",
-                  style: PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
+                  style:
+                      PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
                 ),
               ],
             ),

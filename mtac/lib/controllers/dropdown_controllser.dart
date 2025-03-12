@@ -8,4 +8,8 @@ class DropdownController extends GetxController {
     "Đang xử lý",
     "Đã xử lý"
   ];
+
+  DropdownController(String initialStatus) {
+    selectedValue.value = initialStatus;
+  }
 }
