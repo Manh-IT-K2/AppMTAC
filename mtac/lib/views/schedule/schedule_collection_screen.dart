@@ -62,12 +62,12 @@ class _BodyScheduleCollectionScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             final trip = tripData[index];
             return _ItemTripCollection(
-              txtCode: trip["txtCode"]!,
-              txtGlandHead: trip["txtGlandHead"]!,
-              txtGlandEnd: trip["txtGlandEnd"]!,
-              txtType: trip["txtType"]!,
-              txtDay: trip["txtDay"]!,
-              txtPrice: trip["txtPrice"]!,
+              txtCode: trip.txtCode,
+              txtGlandHead: trip.txtGlandHead,
+              txtGlandEnd: trip.txtGlandEnd,
+              txtType: trip.txtType,
+              txtDay: trip.txtDay,
+              txtPrice: trip.txtPrice,
               onTapSchedule: () {
                 Get.toNamed(AppRoutes.HANDOVERRECORD);
               },
