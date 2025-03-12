@@ -65,32 +65,32 @@ class PrimaryFont{
   }
 
   // text note
-    static TextStyle noteTextThin(){
+    static TextStyle thin(double size){
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w100,
-      fontSize: 10.h,
+      fontSize: size,
     );
   }
-  static TextStyle noteTextLight(){
+  static TextStyle light(double size){
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w300,
-      fontSize: 10.h,
+      fontSize: size,
     );
   }
-  static TextStyle noteTextMedium(){
+  static TextStyle medium(double size){
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w500,
-      fontSize: 10.h,
+      fontSize: size,
     );
   }
-  static TextStyle noteTextBold(){
+  static TextStyle bold(double size){
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w700,
-      fontSize: 10.h,
+      fontSize: size,
     );
   }
 

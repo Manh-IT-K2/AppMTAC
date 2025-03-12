@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mtac/common/responsive_builder.dart';
+import 'package:sizer/sizer.dart';
 import 'package:mtac/constants/text.dart';
 import 'package:mtac/data/home_screen/menu_item.dart';
 import 'package:mtac/routes/app_routes.dart';
@@ -12,27 +12,37 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //
-    final size = context.screenSize;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Chào, Trần Đức Thanh",
-                style: PrimaryFont.headerTextBold().copyWith(color: Colors.black)),
-            const SizedBox(
-              height: 6,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(10.h),
+        child: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: false,
+          flexibleSpace: Padding(
+            padding: const EdgeInsets.only(
+                left: 12, bottom: 10),
+            child: Column(
+              mainAxisAlignment:
+                  MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Chào, Trần Đức Thanh",
+                  style: PrimaryFont.headerTextBold()
+                      .copyWith(color: Colors.black),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  txtMTAC,
+                  style:
+                      PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                ),
+                const SizedBox(height: 4),
+              ],
             ),
-            Text(txtMTAC,
-                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black)),
-            const SizedBox(
-              height: 4,
-            ),
-          ],
+          ),
         ),
-        backgroundColor: Colors.white,
-        centerTitle: false,
       ),
       backgroundColor: Colors.white,
       body: Container(
@@ -44,43 +54,23 @@ class HomeScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: ResponsiveBuilder(
-              portrait: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _HeaderHomeScreen(
-                    sWidthMoney: size.width *0.55,
-                    sHeightMoney: size.height * 0.05,
-                    sHeightRevenue: size.height * 0.15,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const _BodyHomeScreen(),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  _BottomHomeScreen(sHeightTransport: size.height * 0.2),
-                ],
-              ),
-              landscape: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _HeaderHomeScreen(
-                    sWidthMoney: size.width *0.3,
-                    sHeightMoney: size.height * 0.1,
-                    sHeightRevenue: size.height * 0.3,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const _BodyHomeScreen(),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  _BottomHomeScreen(sHeightTransport: size.height * 0.4),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _HeaderHomeScreen(
+                  sWidthMoney: 50.w,
+                  sHeightMoney: 5.h,
+                  sHeightRevenue: 15.h,
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                const _BodyHomeScreen(),
+                const SizedBox(
+                  height: 30,
+                ),
+                _BottomHomeScreen(sHeightTransport: 16.h),
+              ],
             ),
           ),
         ),
@@ -219,7 +209,8 @@ class _HeaderHomeScreen extends StatelessWidget {
               Flexible(
                 child: Text(
                   "100,000,000,000 đ",
-                  style: PrimaryFont.bodyTextMedium().copyWith(color: kPrimaryColor),
+                  style: PrimaryFont.bodyTextMedium()
+                      .copyWith(color: kPrimaryColor),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -256,26 +247,26 @@ class _HeaderHomeScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           padding: const EdgeInsets.all(8),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
                 Icons.account_balance_wallet_outlined,
-                size: 30,
+                size: 10.w,
                 color: Colors.white,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               _TextMoney(
                 title: txtRevenue,
                 balance: txtNumberMoney,
-                size: 23,
+                size: 5.w,
               ),
-              Spacer(),
+              const Spacer(),
               _TextMoney(
                 title: txtYesterday,
                 balance: txtNumberMoney,
-                size: 12,
+                size: 3.w,
               ),
             ],
           ),
@@ -327,13 +318,11 @@ class _TextMoney extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-              color: Colors.white, fontSize: 10, fontWeight: FontWeight.w300),
+          style: PrimaryFont.bodyTextLight().copyWith(color: Colors.white),
         ),
         Text(
           balance,
-          style: TextStyle(
-              color: Colors.white, fontSize: size, fontWeight: FontWeight.w900),
+          style: PrimaryFont.bold(size).copyWith(color: Colors.white),
         ),
       ],
     );
@@ -351,8 +340,8 @@ class _ItemInviteTransport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200,
-      height: 156,
+      width: 50.w,
+      height: 20.h,
       decoration: const BoxDecoration(
         color: Color(0xFFF4F4F4),
         borderRadius: BorderRadius.only(
@@ -369,8 +358,8 @@ class _ItemInviteTransport extends StatelessWidget {
             ),
             child: Image.network(
               image,
-              width: 200,
-              height: 90,
+              width: 50.w,
+              height: 9.h,
               fit: BoxFit.cover,
             ),
           ),
@@ -381,7 +370,7 @@ class _ItemInviteTransport extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
               text,
-              style:PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
+              style: PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -407,37 +396,38 @@ class _ItemFunction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 80,
+      width: 18.w,
       child: Column(
         children: [
           checkNoti
               ? Align(
                   alignment: Alignment.centerRight,
                   child: Container(
-                    width: 20,
-                    height: 20,
+                    width: 5.w,
+                    height: 5.w,
                     alignment: Alignment.center,
                     decoration: const BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.all(
-                        Radius.circular(50),
+                        Radius.circular(1000),
                       ),
                     ),
                     child: Text(
                       numberNoti,
-                      style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.white),
+                      style: PrimaryFont.bodyTextMedium()
+                          .copyWith(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
                   ),
                 )
-              : const SizedBox(
-                  width: 20,
-                  height: 20,
+              : SizedBox(
+                  width: 5.w,
+                  height: 5.w,
                 ),
           Icon(
             icons,
             color: Colors.black,
-            size: 24,
+            size: 8.w,
           ),
           const SizedBox(
             height: 12,
