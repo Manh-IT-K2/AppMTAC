@@ -152,7 +152,7 @@ class _BodyHomeScreen extends StatelessWidget {
           return InkWell(
             onTap: () {
               if (item["text"] == "Sắp lịch") {
-                Get.toNamed(AppRoutes.SCHEDULECOLLECTION);
+                Get.toNamed(AppRoutes.SCHEDULE);
               }
               // Get.snackbar(
               //   "Notification",
