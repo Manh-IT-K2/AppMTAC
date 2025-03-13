@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/constants/text.dart';
-import 'package:mtac/controllers/dropdown_controllser.dart';
+import 'package:mtac/controllers/dropdown_controller.dart';
 import 'package:mtac/controllers/image_picker_controller.dart';
 import 'package:mtac/data/schedule_screen/item_info_waste.dart';
 import 'package:mtac/themes/color.dart';
