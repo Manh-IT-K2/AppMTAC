@@ -3,7 +3,7 @@ class ScheduleModel {
   final String nameWaste;
   final String addressBusiness;
   final String day;
-  final bool status;
+  final String status;
 
   ScheduleModel({
     required this.title,
