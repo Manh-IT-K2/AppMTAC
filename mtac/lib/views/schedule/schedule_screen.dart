@@ -117,7 +117,7 @@ class ScheduleScreen extends StatelessWidget {
                 children: controller.items.map((title) {
                   return ListView.builder(
                     itemCount: 10,
-                    itemBuilder: (context, index) => _ItemTripWork(),
+                    itemBuilder: (context, index) => const _ItemTripWork(),
                   );
                 }).toList(),
               ),
@@ -245,23 +245,25 @@ class _ItemListTrip extends StatelessWidget {
       onTap: () => controller.selectItem(title),
       child: Obx(() {
         bool isSelected = controller.selectedTitle.value == title;
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: isSelected ? Colors.blue : Colors.grey,
+        return IntrinsicWidth(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: isSelected ? Colors.blue : Colors.grey,
+                ),
               ),
-            ),
-            Container(
-              color: isSelected ? Colors.blue : Colors.transparent,
-              height: 2,
-              width: isSelected ? 30 : 0,
-              margin: EdgeInsets.only(top: 5),
-            ),
-          ],
+              Container(
+                color: isSelected ? Colors.blue : Colors.transparent,
+                height: 2,
+                width: isSelected ? double.infinity : 0,
+                margin: const EdgeInsets.only(top: 5),
+              ),
+            ],
+          ),
         );
       }),
     );
