@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/controllers/trip_controller.dart';
+import 'package:mtac/data/schedule_screen/item_trip_work.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
@@ -116,9 +117,16 @@ class ScheduleScreen extends StatelessWidget {
                 onPageChanged: controller.onPageChanged,
                 children: controller.items.map((title) {
                   return ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) => const _ItemTripWork(),
-                  );
+                      itemCount: tripWorkData.length,
+                      itemBuilder: (context, index) {
+                        final data = tripWorkData[index];
+                        return _ItemTripWork(
+                            title: data.title,
+                            nameWaste: data.nameWaste,
+                            addressBusiness: data.addressBusiness,
+                            day: data.day,
+                            status: data.status);
+                      });
                 }).toList(),
               ),
             ),
@@ -132,8 +140,14 @@ class ScheduleScreen extends StatelessWidget {
 class _ItemTripWork extends StatelessWidget {
   const _ItemTripWork({
     super.key,
+    required this.title,
+    required this.nameWaste,
+    required this.addressBusiness,
+    required this.day,
+    required this.status,
   });
 
+  final String title, nameWaste, addressBusiness, day, status;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -144,6 +158,14 @@ class _ItemTripWork extends StatelessWidget {
         color: Colors.white,
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(5.w),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 1,
+            offset: const Offset(1, 4),
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -158,12 +180,16 @@ class _ItemTripWork extends StatelessWidget {
                   width: 30.w,
                   height: 10.w,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF22C7E4),
+                    color: title.contains("Khoán")
+                        ? const Color(0xFF22C7E4)
+                        : title.contains("Cân")
+                            ? Colors.orange
+                            : kPrimaryColor,
                     borderRadius: BorderRadius.circular(5.w),
                   ),
                   child: Center(
                     child: Text(
-                      "Khoán",
+                      title,
                       style: PrimaryFont.bodyTextBold()
                           .copyWith(color: Colors.white),
                       textAlign: TextAlign.center,
@@ -174,7 +200,7 @@ class _ItemTripWork extends StatelessWidget {
                   height: 3.w,
                 ),
                 Text(
-                  "Chất thải nguy hại",
+                  nameWaste,
                   style:
                       PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
                   textAlign: TextAlign.center,
@@ -183,7 +209,7 @@ class _ItemTripWork extends StatelessWidget {
                   height: 3.w,
                 ),
                 Text(
-                  "1 CN, Môi Trường Đô Thị",
+                  addressBusiness,
                   style:
                       PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
                   textAlign: TextAlign.center,
@@ -192,7 +218,7 @@ class _ItemTripWork extends StatelessWidget {
                   height: 3.w,
                 ),
                 Text(
-                  "20 -02 - 2025",
+                  day,
                   style:
                       PrimaryFont.bodyTextBold().copyWith(color: Colors.grey),
                   textAlign: TextAlign.center,
@@ -204,23 +230,29 @@ class _ItemTripWork extends StatelessWidget {
             height: double.infinity,
             width: 8.h,
             decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(5.w),
-                  bottomRight: Radius.circular(5.w),
+              color: status.contains("Chưa thu gom")
+                  ? kPrimaryColor
+                  : status.contains("Đang thu gom")
+                      ? Colors.green
+                      : const Color(0xFF22C7E4),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(5.w),
+                bottomRight: Radius.circular(5.w),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 1,
+                  offset: const Offset(1, 4),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
-                      spreadRadius: 2,
-                      blurRadius: 1,
-                      offset: const Offset(1, 4))
-                ]),
+              ],
+            ),
             child: Center(
               child: RotatedBox(
                 quarterTurns: -1,
                 child: Text(
-                  "Chưa thu gom",
+                  status,
                   style:
                       PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
                 ),
