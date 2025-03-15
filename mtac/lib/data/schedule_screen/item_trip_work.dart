@@ -26,7 +26,7 @@ List<ScheduleModel> tripWorkData = [
       day: "20 - 02 - 2025",
       status: "Chưa thu gom"),
   ScheduleModel(
-      title: "Khoán",
+      title: "Bình",
       nameWaste: "Chất thải công nghiệp",
       addressBusiness: "1 CN, Môi trường đô thị",
       day: "20 - 02 - 2025",
@@ -38,11 +38,11 @@ List<ScheduleModel> tripWorkData = [
       day: "20 - 02 - 2025",
       status: "Chưa thu gom"),
   ScheduleModel(
-      title: "Khoán",
+      title: "Bình",
       nameWaste: "Chất thải nguy hại",
       addressBusiness: "1 CN, Môi trường đô thị",
       day: "20 - 02 - 2025",
-      status: "Chưa thu gom"),
+      status: "Đang thu gom"),
   ScheduleModel(
       title: "Khoán",
       nameWaste: "Chất thải nguy hại",
@@ -50,11 +50,11 @@ List<ScheduleModel> tripWorkData = [
       day: "20 - 02 - 2025",
       status: "Chưa thu gom"),
   ScheduleModel(
-      title: "Khoán",
+      title: "Cân",
       nameWaste: "Chất thải y tế",
       addressBusiness: "1 CN, Môi trường đô thị",
       day: "20 - 02 - 2025",
-      status: "Chưa thu gom"),
+      status: "Đã thu gom"),
   ScheduleModel(
       title: "Khoán",
       nameWaste: "Chất thải rắn sinh hoạt",
