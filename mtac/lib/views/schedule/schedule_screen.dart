@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/controllers/trip_controller.dart';
 import 'package:mtac/data/schedule_screen/item_trip_work.dart';
+import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
@@ -226,35 +227,41 @@ class _ItemTripWork extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            height: double.infinity,
-            width: 8.h,
-            decoration: BoxDecoration(
-              color: status.contains("Chưa thu gom")
-                  ? kPrimaryColor
-                  : status.contains("Đang thu gom")
-                      ? Colors.green
-                      : const Color(0xFF22C7E4),
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(5.w),
-                bottomRight: Radius.circular(5.w),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  spreadRadius: 2,
-                  blurRadius: 1,
-                  offset: const Offset(1, 4),
+          
+          GestureDetector(
+            onTap: () {
+              Get.toNamed(AppRoutes.SCHEDULECOLLECTION);
+            },
+            child: Container(
+              height: double.infinity,
+              width: 8.h,
+              decoration: BoxDecoration(
+                color: status.contains("Chưa thu gom")
+                    ? kPrimaryColor
+                    : status.contains("Đang thu gom")
+                        ? Colors.green
+                        : const Color(0xFF22C7E4),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(5.w),
+                  bottomRight: Radius.circular(5.w),
                 ),
-              ],
-            ),
-            child: Center(
-              child: RotatedBox(
-                quarterTurns: -1,
-                child: Text(
-                  status,
-                  style:
-                      PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 1,
+                    offset: const Offset(1, 4),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: RotatedBox(
+                  quarterTurns: -1,
+                  child: Text(
+                    status,
+                    style:
+                        PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
+                  ),
                 ),
               ),
             ),

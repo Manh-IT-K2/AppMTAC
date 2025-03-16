@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:mtac/constants/text.dart';
 import 'package:mtac/controllers/dropdown_controller.dart';
 import 'package:mtac/controllers/image_picker_controller.dart';
+import 'package:mtac/controllers/input_controller.dart';
 import 'package:mtac/data/schedule_screen/item_info_waste.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
@@ -22,6 +23,9 @@ class HandoverRecordScreen extends StatelessWidget {
   //
   final ImagePickerController imageController =
       Get.put(ImagePickerController());
+
+  //
+  final InputController inputController = Get.put(InputController());
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +75,8 @@ class HandoverRecordScreen extends StatelessWidget {
                 sWidthSizeBox: 4.w,
                 sWidthNameWaste: 24.w,
                 sWidthCodeWaste: 20.w,
-                sWidthStatusWaste: 20.w,
+                sWidthStatusWaste: 20.w, 
+                inputController: inputController,
               ),
               const SizedBox(
                 height: 25,
@@ -256,10 +261,12 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
     required this.sWidthCodeWaste,
     required this.sWidthStatusWaste,
     required this.sHeightBody,
-    required this.sWidthSizeBox,
+    required this.sWidthSizeBox, 
+    required this.inputController,
   });
 
   final List<DropdownController> wasteControllers;
+  final InputController inputController;
   final double sHeightBody,
       sHeightItem,
       sWidthNameWaste,
@@ -269,6 +276,9 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    //
+    inputController.initializeList(infoWasteData.length);
     return Column(
       children: [
         Row(
@@ -376,12 +386,17 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                         width: 12,
                       ),
                       Expanded(
-                        child: Text(
-                          item.number,
-                          style: PrimaryFont.bodyTextLight()
-                              .copyWith(color: Colors.black),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        child: GestureDetector(
+                          onTap: () => inputController.showInputPopup(index),
+                          child: Obx(
+                            () => Text(
+                              inputController.numbers[index].value.isEmpty ? "0 (kg)" : "${inputController.numbers[index].value} (kg)",
+                              style: PrimaryFont.bodyTextLight()
+                                  .copyWith(color: Colors.black),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -490,10 +505,11 @@ class _ItemInfoWaste extends StatelessWidget {
     required this.controller,
     required this.sName,
     required this.sCode,
-    required this.sNumber,
+    required this.sNumber, required this.inputController,
   });
 
   final DropdownController controller;
+  final InputController inputController;
   final String sName, sCode, sNumber;
 
   @override
@@ -571,12 +587,13 @@ class _ItemInfoWaste extends StatelessWidget {
           SizedBox(
             width: 60,
             child: Text(
-              sNumber,
-              style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+                sNumber,
+                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
+          
         ],
       ),
     );

@@ -4,9 +4,9 @@ class DropdownController extends GetxController {
   var selectedValue = "Null".obs;
   final List<String> items = [
     "Null",
-    "Chưa xử lý",
-    "Đang xử lý",
-    "Đã xử lý"
+    "Chưa thu gom",
+    "Đang thu gom",
+    "Đã thu gom"
   ];
 
   DropdownController(String initialStatus) {
