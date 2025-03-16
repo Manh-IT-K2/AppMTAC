@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:mtac/common/notify_success_dialog.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
@@ -122,6 +123,7 @@ class InputController extends GetxController {
                               numbers[index].value = textController.text;
                               status.value = false;
                               Get.back();
+                              NotifySuccessDialog().showNotifyPopup();
                             } else {
                               status.value = true;
                             }
