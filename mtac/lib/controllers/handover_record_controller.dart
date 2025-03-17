@@ -1,13 +1,60 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mtac/common/notify_success_dialog.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
-class InputController extends GetxController {
-  var numbers = <RxString>[].obs; // Danh sách các giá trị nhập
+class HandoverRecordController extends GetxController {
+  /* CODE CHOSE IMAGE */
+  // Create variable image
+  final ImagePicker _picker = ImagePicker();
+  var selectedImages = <File>[].obs;
+  var checkDistance = false.obs;
+
+  // Selected image library
+  Future<void> pickMultipleImages() async {
+    final List<XFile>? images = await _picker.pickMultiImage();
+    if (images != null) {
+      List<File> newImages = images.map((img) => File(img.path)).toList();
+      // filter image name
+      final Set<String> fileNames =
+          selectedImages.map((file) => file.path.split('/').last).toSet();
+      for (var img in newImages) {
+        if (!fileNames.contains(img.path.split('/').last)) {
+          selectedImages.add(img);
+        }
+      }
+      checkDistance.value = selectedImages.isNotEmpty;
+      //selectedImages.refresh();
+      //print("Selected Images: ${selectedImages.map((e) => e.path).toList()}");
+    }
+  }
+
+  // Open Camera
+  Future<void> pickImageFromCamera() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      selectedImages.add(File(image.path));
+      checkDistance.value = selectedImages.isNotEmpty;
+      //selectedImages.refresh();
+    }
+  }
+
+  // Renove image from index
+  void removeImage(int index) {
+    selectedImages.removeAt(index);
+    checkDistance.value = selectedImages.isNotEmpty;
+  }
+
+  /* CODE INPUT */
+
+  // Create variable input
+  var numbers = <RxString>[].obs;
   var status = false.obs;
   var textController = TextEditingController();
 
@@ -123,7 +170,9 @@ class InputController extends GetxController {
                               numbers[index].value = textController.text;
                               status.value = false;
                               Get.back();
-                              NotifySuccessDialog().showNotifyPopup("Thêm khối lượng thành công", () =>  Get.back());
+                              NotifySuccessDialog().showNotifyPopup(
+                                  "Thêm khối lượng thành công",
+                                  () => Get.back());
                             } else {
                               status.value = true;
                             }

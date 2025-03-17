@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mtac/controllers/image_picker_controller.dart';
+import 'package:mtac/controllers/handover_record_controller.dart';
 import 'package:sizer/sizer.dart';
 
 class BottomPreviewImageSheet extends StatelessWidget {
@@ -8,7 +8,7 @@ class BottomPreviewImageSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageController = Get.find<ImagePickerController>();
+    final imageController = Get.find<HandoverRecordController>();
 
     return Container(
       padding: const EdgeInsets.all(10),

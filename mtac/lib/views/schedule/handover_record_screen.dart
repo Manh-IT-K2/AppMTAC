@@ -5,8 +5,7 @@ import 'package:get/get.dart';
 import 'package:mtac/common/notify_success_dialog.dart';
 import 'package:mtac/constants/text.dart';
 import 'package:mtac/controllers/dropdown_controller.dart';
-import 'package:mtac/controllers/image_picker_controller.dart';
-import 'package:mtac/controllers/input_controller.dart';
+import 'package:mtac/controllers/handover_record_controller.dart';
 import 'package:mtac/data/schedule_screen/item_info_waste.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
@@ -20,15 +19,10 @@ class HandoverRecordScreen extends StatelessWidget {
   HandoverRecordScreen({super.key});
 
   //
-  List<DropdownController> wasteControllers =
-      infoWasteData.map((item) => DropdownController(item.status)).toList();
+  List<DropdownController> wasteControllers = infoWasteData.map((item) => DropdownController(item.status)).toList();
 
   //
-  final ImagePickerController imageController =
-      Get.put(ImagePickerController());
-
-  //
-  final InputController inputController = Get.put(InputController());
+  final HandoverRecordController _handoverRecordController = Get.put(HandoverRecordController());
 
   @override
   Widget build(BuildContext context) {
@@ -79,13 +73,13 @@ class HandoverRecordScreen extends StatelessWidget {
                 sWidthNameWaste: 24.w,
                 sWidthCodeWaste: 20.w,
                 sWidthStatusWaste: 20.w,
-                inputController: inputController,
+                inputController: _handoverRecordController,
               ),
               const SizedBox(
                 height: 25,
               ),
               _BottomHandoverRecordSceen(
-                  imageController: imageController,
+                  imageController: _handoverRecordController,
                   sWidthCon: 30.w,
                   sHeightCon: 20.h),
               const SizedBox(
@@ -107,7 +101,7 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
     required this.sHeightCon,
   });
 
-  final ImagePickerController imageController;
+  final HandoverRecordController imageController;
   final double sWidthCon, sHeightCon;
 
   @override
@@ -272,7 +266,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
   });
 
   final List<DropdownController> wasteControllers;
-  final InputController inputController;
+  final HandoverRecordController inputController;
   final double sHeightBody,
       sHeightItem,
       sWidthNameWaste,
@@ -515,7 +509,7 @@ class _ItemInfoWaste extends StatelessWidget {
   });
 
   final DropdownController controller;
-  final InputController inputController;
+  final HandoverRecordController inputController;
   final String sName, sCode, sNumber;
 
   @override

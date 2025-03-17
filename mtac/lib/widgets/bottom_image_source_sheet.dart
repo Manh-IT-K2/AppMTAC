@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/constants/text.dart';
+import 'package:mtac/controllers/handover_record_controller.dart';
 import 'package:mtac/utils/theme_text.dart';
-import '../controllers/image_picker_controller.dart';
 
 class BottomImageSourceSheet extends StatelessWidget {
   const BottomImageSourceSheet({super.key});
@@ -10,7 +10,7 @@ class BottomImageSourceSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    final imageController = Get.find<ImagePickerController>();
+    final imageController = Get.find<HandoverRecordController>();
 
     return Wrap(
       children: [
