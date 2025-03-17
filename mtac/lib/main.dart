@@ -13,10 +13,10 @@ void main() {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((_) {
-    // DevicePreview(
+    // runApp(DevicePreview(
     //   enabled: !kReleaseMode,
     //   builder: (context) => const MyApp(), // Wrap your app
-    // );
+    // ));
     Get.config(enableLog: false);
     runApp(const MyApp());
   });

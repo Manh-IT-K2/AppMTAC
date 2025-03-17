@@ -46,7 +46,7 @@ dependencies:
   sizer: ^3.0.4
   
   #preview mobile, ios, ipad,destop
-  device_preview: ^1.2.0
+  device_preview: ^1.1.0
 
 
 dev_dependencies:
