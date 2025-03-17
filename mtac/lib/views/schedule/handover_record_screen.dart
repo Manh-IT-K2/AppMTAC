@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mtac/common/notify_success_dialog.dart';
 import 'package:mtac/constants/text.dart';
 import 'package:mtac/controllers/dropdown_controller.dart';
 import 'package:mtac/controllers/image_picker_controller.dart';
 import 'package:mtac/controllers/input_controller.dart';
 import 'package:mtac/data/schedule_screen/item_info_waste.dart';
+import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:mtac/widgets/bottom_image_source_sheet.dart';
@@ -18,7 +20,8 @@ class HandoverRecordScreen extends StatelessWidget {
   HandoverRecordScreen({super.key});
 
   //
-  List<DropdownController> wasteControllers = infoWasteData.map((item) => DropdownController(item.status)).toList();
+  List<DropdownController> wasteControllers =
+      infoWasteData.map((item) => DropdownController(item.status)).toList();
 
   //
   final ImagePickerController imageController =
@@ -75,7 +78,7 @@ class HandoverRecordScreen extends StatelessWidget {
                 sWidthSizeBox: 4.w,
                 sWidthNameWaste: 24.w,
                 sWidthCodeWaste: 20.w,
-                sWidthStatusWaste: 20.w, 
+                sWidthStatusWaste: 20.w,
                 inputController: inputController,
               ),
               const SizedBox(
@@ -224,7 +227,7 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
                     }).toList(),
                   ),
                 );
-              })
+              }),
             ],
           ),
         ),
@@ -233,7 +236,10 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
         ),
         Center(
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              NotifySuccessDialog().showNotifyPopup(
+                  "Gửi biên bản thành công", () => Get.offAllNamed(AppRoutes.MAIN));
+            },
             style: ElevatedButton.styleFrom(
                 backgroundColor: kPrimaryColor,
                 shape: RoundedRectangleBorder(
@@ -261,7 +267,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
     required this.sWidthCodeWaste,
     required this.sWidthStatusWaste,
     required this.sHeightBody,
-    required this.sWidthSizeBox, 
+    required this.sWidthSizeBox,
     required this.inputController,
   });
 
@@ -276,7 +282,6 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     //
     inputController.initializeList(infoWasteData.length);
     return Column(
@@ -355,9 +360,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                         child: Obx(
                           () => DropdownButton<String>(
                             isExpanded: true,
-                            value: wasteControllers[index]
-                                .selectedValue
-                                .value,
+                            value: wasteControllers[index].selectedValue.value,
                             icon: const Icon(Icons.keyboard_arrow_down),
                             style: PrimaryFont.bodyTextBold().copyWith(
                               color: Colors.green,
@@ -390,7 +393,9 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                           onTap: () => inputController.showInputPopup(index),
                           child: Obx(
                             () => Text(
-                              inputController.numbers[index].value.isEmpty ? "0 (kg)" : "${inputController.numbers[index].value} (kg)",
+                              inputController.numbers[index].value.isEmpty
+                                  ? "0 (kg)"
+                                  : "${inputController.numbers[index].value} (kg)",
                               style: PrimaryFont.bodyTextLight()
                                   .copyWith(color: Colors.black),
                               maxLines: 1,
@@ -505,7 +510,8 @@ class _ItemInfoWaste extends StatelessWidget {
     required this.controller,
     required this.sName,
     required this.sCode,
-    required this.sNumber, required this.inputController,
+    required this.sNumber,
+    required this.inputController,
   });
 
   final DropdownController controller;
@@ -587,13 +593,12 @@ class _ItemInfoWaste extends StatelessWidget {
           SizedBox(
             width: 60,
             child: Text(
-                sNumber,
-                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+              sNumber,
+              style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-          
+          ),
         ],
       ),
     );

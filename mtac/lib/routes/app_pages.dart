@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/views/main_screen.dart';
 import 'package:mtac/views/schedule/handover_record_screen.dart';
+import 'package:mtac/views/schedule/map_screen.dart';
 import 'package:mtac/views/schedule/schedule_collection_screen.dart';
 import 'package:mtac/views/schedule/schedule_screen.dart';
 
@@ -20,8 +21,12 @@ class AppPages {
       page: () => HandoverRecordScreen(),
     ),
     GetPage(
-      name: AppRoutes.SCHEDULE, 
+      name: AppRoutes.SCHEDULE,
       page: () => ScheduleScreen(),
-      ),
+    ),
+    GetPage(
+      name: AppRoutes.MAP,
+      page: () => MapScreen(),
+    ),
   ];
 }

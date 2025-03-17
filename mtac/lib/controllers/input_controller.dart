@@ -123,7 +123,7 @@ class InputController extends GetxController {
                               numbers[index].value = textController.text;
                               status.value = false;
                               Get.back();
-                              NotifySuccessDialog().showNotifyPopup();
+                              NotifySuccessDialog().showNotifyPopup("Thêm khối lượng thành công", () =>  Get.back());
                             } else {
                               status.value = true;
                             }
