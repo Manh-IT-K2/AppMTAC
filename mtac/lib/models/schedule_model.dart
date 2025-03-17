@@ -13,7 +13,7 @@ class ScheduleModel {
     required this.status,
   });
 
-  // convert Map to Schedule Model
+  // convert Map to ScheduleModel
   factory ScheduleModel.fromMap(Map<String, dynamic> map) {
     return ScheduleModel(
         title: map['title'] ?? '',
@@ -23,7 +23,7 @@ class ScheduleModel {
         status: map['status'] ?? ' ');
   }
 
-  // convert Schedule Model to Map
+  // convert ScheduleModel to Map
   Map<String,dynamic> toMap(){
     return {
       'title' : title,

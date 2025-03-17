@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 
-// class TripController extends GetxController {
+// class MapController extends GetxController {
 //   var selectedTitle = "Tất cả".obs;
 //   var pageController = PageController();
 
@@ -22,7 +22,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TripController extends GetxController {
+class MapController extends GetxController {
   var selectedTitle = "Tất cả".obs;
   var pageController = PageController(); // Controller điều khiển PageView
 
