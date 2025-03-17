@@ -69,7 +69,7 @@ class _BodyScheduleCollectionScreen extends StatelessWidget {
               txtDay: trip.txtDay,
               txtPrice: trip.txtPrice,
               onTapSchedule: () {
-                Get.toNamed(AppRoutes.HANDOVERRECORD);
+                Get.toNamed(AppRoutes.MAP);
               },
             );
           }),

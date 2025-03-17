@@ -5,7 +5,7 @@ import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
 class NotifySuccessDialog {
-  void showNotifyPopup() {
+  void showNotifyPopup(String title, Function()? onTap) {
     Get.dialog(
       Stack(
         children: [
@@ -26,26 +26,24 @@ class NotifySuccessDialog {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Container(
-                          width: 5.w,
-                          height: 5.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(3.w)),
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.black,
-                            size: 3.w,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.centerRight,
+                    //   child: GestureDetector(
+                    //     onTap: onTap,
+                    //     child: Container(
+                    //       width: 5.w,
+                    //       height: 5.w,
+                    //       decoration: BoxDecoration(
+                    //           color: Colors.grey.withOpacity(0.2),
+                    //           borderRadius: BorderRadius.circular(3.w)),
+                    //       child: Icon(
+                    //         Icons.close,
+                    //         color: Colors.black,
+                    //         size: 3.w,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Align(
                       alignment: Alignment.center,
                       child: Container(
@@ -63,15 +61,13 @@ class NotifySuccessDialog {
                     ),
                     SizedBox(height: 5.w),
                     Text(
-                      "Thêm khối lượng thành công",
+                     title,
                       style: PrimaryFont.headerTextBold()
                           .copyWith(color: kPrimaryColor),
                     ),
                     SizedBox(height: 10.w),
                     ElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                      },
+                      onPressed: onTap,
                       style: ElevatedButton.styleFrom(
                           backgroundColor: kPrimaryColor,
                           shape: RoundedRectangleBorder(

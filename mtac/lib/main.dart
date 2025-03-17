@@ -17,6 +17,7 @@ void main() {
     //   enabled: !kReleaseMode,
     //   builder: (context) => const MyApp(), // Wrap your app
     // );
+    Get.config(enableLog: false);
     runApp(const MyApp());
   });
 }
