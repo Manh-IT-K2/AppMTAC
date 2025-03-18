@@ -463,7 +463,7 @@ class _HeaderHandoverRecordScreen extends StatelessWidget {
                   text:
                       " Dự Án Nhà máy sử dụng nước Thải Nhiên liệu Thị Nghè TP.HCM giai đoạn 2.",
                   style:
-                      PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                      PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
                 ),
               ],
             ),

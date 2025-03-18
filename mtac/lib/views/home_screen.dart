@@ -153,6 +153,8 @@ class _BodyHomeScreen extends StatelessWidget {
             onTap: () {
               if (item["text"] == "Sắp lịch") {
                 Get.toNamed(AppRoutes.SCHEDULE);
+              } else if (item["text"] == "Tài xế"){
+                Get.toNamed(AppRoutes.DRIVER);
               }
               // Get.snackbar(
               //   "Notification",
