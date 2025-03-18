@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/controllers/map_controller.dart';
+import 'package:mtac/controllers/schedule_controller.dart';
 import 'package:mtac/data/schedule_screen/item_trip_work.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
@@ -10,7 +11,7 @@ import 'package:sizer/sizer.dart';
 class ScheduleScreen extends StatelessWidget {
   ScheduleScreen({super.key});
 
-  final MapController controller = Get.put(MapController());
+  final ScheduleController controller = Get.put(ScheduleController());
 
   @override
   Widget build(BuildContext context) {
@@ -274,7 +275,7 @@ class _ItemTripWork extends StatelessWidget {
 
 class _ItemListTrip extends StatelessWidget {
   final String title;
-  final MapController controller = Get.find<MapController>();
+  final ScheduleController controller = Get.find<ScheduleController>();
 
   _ItemListTrip({super.key, required this.title});
 

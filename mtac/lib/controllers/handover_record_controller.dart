@@ -10,6 +10,21 @@ import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
 class HandoverRecordController extends GetxController {
+
+  /* CODE DROPDOW CHOSE STATUS */
+  // Create variable list status
+  // var selectedValue = "Null".obs;
+  // final List<String> items = [
+  //   "Null",
+  //   "Chưa thu gom",
+  //   "Đang thu gom",
+  //   "Đã thu gom"
+  // ];
+
+  // DropdownController(String initialStatus) {
+  //   selectedValue.value = initialStatus;
+  // }
+
   /* CODE CHOSE IMAGE */
   // Create variable image
   final ImagePicker _picker = ImagePicker();

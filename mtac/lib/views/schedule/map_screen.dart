@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mtac/controllers/bottom_sheet_controller.dart';
+import 'package:mtac/controllers/map_controller.dart';
+import 'package:mtac/controllers/schedule_controller.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
@@ -9,7 +10,7 @@ import 'package:sizer/sizer.dart';
 class MapScreen extends StatelessWidget {
   MapScreen({super.key});
 
-  final BottomSheetController controller = Get.put(BottomSheetController());
+  final MapController controller = Get.put(MapController());
   @override
   Widget build(BuildContext context) {
     double screenHeight = 100.h;
