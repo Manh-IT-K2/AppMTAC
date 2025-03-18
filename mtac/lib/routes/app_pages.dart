@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:mtac/routes/app_routes.dart';
+import 'package:mtac/views/driver/driver_screen.dart';
 import 'package:mtac/views/main_screen.dart';
 import 'package:mtac/views/schedule/handover_record_screen.dart';
 import 'package:mtac/views/schedule/map_screen.dart';
@@ -10,7 +11,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: AppRoutes.MAIN,
-      page: () => MainScreen(),
+      page: () => const MainScreen(),
     ),
     GetPage(
       name: AppRoutes.SCHEDULECOLLECTION,
@@ -27,6 +28,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.MAP,
       page: () => MapScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.DRIVER,
+      page: () => const DriverScreen(),
     ),
   ];
 }
