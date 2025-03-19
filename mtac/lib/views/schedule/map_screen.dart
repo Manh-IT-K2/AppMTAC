@@ -40,7 +40,7 @@ class MapScreen extends StatelessWidget {
             top: 15.w,
             left: 5.w,
             child: GestureDetector(
-              onTap: () => Get.back,
+              onTap: () => Get.back(),
               child: Container(
                 width: 10.w,
                 height: 10.w,
@@ -106,7 +106,7 @@ class MapScreen extends StatelessWidget {
                             children: [
                               Text(
                                 txtTitleBottomM,
-                                style: PrimaryFont.headerTextMedium().copyWith(
+                                style: PrimaryFont.headerTextBold().copyWith(
                                   color: const Color(0xFF233751),
                                 ),
                               ),
@@ -226,7 +226,7 @@ class _ItemDestination extends StatelessWidget {
         SizedBox(height: 3.w),
         Text(
           "Công ty CP SX TM Sáng Việt",
-          style: PrimaryFont.headerTextMedium().copyWith(
+          style: PrimaryFont.titleTextMedium().copyWith(
             color: Colors.black,
           ),
         ),

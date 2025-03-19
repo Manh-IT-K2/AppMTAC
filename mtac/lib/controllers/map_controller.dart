@@ -7,11 +7,11 @@ import 'package:hugeicons/hugeicons.dart';
 
 class MapController extends GetxController {
   /* Bottom bar Destination */
-  var sheetHeight = 0.06.obs;
+  var sheetHeight = 0.07.obs;
 
   void updateHeight(double delta, double screenHeight) {
     sheetHeight.value -= delta / screenHeight;
-    sheetHeight.value = sheetHeight.value.clamp(0.06, 0.7);
+    sheetHeight.value = sheetHeight.value.clamp(0.07, 0.7);
   }
 
   /* Google Map */
@@ -22,7 +22,7 @@ class MapController extends GetxController {
   final LatLng endLocation = const LatLng(10.8039, 106.7143); // Bình Thạnh
 
 // Danh sách các điểm của tuyến đường
-  final List<LatLng> routePoints = [
+  final List<LatLng> routePoints = const [
     LatLng(10.7769, 106.7009), // Bến Thành
     LatLng(10.7845, 106.7070), // Nguyễn Thị Minh Khai
     LatLng(10.7932, 106.7112), // Điện Biên Phủ
