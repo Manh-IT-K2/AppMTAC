@@ -1,32 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-class PrimaryFont{
 
-  static String fontfamily ='Raleway';
+class PrimaryFont {
+  static String fontfamily = 'Raleway';
 
   // text header
-  static TextStyle headerTextThin(){
+  static TextStyle headerTextThin() {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w100,
       fontSize: 5.w,
     );
   }
-  static TextStyle headerTextLight(){
+
+  static TextStyle headerTextLight() {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w300,
       fontSize: 5.w,
     );
   }
-  static TextStyle headerTextMedium(){
+
+  static TextStyle headerTextMedium() {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w500,
       fontSize: 5.w,
     );
   }
-  static TextStyle headerTextBold(){
+
+  static TextStyle headerTextBold() {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w700,
@@ -35,68 +38,106 @@ class PrimaryFont{
   }
 
   // text body
-    static TextStyle bodyTextThin(){
+  static TextStyle bodyTextThin() {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w100,
       fontSize: 3.w,
     );
   }
-  static TextStyle bodyTextLight(){
+
+  static TextStyle bodyTextLight() {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w300,
       fontSize: 3.w,
     );
   }
-  static TextStyle bodyTextMedium(){
+
+  static TextStyle bodyTextMedium() {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w500,
       fontSize: 3.w,
     );
   }
-  static TextStyle bodyTextBold(){
+
+  static TextStyle bodyTextBold() {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w700,
       fontSize: 3.w,
+    );
+  }
+
+// text body
+  static TextStyle titleTextThin() {
+    return TextStyle(
+      fontFamily: fontfamily,
+      fontWeight: FontWeight.w100,
+      fontSize: 4.w,
+    );
+  }
+
+  static TextStyle titleTextLight() {
+    return TextStyle(
+      fontFamily: fontfamily,
+      fontWeight: FontWeight.w300,
+      fontSize: 4.w,
+    );
+  }
+
+  static TextStyle titleTextMedium() {
+    return TextStyle(
+      fontFamily: fontfamily,
+      fontWeight: FontWeight.w500,
+      fontSize: 4.w,
+    );
+  }
+
+  static TextStyle titleTextBold() {
+    return TextStyle(
+      fontFamily: fontfamily,
+      fontWeight: FontWeight.w700,
+      fontSize: 4.w,
     );
   }
 
   // text note
-    static TextStyle thin(double size){
+  static TextStyle thin(double size) {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w100,
       fontSize: size,
     );
   }
-  static TextStyle light(double size){
+
+  static TextStyle light(double size) {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w300,
       fontSize: size,
     );
   }
-  static TextStyle medium(double size){
+
+  static TextStyle medium(double size) {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w500,
       fontSize: size,
     );
   }
-  static TextStyle bold(double size){
+
+  static TextStyle bold(double size) {
     return TextStyle(
       fontFamily: fontfamily,
       fontWeight: FontWeight.w700,
       fontSize: size,
     );
   }
-
 }
 
-extension GetOrientation on BuildContext{
+extension GetOrientation on BuildContext {
   Orientation get orientation => MediaQuery.of(this).orientation;
 }
 

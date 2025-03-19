@@ -1,82 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:mtac/constants/text.dart';
+import 'package:mtac/controllers/driver_controller.dart';
 import 'package:mtac/data/driver_screen/item_note_important.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
-class DriverScreen extends StatefulWidget {
-  const DriverScreen({super.key});
+class DriverScreen extends StatelessWidget {
+  DriverScreen({super.key});
 
-  @override
-  State<DriverScreen> createState() => _DriverScreenState();
-}
-
-class _DriverScreenState extends State<DriverScreen> {
-  late DateTime _currentDate;
-  late List<DateTime> _daysInMonth;
-  late ScrollController _scrollController;
-
-  // Danh sách tên viết tắt của các thứ trong tuần (Bắt đầu từ Thứ 2 - Chủ nhật)
-  final List<String> _weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-
-  @override
-  void initState() {
-    super.initState();
-    _currentDate = DateTime.now();
-    _daysInMonth = _generateDaysInMonth(_currentDate);
-    _scrollController = ScrollController();
-    // Delay 100ms để đảm bảo danh sách được build trước khi cuộn
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToToday();
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  List<DateTime> _generateDaysInMonth(DateTime date) {
-    int daysInMonth = DateTime(date.year, date.month + 1, 0).day;
-    return List.generate(
-        daysInMonth, (index) => DateTime(date.year, date.month, index + 1));
-  }
-
-  List<String> tripTimes = List.generate(12, (index) {
-    int hour = index * 2; // 00:00, 02:00, 04:00, ..., 22:00
-    return '${hour.toString().padLeft(2, '0')}:00';
-  });
-
-  // Hàm lấy tên viết tắt của thứ trong tuần
-  String _getWeekdayShortName(DateTime date) {
-    int weekdayIndex = date.weekday - 1; // `DateTime.weekday` trả về 1 -> 7 (Thứ 2 -> Chủ nhật)
-    return _weekdays[weekdayIndex];
-  }
-
-  void _scrollToToday() {
-    int todayIndex = _daysInMonth.indexWhere((day) =>
-        day.day == _currentDate.day &&
-        day.month == _currentDate.month &&
-        day.year == _currentDate.year);
-
-    if (todayIndex != -1) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        double itemWidth = 13.w + 1; // Kích thước item + khoảng cách
-        double screenWidth = 100.w;
-        double scrollOffset =
-            (todayIndex * itemWidth) - (screenWidth / 2) + (itemWidth / 2);
-
-        _scrollController.animateTo(
-          scrollOffset.clamp(0, _scrollController.position.maxScrollExtent),
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
-      });
-    }
-  }
-
+  final DriverController _driverController = Get.put(DriverController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,18 +21,14 @@ class _DriverScreenState extends State<DriverScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text.rich(
-              TextSpan(
-                text: txtHelloD,
-                style: PrimaryFont.bodyTextMedium()
-                    .copyWith(color: Colors.grey, height: 1.5),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: "Phạm Huỳnh Tín",
-                    style:
-                        PrimaryFont.medium(3.5.w).copyWith(color: Colors.black),
-                  ),
-                ],
+            GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: const Color(0xFF0A4564),
+                size: 5.w,
               ),
             ),
             Container(
@@ -141,164 +72,12 @@ class _DriverScreenState extends State<DriverScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "51C - 7373",
-                    style: PrimaryFont.headerTextBold()
-                        .copyWith(color: Colors.black),
-                  ),
-                  Text(
-                    "MSX: 7362",
-                    style: PrimaryFont.bodyTextBold()
-                        .copyWith(color: Colors.black),
-                  ),
-                ],
-              ),
+              const _HeaderDriverScreen(),
               SizedBox(
                 height: 3.w,
               ),
-              Text(
-                txtUtilDriverD,
-                style:
-                    PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
-              ),
-              Row(
-                children: [
-                  _UtilDriver(
-                    color: Colors.purple.withOpacity(0.2),
-                    icon: Icons.calendar_today_outlined,
-                    title: txtTitleScheduleColectionD,
-                    subTitle: txtSubTitleScheduleColectionD,
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  _UtilDriver(
-                    color: Colors.greenAccent.withOpacity(0.2),
-                    icon: Icons.trending_down,
-                    title: txtTitleStatisticalD,
-                    subTitle: txtSubTitleStatisticalD,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  _UtilDriver(
-                    color: Colors.green.withOpacity(0.1),
-                    icon: Icons.developer_mode_outlined,
-                    title: txtTitleHelpD,
-                    subTitle: txtSubTitleHelpD,
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  _UtilDriver(
-                    color: Colors.orange.withOpacity(0.2),
-                    icon: Icons.smartphone_outlined,
-                    title: txtTitleHistoryD,
-                    subTitle: txtSubTitleHistoryD,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 3.w,
-              ),
-              Text(
-                txtScheduleHighlightD,
-                style:
-                    PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
-              ),
-              SizedBox(
-                height: 3.w,
-              ),
-              SizedBox(
-                height: 20.w,
-                child: ListView.builder(
-                  controller: _scrollController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _daysInMonth.length,
-                  itemBuilder: (context, index) {
-                    DateTime day = _daysInMonth[index];
-                    bool isToday = day.day == _currentDate.day &&
-                        day.month == _currentDate.month &&
-                        day.year == _currentDate.year;
-                    List<int> highlightedDays = [
-                      6,
-                      10,
-                      _currentDate.day,
-                      22,
-                      26,
-                      29
-                    ];
-                    bool isHighlight = highlightedDays.contains(day.day);
-                    return _ItemDayOfWeek(
-                      day: day.day.toString(),
-                      weekdays: _getWeekdayShortName(day),
-                      statusToday: isToday,
-                      statusScheduleHighlight: isHighlight,
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: 5.w),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      txtTripColectionTodayD,
-                      style:
-                          PrimaryFont.bold(3.5.w).copyWith(color: Colors.black),
-                    ),
-                    SizedBox(height: 5.w),
-                    SizedBox(
-                      height: 42.w,
-                      child: ListView.builder(
-                        shrinkWrap: true, // Quan trọng khi dùng trong Column
-                        // Không cuộn riêng
-                        itemCount: tripTimes.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: 5.w),
-                            child: _ItemTripToday(
-                              hour: tripTimes[index],
-                              addressBusiness: 'Bệnh viện Nhi Đồng 1',
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Text(
-                txtTitleNoteImportantD,
-                style:
-                    PrimaryFont.headerTextMedium().copyWith(color: Colors.red),
-              ),
-              Text(
-                txtSubTitleNoteImportantD,
-                style: PrimaryFont.bodyTextMedium()
-                    .copyWith(color: Colors.red.withOpacity(0.8)),
-              ),
-              SizedBox(
-                height: 30.h,
-                child: ListView.builder(
-                    itemCount: noteImportantData.length,
-                    itemBuilder: (context, index) {
-                      final note = noteImportantData[index];
-                      return _ItemNoteImportant(
-                          title: note.nameNote,
-                          subTitle: note.contentNote,
-                          hour: note.hourNote);
-                    }),
-              ),
+              _BodyDriverScreen(driverController: _driverController),
+              const _BottomDriverScreen(),
               SizedBox(
                 height: 5.w,
               ),
@@ -306,6 +85,229 @@ class _DriverScreenState extends State<DriverScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _BottomDriverScreen extends StatelessWidget {
+  const _BottomDriverScreen({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          txtTitleNoteImportantD,
+          style: PrimaryFont.titleTextMedium().copyWith(color: Colors.red),
+        ),
+        Text(
+          txtSubTitleNoteImportantD,
+          style: PrimaryFont.bodyTextMedium().copyWith(
+            color: Colors.black.withOpacity(0.8),
+          ),
+        ),
+        SizedBox(
+          height: 3.w,
+        ),
+        SizedBox(
+          height: 30.h,
+          child: ListView.builder(
+              itemCount: noteImportantData.length,
+              itemBuilder: (context, index) {
+                final note = noteImportantData[index];
+                return _ItemNoteImportant(
+                    title: note.nameNote,
+                    subTitle: note.contentNote,
+                    hour: note.hourNote);
+              }),
+        ),
+      ],
+    );
+  }
+}
+
+class _BodyDriverScreen extends StatelessWidget {
+  const _BodyDriverScreen({
+    super.key,
+    required DriverController driverController,
+  }) : _driverController = driverController;
+
+  final DriverController _driverController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          txtScheduleHighlightD,
+          style: PrimaryFont.titleTextMedium().copyWith(color: Colors.black),
+        ),
+        SizedBox(
+          height: 3.w,
+        ),
+        SizedBox(
+          height: 20.w,
+          child: Obx(
+            () => ListView.builder(
+              controller: _driverController.scrollController,
+              scrollDirection: Axis.horizontal,
+              itemCount: _driverController.daysInMonth.length,
+              itemBuilder: (context, index) {
+                DateTime day = _driverController.daysInMonth[index];
+                bool isToday = day.day ==
+                        _driverController.currentDate.value.day &&
+                    day.month == _driverController.currentDate.value.month &&
+                    day.year == _driverController.currentDate.value.year;
+                List<int> highlightedDays = [
+                  6,
+                  10,
+                  _driverController.currentDate.value.day,
+                  22,
+                  26,
+                  29
+                ];
+                bool isHighlight = highlightedDays.contains(day.day);
+                return _ItemDayOfWeek(
+                  day: day.day.toString(),
+                  weekdays: _driverController.getWeekdayShortName(day),
+                  statusToday: isToday,
+                  statusScheduleHighlight: isHighlight,
+                );
+              },
+            ),
+          ),
+        ),
+        SizedBox(height: 5.w),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                txtTripColectionTodayD,
+                style:
+                    PrimaryFont.titleTextMedium().copyWith(color: Colors.black),
+              ),
+              SizedBox(height: 5.w),
+              SizedBox(
+                height: 42.w,
+                child: ListView.builder(
+                  shrinkWrap: true, // Quan trọng khi dùng trong Column
+                  // Không cuộn riêng
+                  itemCount: _driverController.tripTimes.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 5.w),
+                      child: _ItemTripToday(
+                        hour: _driverController.tripTimes[index],
+                        addressBusiness:
+                            'Bệnh viện Nhi Đồng 1 Bệnh viện Nhi Đồng 1 Bệnh viện Nhi Đồng 1 Bệnh viện Nhi Đồng 1',
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _HeaderDriverScreen extends StatelessWidget {
+  const _HeaderDriverScreen({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text.rich(
+          TextSpan(
+            text: txtHelloD,
+            style: PrimaryFont.bodyTextMedium()
+                .copyWith(color: Colors.grey, height: 1.5),
+            children: <TextSpan>[
+              TextSpan(
+                text: "Phạm Huỳnh Tín",
+                style:
+                    PrimaryFont.titleTextMedium().copyWith(color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 5.w,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "51C - 7373",
+              style: PrimaryFont.headerTextBold().copyWith(color: Colors.black),
+            ),
+            Text(
+              "MSX: 7362",
+              style: PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 3.w,
+        ),
+        Text(
+          txtUtilDriverD,
+          style: PrimaryFont.titleTextMedium().copyWith(color: Colors.black),
+        ),
+        Row(
+          children: [
+            _UtilDriver(
+              color: Colors.purple.withOpacity(0.2),
+              icon: HugeIcons.strokeRoundedCalendar03,
+              title: txtTitleScheduleColectionD,
+              subTitle: txtSubTitleScheduleColectionD,
+            ),
+            const SizedBox(
+              width: 16,
+            ),
+            _UtilDriver(
+              color: Colors.greenAccent.withOpacity(0.2),
+              icon: Icons.trending_down,
+              title: txtTitleStatisticalD,
+              subTitle: txtSubTitleStatisticalD,
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Row(
+          children: [
+            _UtilDriver(
+              color: Colors.green.withOpacity(0.1),
+              icon: HugeIcons.strokeRoundedCustomerService01,
+              title: txtTitleHelpD,
+              subTitle: txtSubTitleHelpD,
+            ),
+            const SizedBox(
+              width: 16,
+            ),
+            _UtilDriver(
+              color: Colors.orange.withOpacity(0.2),
+              icon: HugeIcons.strokeRoundedSmartPhone01,
+              title: txtTitleHistoryD,
+              subTitle: txtSubTitleHistoryD,
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -327,7 +329,7 @@ class _ItemNoteImportant extends StatelessWidget {
       width: double.infinity,
       height: 18.w,
       decoration: BoxDecoration(
-        color: Colors.purple.withOpacity(0.5),
+        color: const Color(0xFF8572FE),
         borderRadius: BorderRadius.circular(3.w),
       ),
       child: Row(
@@ -343,7 +345,7 @@ class _ItemNoteImportant extends StatelessWidget {
               borderRadius: BorderRadius.circular(3.w),
             ),
             child: Icon(
-              Icons.calendar_today,
+              HugeIcons.strokeRoundedCalendar02,
               size: 8.w,
               color: Colors.white,
             ),
@@ -351,44 +353,50 @@ class _ItemNoteImportant extends StatelessWidget {
           SizedBox(
             width: 10.w,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SizedBox(
-                height: 2.w,
-              ),
-              Text(
-                title,
-                style: PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text(
-                subTitle,
-                style:
-                    PrimaryFont.bodyTextMedium().copyWith(color: Colors.white),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.access_time_filled,
-                    size: 5.w,
-                    color: Colors.white,
-                  ),
-                  Text(
-                    hour,
-                    style: PrimaryFont.bodyTextBold()
-                        .copyWith(color: Colors.white),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 2.w,
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  height: 2.w,
+                ),
+                Text(
+                  title,
+                  style:
+                      PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  subTitle,
+                  style: PrimaryFont.bodyTextMedium()
+                      .copyWith(color: Colors.white),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time_filled,
+                      size: 5.w,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      hour,
+                      style: PrimaryFont.bodyTextBold()
+                          .copyWith(color: Colors.white),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 2.w,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 3.w,
           ),
         ],
       ),
@@ -414,7 +422,8 @@ class _ItemTripToday extends StatelessWidget {
           style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
         ),
         Container(
-          width: 50.w,
+          padding: EdgeInsets.symmetric(horizontal: 3.w),
+          width: 60.w,
           height: 10.w,
           decoration: BoxDecoration(
             color: kPrimaryColor.withOpacity(0.5),
@@ -504,6 +513,7 @@ class _UtilDriver extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 2.w),
+      padding: EdgeInsets.symmetric(horizontal: 3.w),
       width: 50.w - 24,
       height: 30.w,
       decoration: BoxDecoration(
@@ -511,7 +521,7 @@ class _UtilDriver extends StatelessWidget {
         borderRadius: BorderRadius.circular(5.w),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
@@ -524,7 +534,9 @@ class _UtilDriver extends StatelessWidget {
           ),
           Text(
             title,
-            style: PrimaryFont.bold(3.5.w).copyWith(color: Colors.black),
+            style: PrimaryFont.titleTextBold().copyWith(color: Colors.black),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           SizedBox(
             height: 2.w,
@@ -532,6 +544,8 @@ class _UtilDriver extends StatelessWidget {
           Text(
             subTitle,
             style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),

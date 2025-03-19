@@ -31,7 +31,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.DRIVER,
-      page: () => const DriverScreen(),
+      page: () => DriverScreen(),
     ),
   ];
 }

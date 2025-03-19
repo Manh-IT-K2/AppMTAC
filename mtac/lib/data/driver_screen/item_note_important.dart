@@ -1,7 +1,7 @@
 import 'package:mtac/models/note_important_model.dart';
 
 final List<NoteImportantModel> noteImportantData = [
-  NoteImportantModel(nameNote: "Đại học Sài Gòn", contentNote: "Gom đủ khối lượng...", hourNote: "12:00"),
+  NoteImportantModel(nameNote: "Đại học Sài Gòn", contentNote: "Gom đủ khối lượng...Gom đủ khối lượng...Gom đủ khối lượng...Gom đủ khối lượng...Gom đủ khối lượng...", hourNote: "12:00"),
     NoteImportantModel(nameNote: "Đại học Y Dược", contentNote: "Gom đủ khối lượng...", hourNote: "14:00"),
       NoteImportantModel(nameNote: "Đại học Sư Phạm HCM", contentNote: "Gom đủ khối lượng...", hourNote: "16:00"),
         NoteImportantModel(nameNote: "Đại học FPT", contentNote: "Gom đủ khối lượng...", hourNote: "18:00"),
