@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mtac/constants/text.dart';
 import 'package:mtac/controllers/map_controller.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
@@ -16,21 +17,6 @@ class MapScreen extends StatelessWidget {
     double screenHeight = 100.h;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        title: GestureDetector(
-          onTap: () => Get.back(),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-              size: 5.w,
-            ),
-          ),
-        ),
-      ),
       body: Stack(
         children: [
           Center(
@@ -50,7 +36,35 @@ class MapScreen extends StatelessWidget {
               },
             ),
           ),
-          
+          Positioned(
+            top: 15.w,
+            left: 5.w,
+            child: GestureDetector(
+              onTap: () => Get.back,
+              child: Container(
+                width: 10.w,
+                height: 10.w,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 4,
+                          blurRadius: 4,
+                          offset: const Offset(1, 1))
+                    ]),
+                child: Transform.translate(
+                  offset: const Offset(4, 0),
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 5.w,
+                    color: kPrimaryColor,
+                  ),
+                ),
+              ),
+            ),
+          ),
           // Draggable Bottom Sheet
           Obx(
             () => Positioned(
@@ -91,7 +105,7 @@ class MapScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                "Theo dõi điểm đến",
+                                txtTitleBottomM,
                                 style: PrimaryFont.headerTextMedium().copyWith(
                                   color: const Color(0xFF233751),
                                 ),
@@ -279,7 +293,7 @@ class _ItemDestination extends StatelessWidget {
                 Get.toNamed(AppRoutes.HANDOVERRECORD);
               },
               child: Text(
-                "Ghi biên bản",
+               txtWriteRecordM,
                 style: PrimaryFont.bodyTextBold().copyWith(
                   color: const Color(0xFF997FEC),
                 ),

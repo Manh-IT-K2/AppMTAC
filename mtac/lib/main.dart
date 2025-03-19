@@ -1,5 +1,5 @@
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:device_preview/device_preview.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -17,6 +17,7 @@ void main() {
     //   enabled: !kReleaseMode,
     //   builder: (context) => const MyApp(), // Wrap your app
     // ));
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     Get.config(enableLog: false);
     runApp(const MyApp());
   });

@@ -26,24 +26,6 @@ class NotifySuccessDialog {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Align(
-                    //   alignment: Alignment.centerRight,
-                    //   child: GestureDetector(
-                    //     onTap: onTap,
-                    //     child: Container(
-                    //       width: 5.w,
-                    //       height: 5.w,
-                    //       decoration: BoxDecoration(
-                    //           color: Colors.grey.withOpacity(0.2),
-                    //           borderRadius: BorderRadius.circular(3.w)),
-                    //       child: Icon(
-                    //         Icons.close,
-                    //         color: Colors.black,
-                    //         size: 3.w,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     Align(
                       alignment: Alignment.center,
                       child: Container(

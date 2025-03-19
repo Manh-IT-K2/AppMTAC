@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mtac/constants/text.dart';
 import 'package:mtac/data/driver_screen/item_note_important.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
@@ -50,8 +51,7 @@ class _DriverScreenState extends State<DriverScreen> {
 
   // Hàm lấy tên viết tắt của thứ trong tuần
   String _getWeekdayShortName(DateTime date) {
-    int weekdayIndex = date.weekday -
-        1; // `DateTime.weekday` trả về 1 -> 7 (Thứ 2 -> Chủ nhật)
+    int weekdayIndex = date.weekday - 1; // `DateTime.weekday` trả về 1 -> 7 (Thứ 2 -> Chủ nhật)
     return _weekdays[weekdayIndex];
   }
 
@@ -88,7 +88,7 @@ class _DriverScreenState extends State<DriverScreen> {
           children: [
             Text.rich(
               TextSpan(
-                text: "Xin chào bác tài\n",
+                text: txtHelloD,
                 style: PrimaryFont.bodyTextMedium()
                     .copyWith(color: Colors.grey, height: 1.5),
                 children: <TextSpan>[
@@ -160,7 +160,7 @@ class _DriverScreenState extends State<DriverScreen> {
                 height: 3.w,
               ),
               Text(
-                "Tiện ích của bác tài",
+                txtUtilDriverD,
                 style:
                     PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
@@ -169,8 +169,8 @@ class _DriverScreenState extends State<DriverScreen> {
                   _UtilDriver(
                     color: Colors.purple.withOpacity(0.2),
                     icon: Icons.calendar_today_outlined,
-                    title: "Lịch thu gom",
-                    subTitle: "Tổng hợp các lịch\n thu gom của bác tài",
+                    title: txtTitleScheduleColectionD,
+                    subTitle: txtSubTitleScheduleColectionD,
                   ),
                   const SizedBox(
                     width: 16,
@@ -178,8 +178,8 @@ class _DriverScreenState extends State<DriverScreen> {
                   _UtilDriver(
                     color: Colors.greenAccent.withOpacity(0.2),
                     icon: Icons.trending_down,
-                    title: "Thống kê",
-                    subTitle: "Thống kê các chỉ số\n hoạt động của bác tài",
+                    title: txtTitleStatisticalD,
+                    subTitle: txtSubTitleStatisticalD,
                   ),
                 ],
               ),
@@ -191,8 +191,8 @@ class _DriverScreenState extends State<DriverScreen> {
                   _UtilDriver(
                     color: Colors.green.withOpacity(0.1),
                     icon: Icons.developer_mode_outlined,
-                    title: "Hỗ trợ",
-                    subTitle: "Hãy liện hệ với chúng\n tôi khi cần bác tài nhé",
+                    title: txtTitleHelpD,
+                    subTitle: txtSubTitleHelpD,
                   ),
                   const SizedBox(
                     width: 16,
@@ -200,8 +200,8 @@ class _DriverScreenState extends State<DriverScreen> {
                   _UtilDriver(
                     color: Colors.orange.withOpacity(0.2),
                     icon: Icons.smartphone_outlined,
-                    title: "Lịch sử",
-                    subTitle: "Tổng hợp các lịch sử thu\n gom của bác tài",
+                    title: txtTitleHistoryD,
+                    subTitle: txtSubTitleHistoryD,
                   ),
                 ],
               ),
@@ -209,7 +209,7 @@ class _DriverScreenState extends State<DriverScreen> {
                 height: 3.w,
               ),
               Text(
-                "Lịch gom nổi bật",
+                txtScheduleHighlightD,
                 style:
                     PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
@@ -227,7 +227,14 @@ class _DriverScreenState extends State<DriverScreen> {
                     bool isToday = day.day == _currentDate.day &&
                         day.month == _currentDate.month &&
                         day.year == _currentDate.year;
-                    List<int> highlightedDays = [6, 10, _currentDate.day, 22, 26, 29];
+                    List<int> highlightedDays = [
+                      6,
+                      10,
+                      _currentDate.day,
+                      22,
+                      26,
+                      29
+                    ];
                     bool isHighlight = highlightedDays.contains(day.day);
                     return _ItemDayOfWeek(
                       day: day.day.toString(),
@@ -245,7 +252,7 @@ class _DriverScreenState extends State<DriverScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Chuyến thu gom hôm nay",
+                      txtTripColectionTodayD,
                       style:
                           PrimaryFont.bold(3.5.w).copyWith(color: Colors.black),
                     ),
@@ -271,12 +278,12 @@ class _DriverScreenState extends State<DriverScreen> {
                 ),
               ),
               Text(
-                "Ghi chú quan trọng",
+                txtTitleNoteImportantD,
                 style:
                     PrimaryFont.headerTextMedium().copyWith(color: Colors.red),
               ),
               Text(
-                "Đừng quên mình có ghi chú quan trọng nhé bác tài",
+                txtSubTitleNoteImportantD,
                 style: PrimaryFont.bodyTextMedium()
                     .copyWith(color: Colors.red.withOpacity(0.8)),
               ),
@@ -316,7 +323,7 @@ class _ItemNoteImportant extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 12),
+      margin: const EdgeInsets.only(top: 12),
       width: double.infinity,
       height: 18.w,
       decoration: BoxDecoration(
