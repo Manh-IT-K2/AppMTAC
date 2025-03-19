@@ -7,11 +7,11 @@ import 'package:hugeicons/hugeicons.dart';
 
 class MapController extends GetxController {
   /* Bottom bar Destination */
-  var sheetHeight = 0.04.obs;
+  var sheetHeight = 0.06.obs;
 
   void updateHeight(double delta, double screenHeight) {
     sheetHeight.value -= delta / screenHeight;
-    sheetHeight.value = sheetHeight.value.clamp(0.04, 0.7);
+    sheetHeight.value = sheetHeight.value.clamp(0.06, 0.7);
   }
 
   /* Google Map */
@@ -42,17 +42,17 @@ class MapController extends GetxController {
   }
 
   void _loadMapData() async {
-  final markerIcon1 = await createCustomMarker(
-  icon: HugeIcons.strokeRoundedPackage03, 
-  backgroundColor: Colors.blue, 
-  borderColor: Colors.white,
-);
+    final markerIcon1 = await createCustomMarker(
+      icon: HugeIcons.strokeRoundedPackage03,
+      backgroundColor: Colors.blue,
+      borderColor: Colors.white,
+    );
 
-final markerIcon2 = await createCustomMarker(
-  icon: Icons.location_on_outlined, 
-  backgroundColor: const Color(0xFFF9C805), 
-  borderColor: Colors.white,
-);
+    final markerIcon2 = await createCustomMarker(
+      icon: Icons.location_on_outlined,
+      backgroundColor: const Color(0xFFF9C805),
+      borderColor: Colors.white,
+    );
 
     // Thêm Marker
     markers.addAll({
@@ -90,91 +90,87 @@ final markerIcon2 = await createCustomMarker(
     update();
   }
 
+  // Draw Icon Map
+  Future<BitmapDescriptor> createCustomMarker({
+    required IconData icon,
+    Color backgroundColor = Colors.amber,
+    Color borderColor = Colors.white,
+  }) async {
+    const double size = 125; // Kích thước tổng của marker
+    final PictureRecorder pictureRecorder = PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
 
+    // 🎨 **Tạo màu vẽ**
+    final Paint paintBorder = Paint()..color = borderColor; // Viền
+    final Paint paintCircle = Paint()..color = backgroundColor; // Nền
+    final Paint paintLine = Paint()
+      ..color = Colors.black
+      ..strokeWidth = 6.0
+      ..strokeCap = StrokeCap.round;
 
-Future<BitmapDescriptor> createCustomMarker({
-  required IconData icon,
-  Color backgroundColor = Colors.amber,
-  Color borderColor = Colors.white,
-}) async {
-  const double size = 125; // Kích thước tổng của marker
-  final PictureRecorder pictureRecorder = PictureRecorder();
-  final Canvas canvas = Canvas(pictureRecorder);
+    final Paint paintDot = Paint()..color = Colors.black; // Chấm tròn đen
 
-  // 🎨 **Tạo màu vẽ**
-  final Paint paintBorder = Paint()..color = borderColor; // Viền
-  final Paint paintCircle = Paint()..color = backgroundColor; // Nền
-  final Paint paintLine = Paint()
-    ..color = Colors.black
-    ..strokeWidth = 6.0
-    ..strokeCap = StrokeCap.round;
+    final double circleRadius = size / 3; // Bán kính hình tròn
 
-  final Paint paintDot = Paint()..color = Colors.black; // Chấm tròn đen
-
-  final double circleRadius = size / 3; // Bán kính hình tròn
-
-  // 📌 **1. Vẽ đường kẻ đen dài hơn**
-  final double lineStartY = size - 10;
-  final double lineEndY = size - 100;
-  canvas.drawLine(
-    Offset(size / 2, lineStartY),
-    Offset(size / 2, lineEndY), 
-    paintLine,
-  );
-
-  // 📌 **2. Dịch chấm tròn đen xuống dưới**
-  final double dotRadius = 6;
-  canvas.drawCircle(
-    Offset(size / 2, lineStartY + 5),
-    dotRadius,
-    paintDot,
-  );
-
-  // 📌 **3. Vẽ viền trắng**
-  canvas.drawCircle(
-    Offset(size / 2, size - 80),
-    circleRadius + 5,
-    paintBorder,
-  );
-
-  // 📌 **4. Vẽ nền màu vàng (có thể thay đổi)**
-  canvas.drawCircle(
-    Offset(size / 2, size - 80),
-    circleRadius,
-    paintCircle,
-  );
-
-  // 📌 **5. Vẽ icon vị trí màu trắng**
-  final TextPainter textPainter = TextPainter(
-    textAlign: TextAlign.center,
-    textDirection: TextDirection.ltr,
-  )..text = TextSpan(
-      text: String.fromCharCode(icon.codePoint),
-      style: TextStyle(
-        fontSize: circleRadius * 1.2,
-        fontFamily: icon.fontFamily,
-        package: icon.fontPackage,
-        color: Colors.white,
-      ),
+    // 📌 **1. Vẽ đường kẻ đen dài hơn**
+    final double lineStartY = size - 10;
+    final double lineEndY = size - 100;
+    canvas.drawLine(
+      Offset(size / 2, lineStartY),
+      Offset(size / 2, lineEndY),
+      paintLine,
     );
 
-  textPainter.layout();
-  textPainter.paint(
-      canvas, Offset(size / 2 - textPainter.width / 2, size - 80 - textPainter.height / 2));
+    // 📌 **2. Dịch chấm tròn đen xuống dưới**
+    final double dotRadius = 6;
+    canvas.drawCircle(
+      Offset(size / 2, lineStartY + 5),
+      dotRadius,
+      paintDot,
+    );
 
-  // 🖼 **Chuyển hình thành BitmapDescriptor để dùng trong Google Maps**
-  final img = await pictureRecorder
-      .endRecording()
-      .toImage(size.toInt(), size.toInt());
-  final ByteData? byteData =
-      await img.toByteData(format: ImageByteFormat.png);
-  final Uint8List uint8List = byteData!.buffer.asUint8List();
+    // 📌 **3. Vẽ viền trắng**
+    canvas.drawCircle(
+      const Offset(size / 2, size - 80),
+      circleRadius + 5,
+      paintBorder,
+    );
 
-  return BitmapDescriptor.fromBytes(uint8List);
-}
+    // 📌 **4. Vẽ nền màu vàng (có thể thay đổi)**
+    canvas.drawCircle(
+      const Offset(size / 2, size - 80),
+      circleRadius,
+      paintCircle,
+    );
 
+    // 📌 **5. Vẽ icon vị trí màu trắng**
+    final TextPainter textPainter = TextPainter(
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    )..text = TextSpan(
+        text: String.fromCharCode(icon.codePoint),
+        style: TextStyle(
+          fontSize: circleRadius * 1.2,
+          fontFamily: icon.fontFamily,
+          package: icon.fontPackage,
+          color: Colors.white,
+        ),
+      );
 
+    textPainter.layout();
+    textPainter.paint(
+        canvas,
+        Offset(size / 2 - textPainter.width / 2,
+            size - 80 - textPainter.height / 2));
 
+    // 🖼 **Chuyển hình thành BitmapDescriptor để dùng trong Google Maps**
+    final img = await pictureRecorder
+        .endRecording()
+        .toImage(size.toInt(), size.toInt());
+    final ByteData? byteData =
+        await img.toByteData(format: ImageByteFormat.png);
+    final Uint8List uint8List = byteData!.buffer.asUint8List();
 
-
+    return BitmapDescriptor.fromBytes(uint8List);
+  }
 }

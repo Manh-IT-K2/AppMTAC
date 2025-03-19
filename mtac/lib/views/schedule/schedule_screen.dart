@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mtac/controllers/map_controller.dart';
+import 'package:mtac/constants/text.dart';
 import 'package:mtac/controllers/schedule_controller.dart';
 import 'package:mtac/data/schedule_screen/item_trip_work.dart';
 import 'package:mtac/routes/app_routes.dart';
@@ -15,6 +15,13 @@ class ScheduleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get day ToDay
+    DateTime now = DateTime.now();
+    String day = now.day.toString().padLeft(2, '0');
+    String month = now.month.toString().padLeft(2, '0');
+    String year = now.year.toString();
+    String today = "$day - $month - $year";
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -33,7 +40,7 @@ class ScheduleScreen extends StatelessWidget {
               ),
             ),
             Text(
-              "Danh sách chuyến",
+              txtTitleS,
               style: PrimaryFont.headerTextBold().copyWith(color: Colors.black),
             ),
             Container(
@@ -69,7 +76,7 @@ class ScheduleScreen extends StatelessWidget {
               child: Text.rich(
                 TextSpan(children: [
                   TextSpan(
-                    text: "Xin chào,",
+                    text: txtHelloS,
                     style: PrimaryFont.bodyTextMedium()
                         .copyWith(color: Colors.grey),
                   ),
@@ -77,7 +84,7 @@ class ScheduleScreen extends StatelessWidget {
                     text: " Quan Văn Mạnh",
                     style: PrimaryFont.bodyTextBold()
                         .copyWith(color: Colors.black),
-                  )
+                  ),
                 ]),
               ),
             ),
@@ -87,12 +94,12 @@ class ScheduleScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Lịch thu gom hôm nay: ",
+                    txtScheduleTodayS,
                     style: PrimaryFont.headerTextBold()
                         .copyWith(color: Colors.black),
                   ),
                   Text(
-                    "20 - 02 - 2025",
+                    today,
                     style: PrimaryFont.bodyTextBold()
                         .copyWith(color: kPrimaryColor),
                   ),
@@ -228,7 +235,6 @@ class _ItemTripWork extends StatelessWidget {
               ],
             ),
           ),
-          
           GestureDetector(
             onTap: () {
               Get.toNamed(AppRoutes.SCHEDULECOLLECTION);
@@ -260,8 +266,8 @@ class _ItemTripWork extends StatelessWidget {
                   quarterTurns: -1,
                   child: Text(
                     status,
-                    style:
-                        PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
+                    style: PrimaryFont.bodyTextBold()
+                        .copyWith(color: Colors.white),
                   ),
                 ),
               ),
