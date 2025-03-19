@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mtac/data/driver_screen/item_note_important.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
@@ -84,7 +85,7 @@ class _DriverScreenState extends State<DriverScreen> {
         backgroundColor: Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [ 
+          children: [
             Text.rich(
               TextSpan(
                 text: "Xin chào bác tài\n",
@@ -226,10 +227,13 @@ class _DriverScreenState extends State<DriverScreen> {
                     bool isToday = day.day == _currentDate.day &&
                         day.month == _currentDate.month &&
                         day.year == _currentDate.year;
+                    List<int> highlightedDays = [6, 10, _currentDate.day, 22, 26, 29];
+                    bool isHighlight = highlightedDays.contains(day.day);
                     return _ItemDayOfWeek(
                       day: day.day.toString(),
                       weekdays: _getWeekdayShortName(day),
                       statusToday: isToday,
+                      statusScheduleHighlight: isHighlight,
                     );
                   },
                 ),
@@ -276,22 +280,21 @@ class _DriverScreenState extends State<DriverScreen> {
                 style: PrimaryFont.bodyTextMedium()
                     .copyWith(color: Colors.red.withOpacity(0.8)),
               ),
-              const _ItemNoteImportant(
-                title: "Đại học Y Dược",
-                subTitle: "Gom đủ khối lượng...",
-                hour: "12:00",
+              SizedBox(
+                height: 30.h,
+                child: ListView.builder(
+                    itemCount: noteImportantData.length,
+                    itemBuilder: (context, index) {
+                      final note = noteImportantData[index];
+                      return _ItemNoteImportant(
+                          title: note.nameNote,
+                          subTitle: note.contentNote,
+                          hour: note.hourNote);
+                    }),
               ),
-              const _ItemNoteImportant(
-                title: "Đại học Sài Gòn",
-                subTitle: "Gom đủ khối lượng...",
-                hour: "16:00",
+              SizedBox(
+                height: 5.w,
               ),
-              const _ItemNoteImportant(
-                title: "Đại học Bách Khoa",
-                subTitle: "Gom đủ khối lượng...",
-                hour: "20:00",
-              ),
-              SizedBox(height: 5.w,),
             ],
           ),
         ),
@@ -302,7 +305,10 @@ class _DriverScreenState extends State<DriverScreen> {
 
 class _ItemNoteImportant extends StatelessWidget {
   const _ItemNoteImportant({
-    super.key, required this.title, required this.subTitle, required this.hour,
+    super.key,
+    required this.title,
+    required this.subTitle,
+    required this.hour,
   });
 
   final String title, subTitle, hour;
@@ -335,40 +341,48 @@ class _ItemNoteImportant extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          SizedBox(width: 10.w,),
+          SizedBox(
+            width: 10.w,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-               SizedBox(height: 2.w,),
+              SizedBox(
+                height: 2.w,
+              ),
               Text(
                 title,
-                style: PrimaryFont.bodyTextBold()
-                    .copyWith(color: Colors.white),
-                     maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                style: PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               Text(
                 subTitle,
-                style: PrimaryFont.bodyTextMedium()
-                    .copyWith(color: Colors.white),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                style:
+                    PrimaryFont.bodyTextMedium().copyWith(color: Colors.white),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               Row(
-            children: [
-              Icon(Icons.access_time_filled, size: 5.w, color: Colors.white,),
-              Text(
-                hour,
-                style: PrimaryFont.bodyTextBold()
-                    .copyWith(color: Colors.white),
+                children: [
+                  Icon(
+                    Icons.access_time_filled,
+                    size: 5.w,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    hour,
+                    style: PrimaryFont.bodyTextBold()
+                        .copyWith(color: Colors.white),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 2.w,
               ),
             ],
           ),
-          SizedBox(height: 2.w,),
-            ],
-          ),
-          
         ],
       ),
     );
@@ -403,8 +417,8 @@ class _ItemTripToday extends StatelessWidget {
             child: Text(
               addressBusiness,
               style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
-               maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ),
@@ -419,10 +433,11 @@ class _ItemDayOfWeek extends StatelessWidget {
     required this.day,
     required this.weekdays,
     required this.statusToday,
+    required this.statusScheduleHighlight,
   });
 
   final String day, weekdays;
-  final bool statusToday;
+  final bool statusToday, statusScheduleHighlight;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -450,7 +465,7 @@ class _ItemDayOfWeek extends StatelessWidget {
               ],
             ),
           ),
-          statusToday
+          statusScheduleHighlight
               ? Container(
                   width: 2.w,
                   height: 2.w,
