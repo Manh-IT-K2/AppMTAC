@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mtac/controllers/map_controller.dart';
-import 'package:mtac/controllers/schedule_controller.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
@@ -33,9 +33,24 @@ class MapScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          const Center(
-            child: Text('Nội dung màn hình'),
+          Center(
+            child: GetBuilder<MapController>(
+              builder: (controller) {
+                return GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: controller.startLocation,
+                    zoom: 14,
+                  ),
+                  markers: controller.markers,
+                  polylines: controller.polylines,
+                  onMapCreated: (GoogleMapController mapController) {
+                    controller.setMapController(mapController);
+                  },
+                );
+              },
+            ),
           ),
+          
           // Draggable Bottom Sheet
           Obx(
             () => Positioned(
