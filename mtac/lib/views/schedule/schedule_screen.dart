@@ -114,11 +114,14 @@ class ScheduleScreen extends StatelessWidget {
               height: 5.h,
               color: const Color(0xFFEBF5FF),
               child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: controller.items
-                      .map((title) => _ItemListTrip(title: title))
-                      .toList()),
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: controller.items
+                    .map(
+                      (title) => _ItemListTrip(title: title),
+                    )
+                    .toList(),
+              ),
             ),
             Expanded(
               child: PageView(

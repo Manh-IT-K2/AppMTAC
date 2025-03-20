@@ -29,6 +29,7 @@ class MapScreen extends StatelessWidget {
                   ),
                   markers: controller.markers,
                   polylines: controller.polylines,
+                  // myLocationEnabled: true,
                   onMapCreated: (GoogleMapController mapController) {
                     controller.setMapController(mapController);
                   },

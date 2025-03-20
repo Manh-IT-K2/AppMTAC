@@ -53,6 +53,8 @@
 	<string>This app needs permission to save images to your photo library.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>The app needs to access your location even when running in the background.</string>
 
 </dict>
 </plist>

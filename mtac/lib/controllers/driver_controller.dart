@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class DriverController extends GetxController {
+
+  // initial variable for time
   var currentDate = DateTime.now().obs;
   var daysInMonth = <DateTime>[].obs;
   var scrollController = ScrollController();
 
+  // initial list weekdays
   final List<String> weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
-   List<String> tripTimes = List.generate(12, (index) {
-    int hour = index * 2; 
-    return '${hour.toString().padLeft(2, '0')}:00';
-  });
-
+  // function initial
   @override
   void onInit() {
     super.onInit();
@@ -21,6 +20,13 @@ class DriverController extends GetxController {
     Future.delayed(const Duration(milliseconds: 100), _scrollToToday);
   }
 
+   // initial list hour away two hour
+  List<String> tripTimes = List.generate(12, (index) {
+    int hour = index * 2; 
+    return '${hour.toString().padLeft(2, '0')}:00';
+  });
+
+  // initial list day in month
   List<DateTime> _generateDaysInMonth(DateTime date) {
     int daysInMonth = DateTime(date.year, date.month + 1, 0).day;
     return List.generate(
@@ -29,6 +35,7 @@ class DriverController extends GetxController {
     );
   }
 
+  // initial scroll to Today in center screen
   void _scrollToToday() {
     int todayIndex = daysInMonth.indexWhere((day) =>
         day.day == currentDate.value.day &&
@@ -47,6 +54,7 @@ class DriverController extends GetxController {
     }
   }
 
+  // get weekday name
   String getWeekdayShortName(DateTime date) {
     return weekdays[date.weekday - 1];
   }

@@ -11,7 +11,9 @@ import 'package:sizer/sizer.dart';
 class DriverScreen extends StatelessWidget {
   DriverScreen({super.key});
 
+  // initial DriverController
   final DriverController _driverController = Get.put(DriverController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +37,8 @@ class DriverScreen extends StatelessWidget {
               width: 10.w,
               height: 10.w,
               decoration: BoxDecoration(
-                color: kPrimaryColor.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10.w),
-              ),
+                  color: kPrimaryColor.withOpacity(0.2),
+                  shape: BoxShape.circle),
               child: Stack(
                 children: [
                   Center(
@@ -53,10 +54,8 @@ class DriverScreen extends StatelessWidget {
                     child: Container(
                       width: 1.5.w,
                       height: 1.5.w,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(1.5.w),
-                      ),
+                      decoration: const BoxDecoration(
+                          color: Colors.red, shape: BoxShape.circle),
                     ),
                   ),
                 ],
@@ -115,14 +114,16 @@ class _BottomDriverScreen extends StatelessWidget {
         SizedBox(
           height: 30.h,
           child: ListView.builder(
-              itemCount: noteImportantData.length,
-              itemBuilder: (context, index) {
-                final note = noteImportantData[index];
-                return _ItemNoteImportant(
-                    title: note.nameNote,
-                    subTitle: note.contentNote,
-                    hour: note.hourNote);
-              }),
+            itemCount: noteImportantData.length,
+            itemBuilder: (context, index) {
+              final note = noteImportantData[index];
+              return _ItemNoteImportant(
+                title: note.nameNote,
+                subTitle: note.contentNote,
+                hour: note.hourNote,
+              );
+            },
+          ),
         ),
       ],
     );
@@ -183,7 +184,7 @@ class _BodyDriverScreen extends StatelessWidget {
         ),
         SizedBox(height: 5.w),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -196,8 +197,7 @@ class _BodyDriverScreen extends StatelessWidget {
               SizedBox(
                 height: 42.w,
                 child: ListView.builder(
-                  shrinkWrap: true, // Quan trọng khi dùng trong Column
-                  // Không cuộn riêng
+                  //shrinkWrap: true,
                   itemCount: _driverController.tripTimes.length,
                   itemBuilder: (context, index) {
                     return Padding(
