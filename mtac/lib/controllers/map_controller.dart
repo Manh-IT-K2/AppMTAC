@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,6 +17,7 @@ class MapController extends GetxController {
 
   /* Google Map */
   GoogleMapController? mapController;
+  Rx<LatLng?> currentLocation = Rx<LatLng?>(null);
 
   // Toạ độ điểm bắt đầu & kết thúc
   final LatLng startLocation = const LatLng(10.7769, 106.7009); // Bến Thành
@@ -39,6 +41,7 @@ class MapController extends GetxController {
   void onInit() {
     super.onInit();
     _loadMapData();
+    getCurrentLocation();
   }
 
   void _loadMapData() async {
@@ -88,6 +91,51 @@ class MapController extends GetxController {
   void setMapController(GoogleMapController controller) {
     mapController = controller;
     update();
+  }
+
+  Future<void> getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Kiểm tra dịch vụ vị trí
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return;
+    }
+
+    // Kiểm tra quyền truy cập
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return;
+    }
+
+    // Lấy vị trí hiện tại
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    currentLocation.value = LatLng(position.latitude, position.longitude);
+final customIcon = await createCurrentLocationMarker();
+    // Thêm Marker vị trí hiện tại
+    markers.add(
+      Marker(
+        markerId: const MarkerId("currentLocation"),
+        position: currentLocation.value!,
+        icon: customIcon,
+      ),
+    );
+
+    // Cập nhật Camera đến vị trí hiện tại
+    if (mapController != null) {
+      mapController!.animateCamera(
+        CameraUpdate.newLatLngZoom(currentLocation.value!, 15),
+      );
+    }
   }
 
   // Draw Icon Map
@@ -173,4 +221,59 @@ class MapController extends GetxController {
 
     return BitmapDescriptor.fromBytes(uint8List);
   }
+
+  Future<BitmapDescriptor> createCurrentLocationMarker() async {
+  const double size = 120; // Kích thước tổng của marker
+  final PictureRecorder pictureRecorder = PictureRecorder();
+  final Canvas canvas = Canvas(pictureRecorder);
+
+  // 🎨 **Tạo màu vẽ**
+  final Paint paintBorder = Paint()..color = Colors.purple.shade100; // Viền xanh mờ
+  final Paint paintCircle = Paint()..color = Colors.purple.shade700; // Nền xanh đậm
+  final Paint paintInnerCircle = Paint()..color = Colors.white; // Vòng tròn trong
+  final Paint paintArrow = Paint()..color = Colors.purple.shade900; // Mũi tên
+
+  final double outerCircleRadius = size / 2; // Bán kính hình tròn lớn
+  final double innerCircleRadius = outerCircleRadius * 0.8; // Hình tròn nhỏ
+
+  // 📌 **1. Vẽ viền xanh mờ**
+  canvas.drawCircle(
+    Offset(outerCircleRadius, outerCircleRadius),
+    outerCircleRadius,
+    paintBorder,
+  );
+
+  // 📌 **2. Vẽ nền xanh đậm**
+  canvas.drawCircle(
+    Offset(outerCircleRadius, outerCircleRadius),
+    innerCircleRadius,
+    paintCircle,
+  );
+
+  // 📌 **3. Vẽ vòng tròn trắng bên trong**
+  canvas.drawCircle(
+    Offset(outerCircleRadius, outerCircleRadius),
+    innerCircleRadius * 0.8,
+    paintInnerCircle,
+  );
+
+  // 📌 **4. Vẽ mũi tên định hướng**
+ Path arrowPath = Path()
+  ..moveTo(outerCircleRadius, outerCircleRadius - 30) // Đỉnh mũi tên xa hơn
+  ..lineTo(outerCircleRadius - 20, outerCircleRadius + 15) // Cánh mũi tên rộng hơn
+  ..lineTo(outerCircleRadius, outerCircleRadius) // Gốc mũi tên thấp hơn
+  ..lineTo(outerCircleRadius + 20, outerCircleRadius + 15) // Cánh còn lại rộng hơn
+  ..close();
+
+
+  canvas.drawPath(arrowPath, paintArrow);
+
+  // 🖼 **Chuyển hình thành BitmapDescriptor**
+  final img = await pictureRecorder.endRecording().toImage(size.toInt(), size.toInt());
+  final ByteData? byteData = await img.toByteData(format: ImageByteFormat.png);
+  final Uint8List uint8List = byteData!.buffer.asUint8List();
+
+  return BitmapDescriptor.fromBytes(uint8List);
+}
+
 }
