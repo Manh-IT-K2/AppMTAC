@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 class MapController extends GetxController {
   /* Bottom bar Destination */
@@ -31,20 +35,93 @@ class MapController extends GetxController {
     LatLng(10.8039, 106.7143), // Bình Thạnh
   ];
 
+  final List<String> routeNames = const [
+    "Chợ Bến Thành",
+    "Nguyễn Thị Minh Khai",
+    "Điện Biên Phủ",
+    "Bình Thạnh"
+  ];
+
   // Danh sách Marker
   RxSet<Marker> markers = <Marker>{}.obs;
 
   // Danh sách tuyến đường (Polyline)
   RxSet<Polyline> polylines = <Polyline>{}.obs;
+  Rx<LatLng?> selectedRoute = Rx<LatLng?>(null); // Lưu vị trí route được chọn
+  RxString selectedAddress = "".obs; // Địa chỉ hiển thị trong khung
+  RxBool isRouteSelected = false.obs; // Kiểm tra có route nào được chọn không
+
+  void selectRoute(LatLng position, String address) {
+    selectedRoute.value = position;
+    selectedAddress.value = address;
+    isRouteSelected.value = true;
+  }
+
+  void clearSelection() {
+    isRouteSelected.value = false;
+  }
+
+  void openGoogleMaps() async {
+    if (selectedRoute.value != null) {
+      final lat = selectedRoute.value!.latitude;
+      final lng = selectedRoute.value!.longitude;
+      final url = Uri.parse(
+          "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving");
+
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      } else {
+        print("Không thể mở Google Maps");
+      }
+    }
+  }
 
   @override
   void onInit() {
     super.onInit();
     _loadMapData();
-    getCurrentLocation();
+    //getCurrentLocation();
   }
 
+
+// Future<String> getAddressFromGoogleMaps(LatLng position) async {
+//   const String apiKey = "AIzaSyBUjmpm28Qw1FSnxp5eev73WxMDPl5ApY8";
+//   final String url =
+//       "https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&key=$apiKey";
+
+//   final response = await http.get(Uri.parse(url));
+
+//   if (response.statusCode == 200) {
+//     final data = json.decode(response.body);
+//     if (data["status"] == "OK") {
+//       return data["results"][0]["formatted_address"];
+//     }
+//   }
+//   return "Không tìm thấy địa chỉ";
+// }
+Future<String> getAddressFromLatLng(LatLng position) async {
+  try {
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      position.latitude, position.longitude,
+    );
+
+    if (placemarks.isNotEmpty) {
+      Placemark place = placemarks[0];
+      String address = "${place.street}, ${place.subLocality}, ${place.locality}";
+      return "Địa chỉ: $address";
+    }
+  } catch (e) {
+    return "Lỗi lấy địa chỉ: $e";
+  }
+   return "Không tìm thấy địa chỉ";
+}
   void _loadMapData() async {
+    final markerIcon = await createCustomMarker(
+      icon: Icons.location_on_outlined,
+      backgroundColor: Colors.green,
+      borderColor: Colors.white,
+    );
+
     final markerIcon1 = await createCustomMarker(
       icon: HugeIcons.strokeRoundedPackage03,
       backgroundColor: Colors.blue,
@@ -62,18 +139,22 @@ class MapController extends GetxController {
       Marker(
         markerId: const MarkerId("start"),
         position: startLocation,
-        icon: markerIcon2,
+        icon: markerIcon,
       ),
       Marker(
         markerId: const MarkerId("end"),
         position: endLocation,
         icon: markerIcon1,
       ),
-      for (int i = 1; i < routePoints.length - 1; i++)
+      for (int i = 0; i < routePoints.length; i++)
         Marker(
           markerId: MarkerId("point$i"),
           position: routePoints[i],
           icon: markerIcon2,
+          onTap: () async {
+        String address = await getAddressFromLatLng(routePoints[i]);
+  selectRoute(routePoints[i], address);
+          },
         ),
     });
 
@@ -120,7 +201,7 @@ class MapController extends GetxController {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     currentLocation.value = LatLng(position.latitude, position.longitude);
-final customIcon = await createCurrentLocationMarker();
+    final customIcon = await createCurrentLocationMarker();
     // Thêm Marker vị trí hiện tại
     markers.add(
       Marker(
@@ -223,57 +304,63 @@ final customIcon = await createCurrentLocationMarker();
   }
 
   Future<BitmapDescriptor> createCurrentLocationMarker() async {
-  const double size = 120; // Kích thước tổng của marker
-  final PictureRecorder pictureRecorder = PictureRecorder();
-  final Canvas canvas = Canvas(pictureRecorder);
+    const double size = 120; // Kích thước tổng của marker
+    final PictureRecorder pictureRecorder = PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
 
-  // 🎨 **Tạo màu vẽ**
-  final Paint paintBorder = Paint()..color = Colors.purple.shade100; // Viền xanh mờ
-  final Paint paintCircle = Paint()..color = Colors.purple.shade700; // Nền xanh đậm
-  final Paint paintInnerCircle = Paint()..color = Colors.white; // Vòng tròn trong
-  final Paint paintArrow = Paint()..color = Colors.purple.shade900; // Mũi tên
+    // 🎨 **Tạo màu vẽ**
+    final Paint paintBorder = Paint()
+      ..color = Colors.purple.shade100; // Viền xanh mờ
+    final Paint paintCircle = Paint()
+      ..color = Colors.purple.shade700; // Nền xanh đậm
+    final Paint paintInnerCircle = Paint()
+      ..color = Colors.white; // Vòng tròn trong
+    final Paint paintArrow = Paint()..color = Colors.purple.shade900; // Mũi tên
 
-  final double outerCircleRadius = size / 2; // Bán kính hình tròn lớn
-  final double innerCircleRadius = outerCircleRadius * 0.8; // Hình tròn nhỏ
+    final double outerCircleRadius = size / 2; // Bán kính hình tròn lớn
+    final double innerCircleRadius = outerCircleRadius * 0.8; // Hình tròn nhỏ
 
-  // 📌 **1. Vẽ viền xanh mờ**
-  canvas.drawCircle(
-    Offset(outerCircleRadius, outerCircleRadius),
-    outerCircleRadius,
-    paintBorder,
-  );
+    // 📌 **1. Vẽ viền xanh mờ**
+    canvas.drawCircle(
+      Offset(outerCircleRadius, outerCircleRadius),
+      outerCircleRadius,
+      paintBorder,
+    );
 
-  // 📌 **2. Vẽ nền xanh đậm**
-  canvas.drawCircle(
-    Offset(outerCircleRadius, outerCircleRadius),
-    innerCircleRadius,
-    paintCircle,
-  );
+    // 📌 **2. Vẽ nền xanh đậm**
+    canvas.drawCircle(
+      Offset(outerCircleRadius, outerCircleRadius),
+      innerCircleRadius,
+      paintCircle,
+    );
 
-  // 📌 **3. Vẽ vòng tròn trắng bên trong**
-  canvas.drawCircle(
-    Offset(outerCircleRadius, outerCircleRadius),
-    innerCircleRadius * 0.8,
-    paintInnerCircle,
-  );
+    // 📌 **3. Vẽ vòng tròn trắng bên trong**
+    canvas.drawCircle(
+      Offset(outerCircleRadius, outerCircleRadius),
+      innerCircleRadius * 0.8,
+      paintInnerCircle,
+    );
 
-  // 📌 **4. Vẽ mũi tên định hướng**
- Path arrowPath = Path()
-  ..moveTo(outerCircleRadius, outerCircleRadius - 30) // Đỉnh mũi tên xa hơn
-  ..lineTo(outerCircleRadius - 20, outerCircleRadius + 15) // Cánh mũi tên rộng hơn
-  ..lineTo(outerCircleRadius, outerCircleRadius) // Gốc mũi tên thấp hơn
-  ..lineTo(outerCircleRadius + 20, outerCircleRadius + 15) // Cánh còn lại rộng hơn
-  ..close();
+    // 📌 **4. Vẽ mũi tên định hướng**
+    Path arrowPath = Path()
+      ..moveTo(outerCircleRadius, outerCircleRadius - 30) // Đỉnh mũi tên xa hơn
+      ..lineTo(outerCircleRadius - 20,
+          outerCircleRadius + 15) // Cánh mũi tên rộng hơn
+      ..lineTo(outerCircleRadius, outerCircleRadius) // Gốc mũi tên thấp hơn
+      ..lineTo(outerCircleRadius + 20,
+          outerCircleRadius + 15) // Cánh còn lại rộng hơn
+      ..close();
 
+    canvas.drawPath(arrowPath, paintArrow);
 
-  canvas.drawPath(arrowPath, paintArrow);
+    // 🖼 **Chuyển hình thành BitmapDescriptor**
+    final img = await pictureRecorder
+        .endRecording()
+        .toImage(size.toInt(), size.toInt());
+    final ByteData? byteData =
+        await img.toByteData(format: ImageByteFormat.png);
+    final Uint8List uint8List = byteData!.buffer.asUint8List();
 
-  // 🖼 **Chuyển hình thành BitmapDescriptor**
-  final img = await pictureRecorder.endRecording().toImage(size.toInt(), size.toInt());
-  final ByteData? byteData = await img.toByteData(format: ImageByteFormat.png);
-  final Uint8List uint8List = byteData!.buffer.asUint8List();
-
-  return BitmapDescriptor.fromBytes(uint8List);
-}
-
+    return BitmapDescriptor.fromBytes(uint8List);
+  }
 }

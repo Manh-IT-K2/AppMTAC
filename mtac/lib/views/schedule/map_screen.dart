@@ -66,6 +66,69 @@ class MapScreen extends StatelessWidget {
               ),
             ),
           ),
+          Obx(() {
+            if (controller.isRouteSelected.value) {
+              return Positioned(
+                bottom: 80,
+                left: 20,
+                right: 20,
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 5,
+                      )
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: () => controller.isRouteSelected.value = false,
+                          child: Icon(
+                            Icons.close,
+                            size: 4.w,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        controller.selectedAddress.value,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: controller.openGoogleMaps,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: kPrimaryColor.withOpacity(0.6), 
+                          foregroundColor: Colors.white, 
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 5.w, vertical: 1.w), 
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100.w),
+                          ),
+                          elevation: 5,
+                        ),
+                        child: Text(
+                          "Đi đến vị trí",
+                          style: PrimaryFont.bodyTextBold(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          }),
+
           // Draggable Bottom Sheet
           Obx(
             () => Positioned(
@@ -294,7 +357,7 @@ class _ItemDestination extends StatelessWidget {
                 Get.toNamed(AppRoutes.HANDOVERRECORD);
               },
               child: Text(
-               txtWriteRecordM,
+                txtWriteRecordM,
                 style: PrimaryFont.bodyTextBold().copyWith(
                   color: const Color(0xFF997FEC),
                 ),
