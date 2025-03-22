@@ -107,10 +107,10 @@ class MapScreen extends StatelessWidget {
                       ElevatedButton(
                         onPressed: controller.openGoogleMaps,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: kPrimaryColor.withOpacity(0.6), 
-                          foregroundColor: Colors.white, 
+                          backgroundColor: kPrimaryColor.withOpacity(0.6),
+                          foregroundColor: Colors.white,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 5.w, vertical: 1.w), 
+                              horizontal: 5.w, vertical: 1.w),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100.w),
                           ),
@@ -279,8 +279,10 @@ class MapScreen extends StatelessWidget {
 
 class _ItemDestination extends StatelessWidget {
   const _ItemDestination({
-    super.key,
+    super.key, required this.addressBusiness, required this.numberBD, required this.status, required this.totalWeight, required this.phonePartner, required this.namePartner, required this.note,
   });
+
+  final String addressBusiness, numberBD, status, totalWeight, phonePartner, namePartner, note;
 
   @override
   Widget build(BuildContext context) {
@@ -289,31 +291,31 @@ class _ItemDestination extends StatelessWidget {
       children: [
         SizedBox(height: 3.w),
         Text(
-          "Công ty CP SX TM Sáng Việt",
+          addressBusiness,
           style: PrimaryFont.titleTextMedium().copyWith(
             color: Colors.black,
           ),
         ),
         Text(
-          "+BD: 0",
+          "+BD: $numberBD",
           style: PrimaryFont.bodyTextMedium().copyWith(
             color: Colors.black,
           ),
         ),
         Text(
-          "+CC: 588.5",
+          "+CC: $totalWeight",
           style: PrimaryFont.bodyTextMedium().copyWith(
             color: Colors.black,
           ),
         ),
         Text(
-          "GOM: L1/11",
+          "GOM: $status",
           style: PrimaryFont.bodyTextMedium().copyWith(
             color: Colors.black,
           ),
         ),
         Text(
-          "Gom đủ khối lượng không phát sinh",
+          note,
           style: PrimaryFont.bodyTextMedium().copyWith(
             color: Colors.black,
           ),
@@ -322,7 +324,7 @@ class _ItemDestination extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Chị Giao",
+              namePartner,
               style: PrimaryFont.bodyTextBold().copyWith(
                 color: Colors.black,
               ),
