@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mtac/constants/text.dart';
 import 'package:mtac/controllers/map_controller.dart';
+import 'package:mtac/data/map_screen/item_destination.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
@@ -225,35 +226,34 @@ class MapScreen extends StatelessWidget {
                                     ],
                                   ),
                                   SizedBox(width: 5.w),
-                                  Flexible(
-                                    fit: FlexFit.loose,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const _ItemDestination(),
-                                        SizedBox(
-                                          height: 5.w,
-                                        ),
-                                        Icon(
-                                          Icons.arrow_downward,
-                                          color: kPrimaryColor,
-                                          size: 5.w,
-                                        ),
-                                        const _ItemDestination(),
-                                        SizedBox(
-                                          height: 5.w,
-                                        ),
-                                        Icon(
-                                          Icons.arrow_downward,
-                                          color: kPrimaryColor,
-                                          size: 5.w,
-                                        ),
-                                        const _ItemDestination(),
-                                        SizedBox(
-                                          height: 10.w,
-                                        ),
-                                      ],
+                                  Expanded(
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: itemDestinationData.length,
+                                      itemBuilder: (context, index) {
+                                        final destination =
+                                            itemDestinationData[index];
+                                        return _ItemDestination(
+                                          addressBusiness:
+                                              destination.addressBusiness,
+                                          numberBD: destination.numberBD,
+                                          status: destination.status,
+                                          totalWeight: destination.totalWeight,
+                                          phonePartner:
+                                              destination.phonePartner,
+                                          namePartner: destination.namePartner,
+                                          note: destination.note,
+                                          isLastItem: index ==
+                                              itemDestinationData.length - 1,
+                                          onTap: () {
+                                            controller.makePhoneCall(
+                                                destination.phonePartner);
+                                          },
+                                        );
+                                      },
                                     ),
                                   ),
                                   SizedBox(
@@ -279,10 +279,27 @@ class MapScreen extends StatelessWidget {
 
 class _ItemDestination extends StatelessWidget {
   const _ItemDestination({
-    super.key, required this.addressBusiness, required this.numberBD, required this.status, required this.totalWeight, required this.phonePartner, required this.namePartner, required this.note,
+    super.key,
+    required this.addressBusiness,
+    required this.numberBD,
+    required this.status,
+    required this.totalWeight,
+    required this.phonePartner,
+    required this.namePartner,
+    required this.note,
+    required this.isLastItem,
+    this.onTap,
   });
 
-  final String addressBusiness, numberBD, status, totalWeight, phonePartner, namePartner, note;
+  final String addressBusiness,
+      numberBD,
+      status,
+      totalWeight,
+      phonePartner,
+      namePartner,
+      note;
+  final bool isLastItem;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -329,17 +346,20 @@ class _ItemDestination extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            Container(
-              width: 8.w,
-              height: 8.w,
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(8.w),
-              ),
-              child: Icon(
-                Icons.call,
-                color: Colors.white,
-                size: 4.w,
+            GestureDetector(
+              onTap: () => onTap,
+              child: Container(
+                width: 8.w,
+                height: 8.w,
+                decoration: BoxDecoration(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.circular(8.w),
+                ),
+                child: Icon(
+                  Icons.call,
+                  color: Colors.white,
+                  size: 4.w,
+                ),
               ),
             ),
           ],
@@ -367,6 +387,15 @@ class _ItemDestination extends StatelessWidget {
             ),
           ],
         ),
+        SizedBox(
+          height: 5.w,
+        ),
+        if (!isLastItem)
+          Icon(
+            Icons.arrow_downward,
+            color: kPrimaryColor,
+            size: 5.w,
+          ),
       ],
     );
   }
