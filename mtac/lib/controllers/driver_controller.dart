@@ -43,7 +43,7 @@ class DriverController extends GetxController {
         day.year == currentDate.value.year);
 
     if (todayIndex != -1) {
-      double itemWidth = 13.w + 1;
+      double itemWidth = 13.w + 0.7;
       double screenWidth = 100.w;
       double scrollOffset = (todayIndex * itemWidth) - (screenWidth / 2) + (itemWidth / 2);
       scrollController.animateTo(

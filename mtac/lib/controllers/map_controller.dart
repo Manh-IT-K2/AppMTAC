@@ -23,11 +23,11 @@ class MapController extends GetxController {
   GoogleMapController? mapController;
   Rx<LatLng?> currentLocation = Rx<LatLng?>(null);
 
-  // Toạ độ điểm bắt đầu & kết thúc
-  final LatLng startLocation = const LatLng(10.7769, 106.7009); // Bến Thành
-  final LatLng endLocation = const LatLng(10.8039, 106.7143); // Bình Thạnh
+  // Coordinates of start and end points
+  final LatLng startLocation = const LatLng(10.7769, 106.7009);
+  final LatLng endLocation = const LatLng(10.8039, 106.7143);
 
-// Danh sách các điểm của tuyến đường
+// List of routes points
   final List<LatLng> routePoints = const [
     LatLng(10.7769, 106.7009), // Bến Thành
     LatLng(10.7845, 106.7070), // Nguyễn Thị Minh Khai
@@ -35,32 +35,38 @@ class MapController extends GetxController {
     LatLng(10.8039, 106.7143), // Bình Thạnh
   ];
 
-  final List<String> routeNames = const [
-    "Chợ Bến Thành",
-    "Nguyễn Thị Minh Khai",
-    "Điện Biên Phủ",
-    "Bình Thạnh"
-  ];
+  // final List<String> routeNames = const [
+  //   "Chợ Bến Thành",
+  //   "Nguyễn Thị Minh Khai",
+  //   "Điện Biên Phủ",
+  //   "Bình Thạnh"
+  // ];
 
-  // Danh sách Marker
+  // list Marker
   RxSet<Marker> markers = <Marker>{}.obs;
 
-  // Danh sách tuyến đường (Polyline)
+  // Route list (Polyline)
   RxSet<Polyline> polylines = <Polyline>{}.obs;
-  Rx<LatLng?> selectedRoute = Rx<LatLng?>(null); // Lưu vị trí route được chọn
-  RxString selectedAddress = "".obs; // Địa chỉ hiển thị trong khung
-  RxBool isRouteSelected = false.obs; // Kiểm tra có route nào được chọn không
+  // save location selected route
+  Rx<LatLng?> selectedRoute = Rx<LatLng?>(null);
+  // adress display frame
+  RxString selectedAddress = "".obs;
+  // check selected route
+  RxBool isRouteSelected = false.obs;
 
+  // function selected route
   void selectRoute(LatLng position, String address) {
     selectedRoute.value = position;
     selectedAddress.value = address;
     isRouteSelected.value = true;
   }
 
+//
   void clearSelection() {
     isRouteSelected.value = false;
   }
 
+// function open google map on the phone
   void openGoogleMaps() async {
     if (selectedRoute.value != null) {
       final lat = selectedRoute.value!.latitude;
@@ -83,7 +89,6 @@ class MapController extends GetxController {
     //getCurrentLocation();
   }
 
-
 // Future<String> getAddressFromGoogleMaps(LatLng position) async {
 //   const String apiKey = "AIzaSyBUjmpm28Qw1FSnxp5eev73WxMDPl5ApY8";
 //   final String url =
@@ -99,22 +104,28 @@ class MapController extends GetxController {
 //   }
 //   return "Không tìm thấy địa chỉ";
 // }
-Future<String> getAddressFromLatLng(LatLng position) async {
-  try {
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-      position.latitude, position.longitude,
-    );
 
-    if (placemarks.isNotEmpty) {
-      Placemark place = placemarks[0];
-      String address = "${place.street}, ${place.subLocality}, ${place.locality}";
-      return "Địa chỉ: $address";
+// get address specifically
+  Future<String> getAddressFromLatLng(LatLng position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        String address =
+            "${place.street}, ${place.subLocality}, ${place.locality}";
+        return "Địa chỉ: $address";
+      }
+    } catch (e) {
+      return "Lỗi lấy địa chỉ: $e";
     }
-  } catch (e) {
-    return "Lỗi lấy địa chỉ: $e";
+    return "Không tìm thấy địa chỉ";
   }
-   return "Không tìm thấy địa chỉ";
-}
+
+// load map from route
   void _loadMapData() async {
     final markerIcon = await createCustomMarker(
       icon: Icons.location_on_outlined,
@@ -134,7 +145,7 @@ Future<String> getAddressFromLatLng(LatLng position) async {
       borderColor: Colors.white,
     );
 
-    // Thêm Marker
+    // add Marker
     markers.addAll({
       Marker(
         markerId: const MarkerId("start"),
@@ -152,13 +163,13 @@ Future<String> getAddressFromLatLng(LatLng position) async {
           position: routePoints[i],
           icon: markerIcon2,
           onTap: () async {
-        String address = await getAddressFromLatLng(routePoints[i]);
-  selectRoute(routePoints[i], address);
+            String address = await getAddressFromLatLng(routePoints[i]);
+            selectRoute(routePoints[i], address);
           },
         ),
     });
 
-    // Thêm tuyến đường (Polyline)
+    // add route (Polyline)
     polylines.add(
       Polyline(
         polylineId: const PolylineId("route"),
@@ -169,22 +180,24 @@ Future<String> getAddressFromLatLng(LatLng position) async {
     );
   }
 
+//
   void setMapController(GoogleMapController controller) {
     mapController = controller;
     update();
   }
 
+// get current location
   Future<void> getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Kiểm tra dịch vụ vị trí
+    // check sevice location
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return;
     }
 
-    // Kiểm tra quyền truy cập
+    // check permission
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -197,12 +210,12 @@ Future<String> getAddressFromLatLng(LatLng position) async {
       return;
     }
 
-    // Lấy vị trí hiện tại
+    // get current location
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     currentLocation.value = LatLng(position.latitude, position.longitude);
     final customIcon = await createCurrentLocationMarker();
-    // Thêm Marker vị trí hiện tại
+    // add marker current location
     markers.add(
       Marker(
         markerId: const MarkerId("currentLocation"),
@@ -211,7 +224,7 @@ Future<String> getAddressFromLatLng(LatLng position) async {
       ),
     );
 
-    // Cập nhật Camera đến vị trí hiện tại
+    // update Camera to current location
     if (mapController != null) {
       mapController!.animateCamera(
         CameraUpdate.newLatLngZoom(currentLocation.value!, 15),
@@ -303,6 +316,7 @@ Future<String> getAddressFromLatLng(LatLng position) async {
     return BitmapDescriptor.fromBytes(uint8List);
   }
 
+  // draw icon current location
   Future<BitmapDescriptor> createCurrentLocationMarker() async {
     const double size = 120; // Kích thước tổng của marker
     final PictureRecorder pictureRecorder = PictureRecorder();
@@ -362,5 +376,16 @@ Future<String> getAddressFromLatLng(LatLng position) async {
     final Uint8List uint8List = byteData!.buffer.asUint8List();
 
     return BitmapDescriptor.fromBytes(uint8List);
+  }
+
+// open app call on the phone
+  void makePhoneCall(String phoneNumber) async {
+    final Uri url = Uri.parse("tel:$phoneNumber");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      Get.snackbar("Lỗi", "Không thể mở ứng dụng gọi điện",
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
   }
 }

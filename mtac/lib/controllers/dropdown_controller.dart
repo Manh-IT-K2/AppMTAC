@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
 class DropdownController extends GetxController {
+
+  // initial variable
   var selectedValue = "Null".obs;
   final List<String> items = [
     "Null",
