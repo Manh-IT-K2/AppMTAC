@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/common/notify_success_dialog.dart';
 import 'package:mtac/constants/text.dart';
-import 'package:mtac/controllers/dropdown_controller.dart';
 import 'package:mtac/controllers/handover_record_controller.dart';
 import 'package:mtac/data/schedule_screen/item_info_waste.dart';
 import 'package:mtac/routes/app_routes.dart';
@@ -18,15 +17,12 @@ import 'package:sizer/sizer.dart';
 class HandoverRecordScreen extends StatelessWidget {
   HandoverRecordScreen({super.key});
 
-  //
-  List<DropdownController> wasteControllers = infoWasteData.map((item) => DropdownController(item.status)).toList();
-
-  //
-  final HandoverRecordController _handoverRecordController = Get.put(HandoverRecordController());
+  // Initial _handoverRecordController
+  final HandoverRecordController _handoverRecordController =
+      Get.put(HandoverRecordController());
 
   @override
   Widget build(BuildContext context) {
-    //
     //final size = context.screenSize;
     return Scaffold(
       appBar: AppBar(
@@ -66,14 +62,13 @@ class HandoverRecordScreen extends StatelessWidget {
             children: [
               const _HeaderHandoverRecordScreen(),
               _BodyHandoverRecordScreen(
-                wasteControllers: wasteControllers,
                 sHeightBody: 20.h,
                 sHeightItem: 5.h,
                 sWidthSizeBox: 4.w,
                 sWidthNameWaste: 24.w,
                 sWidthCodeWaste: 20.w,
                 sWidthStatusWaste: 20.w,
-                inputController: _handoverRecordController,
+                controller: _handoverRecordController,
               ),
               const SizedBox(
                 height: 25,
@@ -231,8 +226,11 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
         Center(
           child: ElevatedButton(
             onPressed: () {
-              NotifySuccessDialog().showNotifyPopup(
-                  "Gửi biên bản thành công", () => Get.offAllNamed(AppRoutes.MAIN));
+              NotifySuccessDialog().showNotifyPopup("Gửi biên bản thành công",
+                  () {
+                Navigator.pop(context);
+                Get.offAllNamed(AppRoutes.MAIN);
+              });
             },
             style: ElevatedButton.styleFrom(
                 backgroundColor: kPrimaryColor,
@@ -255,18 +253,16 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
 class _BodyHandoverRecordScreen extends StatelessWidget {
   const _BodyHandoverRecordScreen({
     super.key,
-    required this.wasteControllers,
     required this.sHeightItem,
     required this.sWidthNameWaste,
     required this.sWidthCodeWaste,
     required this.sWidthStatusWaste,
     required this.sHeightBody,
     required this.sWidthSizeBox,
-    required this.inputController,
+    required this.controller,
   });
 
-  final List<DropdownController> wasteControllers;
-  final HandoverRecordController inputController;
+  final HandoverRecordController controller;
   final double sHeightBody,
       sHeightItem,
       sWidthNameWaste,
@@ -277,7 +273,7 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //
-    inputController.initializeList(infoWasteData.length);
+    controller.initializeList(infoWasteData.length);
     return Column(
       children: [
         Row(
@@ -354,18 +350,17 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                         child: Obx(
                           () => DropdownButton<String>(
                             isExpanded: true,
-                            value: wasteControllers[index].selectedValue.value,
+                            value: controller.wasteControllers[index].value,
                             icon: const Icon(Icons.keyboard_arrow_down),
                             style: PrimaryFont.bodyTextBold().copyWith(
                               color: Colors.green,
                               overflow: TextOverflow.ellipsis,
                             ),
                             onChanged: (String? newValue) {
-                              wasteControllers[index].selectedValue.value =
+                              controller.wasteControllers[index].value =
                                   newValue!;
                             },
-                            items: wasteControllers[index]
-                                .items
+                            items: controller.statusItems
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -384,12 +379,12 @@ class _BodyHandoverRecordScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => inputController.showInputPopup(index),
+                          onTap: () => controller.showInputPopup(index),
                           child: Obx(
                             () => Text(
-                              inputController.numbers[index].value.isEmpty
+                              controller.numbers[index].value.isEmpty
                                   ? "0 (kg)"
-                                  : "${inputController.numbers[index].value} (kg)",
+                                  : "${controller.numbers[index].value} (kg)",
                               style: PrimaryFont.bodyTextLight()
                                   .copyWith(color: Colors.black),
                               maxLines: 1,
@@ -495,106 +490,6 @@ class _HeaderHandoverRecordScreen extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _ItemInfoWaste extends StatelessWidget {
-  const _ItemInfoWaste({
-    required this.controller,
-    required this.sName,
-    required this.sCode,
-    required this.sNumber,
-    required this.inputController,
-  });
-
-  final DropdownController controller;
-  final HandoverRecordController inputController;
-  final String sName, sCode, sNumber;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 30,
-      margin: const EdgeInsets.only(
-        top: 12,
-      ),
-      decoration: BoxDecoration(
-          border: Border.all(
-            color: kPrimaryColor,
-            width: 1,
-          ),
-          borderRadius: BorderRadius.circular(10)),
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 18,
-          ),
-          SizedBox(
-            width: 95,
-            child: Text(
-              sName,
-              style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const SizedBox(
-            width: 12,
-          ),
-          SizedBox(
-            width: 72,
-            child: Text(
-              sCode,
-              style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const SizedBox(
-            width: 18,
-          ),
-          SizedBox(
-            width: 80,
-            child: Obx(
-              () => DropdownButton<String>(
-                isExpanded: true,
-                value: controller.selectedValue.value,
-                icon: const Icon(Icons.keyboard_arrow_down),
-                style: PrimaryFont.bodyTextBold().copyWith(
-                  color: Colors.green,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                onChanged: (String? newValue) {
-                  controller.selectedValue.value = newValue!;
-                },
-                items: controller.items
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: const TextStyle(overflow: TextOverflow.ellipsis),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 18,
-          ),
-          SizedBox(
-            width: 60,
-            child: Text(
-              sNumber,
-              style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -1,6 +1,5 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -8,9 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;
 
 class MapController extends GetxController {
+
   /* Bottom bar Destination */
   var sheetHeight = 0.07.obs;
 
@@ -42,31 +42,31 @@ class MapController extends GetxController {
   //   "Bình Thạnh"
   // ];
 
-  // list Marker
+  // List Marker
   RxSet<Marker> markers = <Marker>{}.obs;
 
   // Route list (Polyline)
   RxSet<Polyline> polylines = <Polyline>{}.obs;
-  // save location selected route
+  // Save location selected route
   Rx<LatLng?> selectedRoute = Rx<LatLng?>(null);
-  // adress display frame
+  // Adress display frame
   RxString selectedAddress = "".obs;
-  // check selected route
+  // Check selected route
   RxBool isRouteSelected = false.obs;
 
-  // function selected route
+  // Function selected route
   void selectRoute(LatLng position, String address) {
     selectedRoute.value = position;
     selectedAddress.value = address;
     isRouteSelected.value = true;
   }
 
-//
+  // Clear route selected
   void clearSelection() {
     isRouteSelected.value = false;
   }
 
-// function open google map on the phone
+  // Function open google map on the phone
   void openGoogleMaps() async {
     if (selectedRoute.value != null) {
       final lat = selectedRoute.value!.latitude;
@@ -75,13 +75,17 @@ class MapController extends GetxController {
           "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving");
 
       if (await canLaunchUrl(url)) {
+        // open google map
         await launchUrl(url, mode: LaunchMode.externalApplication);
       } else {
-        print("Không thể mở Google Maps");
+        if (kDebugMode) {
+          print("Không thể mở Google Maps");
+        }
       }
     }
   }
 
+  // Lifecycle method of GetX
   @override
   void onInit() {
     super.onInit();
@@ -105,7 +109,7 @@ class MapController extends GetxController {
 //   return "Không tìm thấy địa chỉ";
 // }
 
-// get address specifically
+  // Get address specifically
   Future<String> getAddressFromLatLng(LatLng position) async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -125,7 +129,7 @@ class MapController extends GetxController {
     return "Không tìm thấy địa chỉ";
   }
 
-// load map from route
+  // Load map from route
   void _loadMapData() async {
     final markerIcon = await createCustomMarker(
       icon: Icons.location_on_outlined,
@@ -145,7 +149,7 @@ class MapController extends GetxController {
       borderColor: Colors.white,
     );
 
-    // add Marker
+    // Add Marker
     markers.addAll({
       Marker(
         markerId: const MarkerId("start"),
@@ -169,7 +173,7 @@ class MapController extends GetxController {
         ),
     });
 
-    // add route (Polyline)
+    // Add route (Polyline)
     polylines.add(
       Polyline(
         polylineId: const PolylineId("route"),
@@ -180,42 +184,44 @@ class MapController extends GetxController {
     );
   }
 
-//
+  // Save the GoogleMapController object when the map is initialized.
   void setMapController(GoogleMapController controller) {
     mapController = controller;
     update();
   }
 
-// get current location
+  // Get current location
   Future<void> getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // check sevice location
+    // Check sevice location
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return;
     }
 
-    // check permission
+    // Check permission
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
+      // Request
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         return;
       }
     }
 
+    // User denied forever
     if (permission == LocationPermission.deniedForever) {
       return;
     }
 
-    // get current location
+    // Get current location
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     currentLocation.value = LatLng(position.latitude, position.longitude);
     final customIcon = await createCurrentLocationMarker();
-    // add marker current location
+    // Add marker current location
     markers.add(
       Marker(
         markerId: const MarkerId("currentLocation"),
@@ -224,7 +230,7 @@ class MapController extends GetxController {
       ),
     );
 
-    // update Camera to current location
+    // Update Camera to current location
     if (mapController != null) {
       mapController!.animateCamera(
         CameraUpdate.newLatLngZoom(currentLocation.value!, 15),
@@ -378,14 +384,15 @@ class MapController extends GetxController {
     return BitmapDescriptor.fromBytes(uint8List);
   }
 
-// open app call on the phone
+  // Open app call on the phone
   void makePhoneCall(String phoneNumber) async {
     final Uri url = Uri.parse("tel:$phoneNumber");
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
-      Get.snackbar("Lỗi", "Không thể mở ứng dụng gọi điện",
-          backgroundColor: Colors.red, colorText: Colors.white);
+     if (kDebugMode) {
+       print("Lỗi Không thể mở ứng dụng gọi điện");
+     }     
     }
   }
 }
