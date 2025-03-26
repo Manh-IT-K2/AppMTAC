@@ -31,7 +31,8 @@ class ScheduleCollectionScreen extends StatelessWidget {
               child: Text(
                 txtTitleSC,
                 textAlign: TextAlign.center,
-                style: PrimaryFont.headerTextBold().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.headerTextBold().copyWith(color: Colors.black),
               ),
             ),
           ],
@@ -40,11 +41,11 @@ class ScheduleCollectionScreen extends StatelessWidget {
         centerTitle: false,
       ),
       body: const Column(
-          children: [
-            _HeaderScheduleCollectionScreen(),
-            _BodyScheduleCollectionScreen(),
-          ],
-        ),
+        children: [
+          _HeaderScheduleCollectionScreen(),
+          _BodyScheduleCollectionScreen(),
+        ],
+      ),
     );
   }
 }
@@ -58,21 +59,22 @@ class _BodyScheduleCollectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-          itemCount: tripData.length,
-          itemBuilder: (context, index) {
-            final trip = tripData[index];
-            return _ItemTripCollection(
-              txtCode: trip.txtCode,
-              txtGlandHead: trip.txtGlandHead,
-              txtGlandEnd: trip.txtGlandEnd,
-              txtType: trip.txtType,
-              txtDay: trip.txtDay,
-              txtPrice: trip.txtPrice,
-              onTapSchedule: () {
-                Get.toNamed(AppRoutes.MAP);
-              },
-            );
-          }),
+        itemCount: tripData.length,
+        itemBuilder: (context, index) {
+          final trip = tripData[index];
+          return _ItemTripCollection(
+            txtCode: trip.txtCode,
+            txtGlandHead: trip.txtGlandHead,
+            txtGlandEnd: trip.txtGlandEnd,
+            txtType: trip.txtType,
+            txtDay: trip.txtDay,
+            txtPrice: trip.txtPrice,
+            onTapSchedule: () {
+              Get.toNamed(AppRoutes.MAP);
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -147,12 +149,14 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtTripSC,
-                style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
               const Spacer(),
               Text(
                 txtCode,
-                style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
               const SizedBox(
                 width: 12,
@@ -171,12 +175,14 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtGlandSC,
-                style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
               const Spacer(),
               Text(
                 txtGlandHead,
-                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               Icon(
                 Icons.forward_outlined,
@@ -185,7 +191,8 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtGlandEnd,
-                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               const SizedBox(
                 width: 12,
@@ -202,12 +209,14 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtTypSC,
-                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               const Spacer(),
               Text(
                 txtType,
-                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               const SizedBox(
                 width: 12,
@@ -224,12 +233,14 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtDaySC,
-                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               const Spacer(),
               Text(
                 txtDay,
-                style: PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.bodyTextLight().copyWith(color: Colors.black),
               ),
               const SizedBox(
                 width: 12,
@@ -246,12 +257,14 @@ class _ItemTripCollection extends StatelessWidget {
               ),
               Text(
                 txtPriceSC,
-                style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
               const Spacer(),
               Text(
                 txtPrice,
-                style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
+                style:
+                    PrimaryFont.bodyTextMedium().copyWith(color: Colors.black),
               ),
               const SizedBox(
                 width: 12,
@@ -280,7 +293,8 @@ class _ItemTripCollection extends StatelessWidget {
                       )),
                   child: Text(
                     txtButDetailSC,
-                    style: PrimaryFont.bodyTextBold().copyWith(color: Colors.grey),
+                    style:
+                        PrimaryFont.bodyTextBold().copyWith(color: Colors.grey),
                   ),
                 ),
               ),
@@ -301,7 +315,8 @@ class _ItemTripCollection extends StatelessWidget {
                         )),
                     child: Text(
                       txtButScheduleSC,
-                      style: PrimaryFont.bodyTextBold().copyWith(color: kPrimaryColor),
+                      style: PrimaryFont.bodyTextBold()
+                          .copyWith(color: kPrimaryColor),
                     ),
                   ),
                 ),
