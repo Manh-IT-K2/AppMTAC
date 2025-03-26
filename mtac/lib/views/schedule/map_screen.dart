@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -251,6 +252,9 @@ class MapScreen extends StatelessWidget {
                                           onTap: () {
                                             controller.makePhoneCall(
                                                 destination.phonePartner);
+                                            if (kDebugMode) {
+                                              print("Call with me!");
+                                            }
                                           },
                                         );
                                       },
@@ -278,7 +282,7 @@ class MapScreen extends StatelessWidget {
 }
 
 class _ItemDestination extends StatelessWidget {
-  const _ItemDestination({
+  _ItemDestination({
     super.key,
     required this.addressBusiness,
     required this.numberBD,
@@ -347,7 +351,18 @@ class _ItemDestination extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () => onTap,
+              onTap: () {
+                if (onTap != null) {
+                  if (kDebugMode) {
+                    print("onTap function is called!");
+                  }
+                  onTap!();
+                } else {
+                  if (kDebugMode) {
+                    print("onTap is null!");
+                  }
+                }
+              },
               child: Container(
                 width: 8.w,
                 height: 8.w,
