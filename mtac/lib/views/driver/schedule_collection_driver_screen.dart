@@ -79,27 +79,122 @@ class _ScheduleCollectionDriverScreenState
                     .toList(),
               ),
             ),
+            Row(
+              children: [
+                Obx(
+                  () => controller.checkedItems.isNotEmpty
+                      ? Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () => controller.toggleSelectAll(
+                                itemCollectionTodayDatas
+                                    .map((e) => e.collectionId)
+                                    .toList(),
+                              ),
+                              child: Container(
+                                width: 5.w,
+                                height: 5.w,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.black, width: 0.5),
+                                  borderRadius: BorderRadius.circular(1.w),
+                                  color: controller.isAllSelected(
+                                    itemCollectionTodayDatas
+                                        .map((e) => e.collectionId)
+                                        .toList(),
+                                  )
+                                      ? Colors.red
+                                      : Colors.white,
+                                ),
+                                child: controller.isAllSelected(
+                                  itemCollectionTodayDatas
+                                      .map((e) => e.collectionId)
+                                      .toList(),
+                                )
+                                    ? Icon(Icons.check,
+                                        color: Colors.white, size: 3.w)
+                                    : null,
+                              ),
+                            ),
+                            SizedBox(width: 1.w),
+                            Text("Chọn tất cả",
+                                style: PrimaryFont.bodyTextMedium()),
+                          ],
+                        )
+                      : const SizedBox(),
+                ),
+                const Spacer(),
+                Obx(
+                  () => controller.checkedItems.isNotEmpty
+                      ? GestureDetector(
+                          onTap: () {
+                            controller.deleteSelectedItems();
+                          },
+                          child: Row(
+                            children: [
+                              Icon(HugeIcons.strokeRoundedDelete01,
+                                  color: Colors.red, size: 5.w),
+                              SizedBox(width: 1.w),
+                              Text(
+                                "Xoá",
+                                style: PrimaryFont.bodyTextMedium(),
+                              ),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(),
+                ),
+                SizedBox(width: 3.w),
+                PopupMenuButton<String>(
+                  color: Colors.white,
+                  onSelected: (String value) {
+                   
+                    controller.updateFilter(value);
+                  },
+                  itemBuilder: (BuildContext context) => [
+                    const PopupMenuItem(value: "Khoáng", child: Text("Khoáng")),
+                    const PopupMenuItem(value: "Cân ký", child: Text("Cân ký")),
+                    const PopupMenuItem(value: "Chưa thu gom", child: Text("Chưa thu gom")),
+                  ],
+                  child: Row(
+                    children: [
+                      Icon(HugeIcons.strokeRoundedFilter,
+                          color: Colors.black, size: 5.w),
+                      SizedBox(width: 1.w),
+                      Text("Lọc", style: PrimaryFont.bodyTextMedium()),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 3.w,
+            ),
             Expanded(
               child: PageView(
                 controller: controller.pageControllerDriver,
                 onPageChanged: controller.onPageChangedScheduleDriver,
                 children: controller.itemScheduleCollectionDriver.map(
                   (title) {
-                    return ListView.builder(
-                      itemCount: itemCollectionTodayDatas.length,
-                      itemBuilder: (context, index) {
-                        final data = itemCollectionTodayDatas[index];
-                        return _ItemMainScheduleCollection(
-                            controller: controller,
-                            collectionId: data.collectionId,
-                            nameBusiness: data.nameBusiness,
-                            areaTransit: data.areaTransit,
-                            typeWaste: data.typeWaste,
-                            contactPerson: data.contactPerson,
-                            timeCollection: data.timeCollection,
-                            status: data.status);
-                      },
-                    );
+                    return Obx(
+  () => ListView.builder(
+    itemCount: controller.filteredItems.length, // Được cập nhật tự động
+    itemBuilder: (context, index) {
+      final data = controller.filteredItems[index];
+      return _ItemMainScheduleCollection(
+        controller: controller,
+        collectionId: data.collectionId,
+        nameBusiness: data.nameBusiness,
+        areaTransit: data.areaTransit,
+        typeWaste: data.typeWaste,
+        contactPerson: data.contactPerson,
+        timeCollection: data.timeCollection,
+        status: data.status,
+      );
+    },
+  ),
+);
+
                   },
                 ).toList(),
               ),
@@ -139,9 +234,9 @@ class _ItemMainScheduleCollection extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12.0),
       padding: const EdgeInsets.all(12.0),
       width: 100.w,
-      height: 45.w,
+      height: 50.w,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey, width: 1),
+        border: Border.all(color: Colors.grey, width: 0.5),
         borderRadius: BorderRadius.circular(3.w),
       ),
       child: Column(
@@ -150,10 +245,19 @@ class _ItemMainScheduleCollection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                HugeIcons.strokeRoundedDeliveryTruck02,
-                color: status ? Colors.orange : Colors.green,
-                size: 10.w,
+              Column(
+                children: [
+                  Text(
+                    status ? "Khoáng" : "Cân ký",
+                    style: PrimaryFont.bodyTextBold()
+                        .copyWith(color: status ? Colors.orange : Colors.green),
+                  ),
+                  Icon(
+                    HugeIcons.strokeRoundedDeliveryTruck02,
+                    color: status ? Colors.orange : Colors.green,
+                    size: 10.w,
+                  ),
+                ],
               ),
               SizedBox(
                 width: 3.w,
@@ -170,7 +274,7 @@ class _ItemMainScheduleCollection extends StatelessWidget {
                     width: 5.w,
                     height: 5.w,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1),
+                      border: Border.all(color: Colors.grey, width: 1),
                       borderRadius: BorderRadius.circular(1.w),
                       color: controller.isChecked(collectionId)
                           ? Colors.red
@@ -273,29 +377,31 @@ class _ItemListCollection extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => controller.selectItemScheduleDriver(title),
-      child: Obx(() {
-        bool isSelected = controller.selectedTitleDriver.value == title;
-        return IntrinsicWidth(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: isSelected ? Colors.blue : Colors.grey,
+      child: Obx(
+        () {
+          bool isSelected = controller.selectedTitleDriver.value == title;
+          return IntrinsicWidth(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: isSelected ? Colors.blue : Colors.grey,
+                  ),
                 ),
-              ),
-              Container(
-                color: isSelected ? Colors.blue : Colors.transparent,
-                height: 2,
-                width: isSelected ? double.infinity : 0,
-                margin: const EdgeInsets.only(top: 5),
-              ),
-            ],
-          ),
-        );
-      }),
+                Container(
+                  color: isSelected ? Colors.blue : Colors.transparent,
+                  height: 2,
+                  width: isSelected ? double.infinity : 0,
+                  margin: const EdgeInsets.only(top: 5),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

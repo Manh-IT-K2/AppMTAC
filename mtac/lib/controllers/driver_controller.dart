@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:mtac/data/driver_screen/item_schedule_collection_today.dart';
+import 'package:mtac/models/schedule_collection_today_model.dart';
 import 'package:sizer/sizer.dart';
 
 class DriverController extends GetxController {
@@ -18,6 +19,7 @@ class DriverController extends GetxController {
     super.onInit();
     daysInMonth.value = _generateDaysInMonth(currentDate.value);
     Future.delayed(const Duration(milliseconds: 100), _scrollToToday);
+    filterData();
   }
 
   // initial list hour away two hour
@@ -109,10 +111,32 @@ class DriverController extends GetxController {
 
   // delete from collectionId
   void deleteSelectedItems() {
-    itemCollectionTodayDatas.removeWhere(
-      (item) => checkedItems.contains(item.collectionId),
-    );
+    // Tạo danh sách mới để cập nhật UI
+    var newList = itemCollectionTodayDatas
+        .where(
+          (item) => !checkedItems.contains(item.collectionId),
+        )
+        .toList();
+    // Gán lại danh sách mới để cập nhật UI
+    itemCollectionTodayDatas.clear();
+    itemCollectionTodayDatas.addAll(newList);
+    // Xoá danh sách các mục đã chọn
     checkedItems.clear();
+    // Ép UI cập nhật
+    update();
+  }
+
+  // chose all
+  void toggleSelectAll(List<String> allCollectionIds) {
+    if (checkedItems.length == allCollectionIds.length) {
+      checkedItems.clear();
+    } else {
+      checkedItems.assignAll(allCollectionIds);
+    }
+  }
+
+  bool isAllSelected(List<String> allCollectionIds) {
+    return checkedItems.length == allCollectionIds.length;
   }
 
   // 🔥memory leak
@@ -120,5 +144,38 @@ class DriverController extends GetxController {
   void onClose() {
     pageControllerDriver.dispose();
     super.onClose();
+  }
+
+  // filter
+  // Danh sách gốc
+  final List<ScheduleCollectionTodayModel> allItems = itemCollectionTodayDatas;
+
+  // Trạng thái lọc hiện tại
+  var selectedFilter = "Tất cả".obs;
+
+  // Danh sách đã lọc
+  var filteredItems = <ScheduleCollectionTodayModel>[].obs;
+
+  // Hàm lọc dữ liệu theo trạng thái
+  void filterData() {
+    switch (selectedFilter.value) {
+      case "Khoáng":
+        filteredItems.value = allItems.where((item) => item.status == true).toList();
+        break;
+      case "Cân ký":
+        filteredItems.value = allItems.where((item) => item.status == false).toList();
+        break;
+      case "Chưa thu gom":
+        filteredItems.value = allItems.where((item) => item.timeCollection.contains("Chưa thu gom")).toList();
+        break;
+      default:
+        filteredItems.value = List.from(allItems); // Hiển thị tất cả nếu không có bộ lọc
+    }
+  }
+
+  // Cập nhật bộ lọc khi chọn từ popup
+  void updateFilter(String filter) {
+    selectedFilter.value = filter;
+    filterData();
   }
 }
