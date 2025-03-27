@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:mtac/constants/text.dart';
 import 'package:mtac/controllers/driver_controller.dart';
 import 'package:mtac/data/driver_screen/item_note_important.dart';
+import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
@@ -268,11 +269,16 @@ class _HeaderDriverScreen extends StatelessWidget {
         ),
         Row(
           children: [
-            _UtilDriver(
-              color: Colors.purple.withOpacity(0.2),
-              icon: HugeIcons.strokeRoundedCalendar03,
-              title: txtTitleScheduleColectionD,
-              subTitle: txtSubTitleScheduleColectionD,
+            GestureDetector(
+              onTap: () {
+                Get.toNamed(AppRoutes.SCHEDULECOLLECTIONDRIVER);
+              },
+              child: _UtilDriver(
+                color: Colors.purple.withOpacity(0.2),
+                icon: HugeIcons.strokeRoundedCalendar03,
+                title: txtTitleScheduleColectionD,
+                subTitle: txtSubTitleScheduleColectionD,
+              ),
             ),
             const SizedBox(
               width: 16,

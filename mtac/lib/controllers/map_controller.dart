@@ -90,7 +90,7 @@ class MapController extends GetxController {
   void onInit() {
     super.onInit();
     _loadMapData();
-    //getCurrentLocation();
+    getCurrentLocation();
   }
 
 // Future<String> getAddressFromGoogleMaps(LatLng position) async {
