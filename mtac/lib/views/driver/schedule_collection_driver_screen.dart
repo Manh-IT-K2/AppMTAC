@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mtac/controllers/driver_controller.dart';
+import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
@@ -174,12 +176,11 @@ class _ScheduleCollectionDriverScreenState
                 onPageChanged: controller.onPageChangedScheduleDriver,
                 children: controller.itemScheduleCollectionDriver.map(
                   (title) {
-                    return Obx(
-                      () { 
-                        if(controller.isLoading.value){
-                          return Center(child: const CircularProgressIndicator());
-                        }
-                        return ListView.builder(
+                    return Obx(() {
+                      if (controller.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      return ListView.builder(
                         itemCount: controller.filteredItems.length,
                         itemBuilder: (context, index) {
                           final data = controller.filteredItems[index];
@@ -192,10 +193,14 @@ class _ScheduleCollectionDriverScreenState
                             contactPerson: data.contactPerson,
                             timeCollection: data.timeCollection,
                             status: data.status,
+                            onTap: () {
+                              Get.toNamed(
+                                  AppRoutes.DETAILSCHEDULECOLLECTIONDRIVER);
+                            },
                           );
                         },
-                      );}
-                    );
+                      );
+                    });
                   },
                 ).toList(),
               ),
@@ -217,6 +222,7 @@ class _ItemMainScheduleCollection extends StatelessWidget {
     required this.contactPerson,
     required this.timeCollection,
     required this.status,
+    this.onTap,
   });
 
   final bool status;
@@ -227,114 +233,129 @@ class _ItemMainScheduleCollection extends StatelessWidget {
       contactPerson,
       timeCollection;
   final DriverController controller;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12.0),
-      padding: const EdgeInsets.all(12.0),
-      width: 100.w,
-      height: 50.w,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey, width: 0.5),
-        borderRadius: BorderRadius.circular(3.w),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Column(
-                children: [
-                  Text(
-                    status ? "Khoáng" : "Cân ký",
-                    style: PrimaryFont.bodyTextBold()
-                        .copyWith(color: status ? Colors.orange : Colors.green),
-                  ),
-                  Icon(
-                    HugeIcons.strokeRoundedDeliveryTruck02,
-                    color: status ? Colors.orange : Colors.green,
-                    size: 10.w,
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: 3.w,
-              ),
-              Text(
-                collectionId,
-                style: PrimaryFont.titleTextBold(),
-              ),
-              const Spacer(),
-              GestureDetector(
-                onTap: () => controller.toggleCheck(collectionId),
-                child: Obx(
-                  () => Container(
-                    width: 5.w,
-                    height: 5.w,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(1.w),
-                      color: controller.isChecked(collectionId)
-                          ? Colors.red
-                          : Colors.white,
+    return GestureDetector(
+      onTap: () {
+        if (onTap != null) {
+          if (kDebugMode) {
+            print("onTap function is called!");
+          }
+          onTap!();
+        } else {
+          if (kDebugMode) {
+            print("onTap is null!");
+          }
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12.0),
+        padding: const EdgeInsets.all(12.0),
+        width: 100.w,
+        height: 50.w,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey, width: 0.5),
+          borderRadius: BorderRadius.circular(3.w),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      status ? "Khoáng" : "Cân ký",
+                      style: PrimaryFont.bodyTextBold().copyWith(
+                          color: status ? Colors.orange : Colors.green),
                     ),
-                    child: controller.isChecked(collectionId)
-                        ? Icon(Icons.check, color: Colors.white, size: 3.w)
-                        : null,
+                    Icon(
+                      HugeIcons.strokeRoundedDeliveryTruck02,
+                      color: status ? Colors.orange : Colors.green,
+                      size: 10.w,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 3.w,
+                ),
+                Text(
+                  collectionId,
+                  style: PrimaryFont.titleTextBold(),
+                ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () => controller.toggleCheck(collectionId),
+                  child: Obx(
+                    () => Container(
+                      width: 5.w,
+                      height: 5.w,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(1.w),
+                        color: controller.isChecked(collectionId)
+                            ? Colors.red
+                            : Colors.white,
+                      ),
+                      child: controller.isChecked(collectionId)
+                          ? Icon(Icons.check, color: Colors.white, size: 3.w)
+                          : null,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          _ItemInfoScheduleCollection(
-            title: "Tên công ty:",
-            subTitle: nameBusiness,
-          ),
-          _ItemInfoScheduleCollection(
-            title: "Khu vực vận chuyển:",
-            subTitle: areaTransit,
-          ),
-          _ItemInfoScheduleCollection(
-            title: "Loại hàng:",
-            subTitle: typeWaste,
-          ),
-          _ItemInfoScheduleCollection(
-            title: "Người liên hệ:",
-            subTitle: contactPerson,
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: timeCollection.contains("Chưa thu gom")
-                ? Container(
-                    width: 35.w,
-                    height: 10.w,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(20.w),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          offset: const Offset(2, 2),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        timeCollection,
-                        style: PrimaryFont.titleTextBold()
-                            .copyWith(color: Colors.white),
+              ],
+            ),
+            _ItemInfoScheduleCollection(
+              title: "Tên công ty:",
+              subTitle: nameBusiness,
+            ),
+            _ItemInfoScheduleCollection(
+              title: "Khu vực vận chuyển:",
+              subTitle: areaTransit,
+            ),
+            _ItemInfoScheduleCollection(
+              title: "Loại hàng:",
+              subTitle: typeWaste,
+            ),
+            _ItemInfoScheduleCollection(
+              title: "Người liên hệ:",
+              subTitle: contactPerson,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: timeCollection.contains("Chưa thu gom")
+                  ? Container(
+                      width: 35.w,
+                      height: 10.w,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(20.w),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            offset: const Offset(2, 2),
+                          ),
+                        ],
                       ),
+                      child: Center(
+                        child: Text(
+                          timeCollection,
+                          style: PrimaryFont.titleTextBold()
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
+                    )
+                  : Text(
+                      timeCollection,
+                      style: PrimaryFont.titleTextBold()
+                          .copyWith(color: Colors.blue),
                     ),
-                  )
-                : Text(
-                    timeCollection,
-                    style: PrimaryFont.titleTextBold()
-                        .copyWith(color: Colors.blue),
-                  ),
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
