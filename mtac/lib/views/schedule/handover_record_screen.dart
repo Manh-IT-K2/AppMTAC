@@ -226,11 +226,13 @@ class _BottomHandoverRecordSceen extends StatelessWidget {
         Center(
           child: ElevatedButton(
             onPressed: () {
-              NotifySuccessDialog().showNotifyPopup("Gửi biên bản thành công",
+              if(imageController.selectedImages.isNotEmpty){
+                NotifySuccessDialog().showNotifyPopup("Gửi biên bản thành công",
                   () {
                 Navigator.pop(context);
                 Get.offAllNamed(AppRoutes.MAIN);
               });
+              }
             },
             style: ElevatedButton.styleFrom(
                 backgroundColor: kPrimaryColor,

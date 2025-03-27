@@ -26,4 +26,33 @@ class ScheduleController extends GetxController {
   void onPageChanged(int index) {
     selectedTitle.value = items[index];
   }
+
+  // schedule collection driver
+  var selectedTitleDriver = "Hôm nay".obs;
+  final List<String> itemScheduleCollectionDriver = ["Hôm nay", "Đã gom", "Chưa gom"];
+
+  // function chose item
+  void selectItemScheduleDriver(String title) {
+    int index = itemScheduleCollectionDriver.indexOf(title);
+    if (index != -1) {
+      selectedTitleDriver.value = title;
+      pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  // Update status on swipe
+  void onPageChangedScheduleDriver(int index) {
+    selectedTitleDriver.value = itemScheduleCollectionDriver[index];
+  }
+
+  // initial varible schedule collection driver
+  var isChecked = false.obs;
+  void toggleCheck(){
+    isChecked.value = !isChecked.value;
+  }
+  
 }
