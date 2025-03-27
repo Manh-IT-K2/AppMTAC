@@ -1,5 +1,5 @@
 class ScheduleCollectionTodayModel {
-  final String status;
+  final bool status;
   final String collectionId;
   final String nameBusiness;
   final String addressColection;
