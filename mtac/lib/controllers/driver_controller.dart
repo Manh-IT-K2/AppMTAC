@@ -45,7 +45,7 @@ class DriverController extends GetxController {
         day.year == currentDate.value.year);
 
     if (todayIndex != -1) {
-      double itemWidth = 13.w + 0.7;
+      double itemWidth = 13.w + 0.6;
       double screenWidth = 100.w;
       double scrollOffset =
           (todayIndex * itemWidth) - (screenWidth / 2) + (itemWidth / 2);
@@ -110,20 +110,16 @@ class DriverController extends GetxController {
   }
 
   // delete from collectionId
+  // Hàm xóa các mục đã chọn
   void deleteSelectedItems() {
-    // Tạo danh sách mới để cập nhật UI
-    var newList = itemCollectionTodayDatas
-        .where(
-          (item) => !checkedItems.contains(item.collectionId),
-        )
-        .toList();
-    // Gán lại danh sách mới để cập nhật UI
-    itemCollectionTodayDatas.clear();
-    itemCollectionTodayDatas.addAll(newList);
-    // Xoá danh sách các mục đã chọn
+    // Cập nhật danh sách gốc (allItems)
+    allItems.removeWhere((item) => checkedItems.contains(item.collectionId));
+
+    // Cập nhật danh sách hiển thị sau khi xóa
+    filterData();
+
+    // Xóa danh sách mục đã chọn
     checkedItems.clear();
-    // Ép UI cập nhật
-    update();
   }
 
   // chose all
@@ -139,7 +135,7 @@ class DriverController extends GetxController {
     return checkedItems.length == allCollectionIds.length;
   }
 
-  // 🔥memory leak
+  // depose
   @override
   void onClose() {
     pageControllerDriver.dispose();
@@ -147,33 +143,78 @@ class DriverController extends GetxController {
   }
 
   // filter
-  // Danh sách gốc
+  // list original
   final List<ScheduleCollectionTodayModel> allItems = itemCollectionTodayDatas;
+  var isLoading = false.obs;
+  // status filter current
+  var selectedFilter = "null".obs;
 
-  // Trạng thái lọc hiện tại
-  var selectedFilter = "Tất cả".obs;
-
-  // Danh sách đã lọc
+  // list filtered
   var filteredItems = <ScheduleCollectionTodayModel>[].obs;
 
-  // Hàm lọc dữ liệu theo trạng thái
-  void filterData() {
-    switch (selectedFilter.value) {
-      case "Khoáng":
-        filteredItems.value = allItems.where((item) => item.status == true).toList();
-        break;
-      case "Cân ký":
-        filteredItems.value = allItems.where((item) => item.status == false).toList();
-        break;
-      case "Chưa thu gom":
-        filteredItems.value = allItems.where((item) => item.timeCollection.contains("Chưa thu gom")).toList();
-        break;
-      default:
-        filteredItems.value = List.from(allItems); // Hiển thị tất cả nếu không có bộ lọc
+  // function filter by status
+  void filterData() async {
+    // start
+    isLoading.value = true;
+    await Future.delayed(const Duration(milliseconds: 1000));
+    List<ScheduleCollectionTodayModel> tempList = List.from(allItems);
+
+    // filter by status "Đã gom" or "Chưa gom"
+    if (selectedTitleDriver.value == "Đã gom") {
+      tempList = tempList
+          .where((item) => !item.timeCollection.contains("Chưa thu gom"))
+          .toList();
+    } else if (selectedTitleDriver.value == "Chưa gom") {
+      tempList = tempList
+          .where((item) => item.timeCollection.contains("Chưa thu gom"))
+          .toList();
     }
+
+    // filter by status "Khoáng" hoặc "Cân ký" of Today
+    if (selectedFilter.value == "Khoáng") {
+      tempList = tempList.where((item) => item.status == true).toList();
+    } else if (selectedFilter.value == "Cân ký") {
+      tempList = tempList.where((item) => item.status == false).toList();
+    }
+
+    // filter by status "Khoáng" hoặc "Cân ký" of "Đã gom" or "Chưa gom"
+    if (selectedFilter.value == "Khoáng" &&
+        selectedTitleDriver.value == "Đã gom") {
+      tempList = tempList
+          .where((item) =>
+              item.status == true &&
+              !item.timeCollection.contains("Chưa thu gom"))
+          .toList();
+    } else if (selectedFilter.value == "Cân ký" &&
+        selectedTitleDriver.value == "Đã gom") {
+      tempList = tempList
+          .where((item) =>
+              item.status == false &&
+              !item.timeCollection.contains("Chưa thu gom"))
+          .toList();
+    } else if (selectedFilter.value == "Cân ký" &&
+        selectedTitleDriver.value == "Chưa gom") {
+      tempList = tempList
+          .where((item) =>
+              item.status == false &&
+              item.timeCollection.contains("Chưa thu gom"))
+          .toList();
+    } else if (selectedFilter.value == "Khoáng" &&
+        selectedTitleDriver.value == "Chưa gom") {
+      tempList = tempList
+          .where((item) =>
+              item.status == true &&
+              item.timeCollection.contains("Chưa thu gom"))
+          .toList();
+    }
+
+    // update list filtered
+    filteredItems.value = tempList;
+    // end
+    isLoading.value = false;
   }
 
-  // Cập nhật bộ lọc khi chọn từ popup
+  // update filter
   void updateFilter(String filter) {
     selectedFilter.value = filter;
     filterData();

@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mtac/controllers/driver_controller.dart';
-import 'package:mtac/data/driver_screen/item_schedule_collection_today.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
 class ScheduleCollectionDriverScreen extends StatefulWidget {
-  ScheduleCollectionDriverScreen({super.key});
+  const ScheduleCollectionDriverScreen({super.key});
 
   @override
   State<ScheduleCollectionDriverScreen> createState() =>
@@ -37,8 +36,9 @@ class _ScheduleCollectionDriverScreenState
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        margin: const EdgeInsets.only(bottom: 26.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -87,7 +87,7 @@ class _ScheduleCollectionDriverScreenState
                           children: [
                             GestureDetector(
                               onTap: () => controller.toggleSelectAll(
-                                itemCollectionTodayDatas
+                                controller.filteredItems
                                     .map((e) => e.collectionId)
                                     .toList(),
                               ),
@@ -99,7 +99,7 @@ class _ScheduleCollectionDriverScreenState
                                       color: Colors.black, width: 0.5),
                                   borderRadius: BorderRadius.circular(1.w),
                                   color: controller.isAllSelected(
-                                    itemCollectionTodayDatas
+                                    controller.filteredItems
                                         .map((e) => e.collectionId)
                                         .toList(),
                                   )
@@ -107,7 +107,7 @@ class _ScheduleCollectionDriverScreenState
                                       : Colors.white,
                                 ),
                                 child: controller.isAllSelected(
-                                  itemCollectionTodayDatas
+                                  controller.filteredItems
                                       .map((e) => e.collectionId)
                                       .toList(),
                                 )
@@ -148,13 +148,11 @@ class _ScheduleCollectionDriverScreenState
                 PopupMenuButton<String>(
                   color: Colors.white,
                   onSelected: (String value) {
-                   
                     controller.updateFilter(value);
                   },
                   itemBuilder: (BuildContext context) => [
                     const PopupMenuItem(value: "Khoáng", child: Text("Khoáng")),
                     const PopupMenuItem(value: "Cân ký", child: Text("Cân ký")),
-                    const PopupMenuItem(value: "Chưa thu gom", child: Text("Chưa thu gom")),
                   ],
                   child: Row(
                     children: [
@@ -177,24 +175,27 @@ class _ScheduleCollectionDriverScreenState
                 children: controller.itemScheduleCollectionDriver.map(
                   (title) {
                     return Obx(
-  () => ListView.builder(
-    itemCount: controller.filteredItems.length, // Được cập nhật tự động
-    itemBuilder: (context, index) {
-      final data = controller.filteredItems[index];
-      return _ItemMainScheduleCollection(
-        controller: controller,
-        collectionId: data.collectionId,
-        nameBusiness: data.nameBusiness,
-        areaTransit: data.areaTransit,
-        typeWaste: data.typeWaste,
-        contactPerson: data.contactPerson,
-        timeCollection: data.timeCollection,
-        status: data.status,
-      );
-    },
-  ),
-);
-
+                      () { 
+                        if(controller.isLoading.value){
+                          return Center(child: const CircularProgressIndicator());
+                        }
+                        return ListView.builder(
+                        itemCount: controller.filteredItems.length,
+                        itemBuilder: (context, index) {
+                          final data = controller.filteredItems[index];
+                          return _ItemMainScheduleCollection(
+                            controller: controller,
+                            collectionId: data.collectionId,
+                            nameBusiness: data.nameBusiness,
+                            areaTransit: data.areaTransit,
+                            typeWaste: data.typeWaste,
+                            contactPerson: data.contactPerson,
+                            timeCollection: data.timeCollection,
+                            status: data.status,
+                          );
+                        },
+                      );}
+                    );
                   },
                 ).toList(),
               ),
@@ -207,8 +208,7 @@ class _ScheduleCollectionDriverScreenState
 }
 
 class _ItemMainScheduleCollection extends StatelessWidget {
-  _ItemMainScheduleCollection({
-    super.key,
+  const _ItemMainScheduleCollection({
     required this.controller,
     required this.collectionId,
     required this.nameBusiness,
@@ -342,7 +342,6 @@ class _ItemMainScheduleCollection extends StatelessWidget {
 
 class _ItemInfoScheduleCollection extends StatelessWidget {
   const _ItemInfoScheduleCollection({
-    super.key,
     required this.title,
     required this.subTitle,
   });
@@ -371,12 +370,15 @@ class _ItemListCollection extends StatelessWidget {
   final String title;
   final DriverController controller = Get.find<DriverController>();
 
-  _ItemListCollection({super.key, required this.title});
+  _ItemListCollection({required this.title});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => controller.selectItemScheduleDriver(title),
+      onTap: () {
+        controller.selectItemScheduleDriver(title);
+        controller.updateFilter(title);
+      },
       child: Obx(
         () {
           bool isSelected = controller.selectedTitleDriver.value == title;
