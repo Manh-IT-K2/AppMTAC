@@ -7,5 +7,6 @@ class AppRoutes {
   static const HANDOVERRECORD = "/handoverRecord";
   static const DRIVER = "/driver";
   static const SCHEDULECOLLECTIONDRIVER = "/scheduleCollectionDriver";
+  static const DETAILSCHEDULECOLLECTIONDRIVER = "/detailScheduleCollectionDriver";
   
 }
