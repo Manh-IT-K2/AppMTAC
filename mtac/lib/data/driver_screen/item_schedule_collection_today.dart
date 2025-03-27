@@ -34,7 +34,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     areaTransit: 'Điện Ngọc (Quảng Nam) => Mỹ Tho (Tiền Giang)', 
     numberPlate: '50H-04282', 
     numberWorker: '2', 
-    timeCollection: '12:18 AM', 
+    timeCollection: 'Chưa thu gom', 
     contactPerson: 'Nguyễn Thị Thuỷ',
   ),
   ScheduleCollectionTodayModel(
@@ -58,7 +58,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     areaTransit: 'Bình Tân (TP.HCM) => Thủ Đức (TP.HCM)', 
     numberPlate: '51D-57412', 
     numberWorker: '1', 
-    timeCollection: '11:15 AM', 
+    timeCollection: 'Chưa thu gom', 
     contactPerson: 'Kim Tuyến',
   ),
   ScheduleCollectionTodayModel(
@@ -82,7 +82,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     areaTransit: 'Thủ Đức (TP.HCM) => Quận 12 (TP.HCM)', 
     numberPlate: '50H-11676', 
     numberWorker: '2', 
-    timeCollection: 'Chưa thu gom', 
+    timeCollection: '12:00', 
     contactPerson: 'Yến',
   ),
 ];
