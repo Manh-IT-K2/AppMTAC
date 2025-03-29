@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
@@ -89,7 +90,9 @@ class DetailScheduleCollectionDriverScreen extends StatelessWidget {
                       title2: "Trạng thái công nợ",
                       subTitle2: "Chưa nghiệm thu",
                     ),
-                    SizedBox(height: 10,)
+                    SizedBox(
+                      height: 10,
+                    )
                   ],
                 ),
               ),
@@ -101,25 +104,62 @@ class DetailScheduleCollectionDriverScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 margin: EdgeInsets.only(top: 3.w),
                 width: 100.w,
-                height: 30.h,
+                height: 50.h,
                 decoration: BoxDecoration(
                   color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(5.w),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      "ID",
-                      style: PrimaryFont.bodyTextMedium(),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 3.w),
+                      width: 30.w,
+                      height: 10.w,
+                      decoration: BoxDecoration(
+                          color: kPrimaryColor,
+                          borderRadius: BorderRadius.circular(3.w),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              offset: const Offset(2, 2),
+                            ),
+                          ]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 5.w,
+                          ),
+                          Text(
+                            "Thêm chi phí",
+                            style: PrimaryFont.bodyTextBold()
+                                .copyWith(color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
-                    Text(
-                      "121313",
-                      style: PrimaryFont.titleTextBold(),
+                    const Divider(),
+                    SizedBox(
+                      height: 3.w,
                     ),
-                    Text(
-                      "HẠNG MỤC",
-                      style: PrimaryFont.bodyTextMedium(),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 5.w,
+                            ),
+                            _ItemListCost(),
+                            _ItemListCost(),
+                            _ItemListCost(),
+                            _ItemListCost(),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -132,37 +172,154 @@ class DetailScheduleCollectionDriverScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 margin: EdgeInsets.only(top: 3.w),
                 width: 100.w,
-                height: 30.h,
+                height: 40.h,
                 decoration: BoxDecoration(
                   color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(5.w),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Tên công ty",
-                      style: PrimaryFont.bodyTextMedium(),
-                    ),
-                    Text(
-                      "name",
-                      style: PrimaryFont.titleTextBold(),
-                    ),
-                    Text(
-                      "Ngày thu gom",
-                      style: PrimaryFont.bodyTextMedium(),
-                    ),
-                    Text(
-                      "day",
-                      style: PrimaryFont.titleTextBold(),
-                    ),
-                  ],
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        height: 5.w,
+                      ),
+                      _ItemListCost(),
+                      _ItemListCost(),
+                      _ItemListCost(),
+                      _ItemListCost(),
+                    ],
+                  ),
                 ),
               ),
+              SizedBox(
+                        height: 5.w,
+                      ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ItemListCost extends StatelessWidget {
+  const _ItemListCost({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          width: 100.w,
+          margin: EdgeInsets.only(bottom: 5.w),
+          padding: EdgeInsets.all(5.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: kPrimaryColor.withOpacity(0.2), width: 1),
+            borderRadius: BorderRadius.circular(3.w),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "Hạng mục: ",
+                    style: PrimaryFont.bodyTextMedium(),
+                  ),
+                  Text(
+                    "Thuê nhân công",
+                    style: PrimaryFont.bodyTextBold(),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Đơn giá: ",
+                    style: PrimaryFont.bodyTextMedium(),
+                  ),
+                  Text(
+                    "280,000,00",
+                    style: PrimaryFont.bodyTextBold(),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Số lượng: ",
+                    style: PrimaryFont.bodyTextMedium(),
+                  ),
+                  Text(
+                    "2,00",
+                    style: PrimaryFont.bodyTextBold(),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Thành tiền: ",
+                    style: PrimaryFont.bodyTextMedium(),
+                  ),
+                  Text(
+                    "560,000,00",
+                    style: PrimaryFont.bodyTextBold(),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Ghi chú: ",
+                    style: PrimaryFont.bodyTextMedium(),
+                  ),
+                  Text(
+                    "Đi chung CN với Bibica",
+                    style: PrimaryFont.bodyTextBold(),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Trạng thái: ",
+                    style: PrimaryFont.bodyTextMedium(),
+                  ),
+                  Text(
+                    "Chưa nghiệm thu",
+                    style:
+                        PrimaryFont.bodyTextBold().copyWith(color: Colors.red),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: -10,
+          left: 10,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.green,
+              border:
+                  Border.all(color: kPrimaryColor.withOpacity(0.2), width: 1),
+              borderRadius: BorderRadius.circular(3.w),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+            child: Text(
+              "121313",
+              style: PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -225,7 +382,6 @@ class _ItemRowInforDetail extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10),
       width: 100.w,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 3.w),
@@ -257,6 +413,7 @@ class _ItemRowInforDetail extends StatelessWidget {
               ],
             ),
           ),
+          const Spacer(),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 3.w),
             width: 42.w,
