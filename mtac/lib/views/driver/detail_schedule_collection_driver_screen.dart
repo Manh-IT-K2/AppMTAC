@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mtac/data/schedule_screen/item_cost_collection.dart';
+import 'package:mtac/data/schedule_screen/item_merchandise_collection.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
@@ -146,20 +148,19 @@ class DetailScheduleCollectionDriverScreen extends StatelessWidget {
                       height: 3.w,
                     ),
                     Expanded(
-                      child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 5.w,
-                            ),
-                            _ItemListCost(),
-                            _ItemListCost(),
-                            _ItemListCost(),
-                            _ItemListCost(),
-                          ],
-                        ),
-                      ),
+                      child: ListView.builder(
+                          itemCount: listCostData.length,
+                          itemBuilder: (context, index) {
+                            final data = listCostData[index];
+                            return _ItemListCost(
+                                id: data.id,
+                                category: data.category,
+                                cost: data.cost,
+                                quantity: data.quantity,
+                                totalMoney: data.totalMoney,
+                                note: data.note,
+                                status: data.status);
+                          }),
                     ),
                   ],
                 ),
@@ -177,25 +178,24 @@ class DetailScheduleCollectionDriverScreen extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(5.w),
                 ),
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SizedBox(
-                        height: 5.w,
-                      ),
-                      _ItemListCost(),
-                      _ItemListCost(),
-                      _ItemListCost(),
-                      _ItemListCost(),
-                    ],
-                  ),
+                child: Expanded(
+                  child: ListView.builder(
+                      itemCount: listMerchandiseData.length,
+                      itemBuilder: (context, index) {
+                        final data = listMerchandiseData[index];
+                        return _ItemMerchandise(
+                            id: data.id,
+                            nameGoods: data.nameGoods,
+                            idGoods: data.idGoods,
+                            totalWeight: data.totalWeight,
+                            warehouse: data.warehouse,
+                            processingOwner: data.processingOwner);
+                      }),
                 ),
               ),
               SizedBox(
-                        height: 5.w,
-                      ),
+                height: 5.w,
+              ),
             ],
           ),
         ),
@@ -207,8 +207,16 @@ class DetailScheduleCollectionDriverScreen extends StatelessWidget {
 class _ItemListCost extends StatelessWidget {
   const _ItemListCost({
     super.key,
+    required this.id,
+    required this.category,
+    required this.cost,
+    required this.quantity,
+    required this.totalMoney,
+    required this.note,
+    required this.status,
   });
 
+  final String id, category, cost, quantity, totalMoney, note, status;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -226,78 +234,29 @@ class _ItemListCost extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    "Hạng mục: ",
-                    style: PrimaryFont.bodyTextMedium(),
-                  ),
-                  Text(
-                    "Thuê nhân công",
-                    style: PrimaryFont.bodyTextBold(),
-                  ),
-                ],
+              _ItemTable(
+                title: "Hạng mục: ",
+                subTitle: category,
               ),
-              Row(
-                children: [
-                  Text(
-                    "Đơn giá: ",
-                    style: PrimaryFont.bodyTextMedium(),
-                  ),
-                  Text(
-                    "280,000,00",
-                    style: PrimaryFont.bodyTextBold(),
-                  ),
-                ],
+              _ItemTable(
+                title: "Đơn giá: ",
+                subTitle: cost,
               ),
-              Row(
-                children: [
-                  Text(
-                    "Số lượng: ",
-                    style: PrimaryFont.bodyTextMedium(),
-                  ),
-                  Text(
-                    "2,00",
-                    style: PrimaryFont.bodyTextBold(),
-                  ),
-                ],
+              _ItemTable(
+                title: "Số Lượng",
+                subTitle: quantity,
               ),
-              Row(
-                children: [
-                  Text(
-                    "Thành tiền: ",
-                    style: PrimaryFont.bodyTextMedium(),
-                  ),
-                  Text(
-                    "560,000,00",
-                    style: PrimaryFont.bodyTextBold(),
-                  ),
-                ],
+              _ItemTable(
+                title: "Thành tiền: ",
+                subTitle: totalMoney,
               ),
-              Row(
-                children: [
-                  Text(
-                    "Ghi chú: ",
-                    style: PrimaryFont.bodyTextMedium(),
-                  ),
-                  Text(
-                    "Đi chung CN với Bibica",
-                    style: PrimaryFont.bodyTextBold(),
-                  ),
-                ],
+              _ItemTable(
+                title: "Ghi chú: ",
+                subTitle: note,
               ),
-              Row(
-                children: [
-                  Text(
-                    "Trạng thái: ",
-                    style: PrimaryFont.bodyTextMedium(),
-                  ),
-                  Text(
-                    "Chưa nghiệm thu",
-                    style:
-                        PrimaryFont.bodyTextBold().copyWith(color: Colors.red),
-                  ),
-                ],
+              _ItemTable(
+                title: "Trạng thái: ",
+                subTitle: status,
               ),
             ],
           ),
@@ -314,9 +273,115 @@ class _ItemListCost extends StatelessWidget {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
             child: Text(
-              "121313",
+              id,
               style: PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
             ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ItemMerchandise extends StatelessWidget {
+  const _ItemMerchandise({
+    super.key,
+    required this.id,
+    required this.nameGoods,
+    required this.idGoods,
+    required this.totalWeight,
+    required this.warehouse,
+    required this.processingOwner,
+  });
+
+  final String id, nameGoods, idGoods, totalWeight, warehouse, processingOwner;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          width: 100.w,
+          margin: EdgeInsets.only(bottom: 5.w),
+          padding: EdgeInsets.all(5.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: kPrimaryColor.withOpacity(0.2), width: 1),
+            borderRadius: BorderRadius.circular(3.w),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _ItemTable(
+                title: "Tên hàng hoá: ",
+                subTitle: nameGoods,
+              ),
+              _ItemTable(
+                title: "Mã hàng hoá: ",
+                subTitle: idGoods,
+                color: Colors.red,
+              ),
+              _ItemTable(
+                title: "KL Gom - Kg: ",
+                subTitle: totalWeight,
+              ),
+              _ItemTable(
+                title: "Kho nhập: ",
+                subTitle: warehouse,
+              ),
+              _ItemTable(
+                title: "Chờ xử lý: ",
+                subTitle: processingOwner,
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: -10,
+          left: 10,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.green,
+              border:
+                  Border.all(color: kPrimaryColor.withOpacity(0.2), width: 1),
+              borderRadius: BorderRadius.circular(3.w),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+            child: Text(
+              id,
+              style: PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ItemTable extends StatelessWidget {
+  const _ItemTable({
+    super.key,
+    required this.title,
+    required this.subTitle,
+    this.color,
+  });
+
+  final String title, subTitle;
+  final Color? color;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          title,
+          style: PrimaryFont.bodyTextMedium(),
+        ),
+        Expanded(
+          child: Text(
+            subTitle,
+            style: PrimaryFont.bodyTextBold().copyWith(color: color),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],
