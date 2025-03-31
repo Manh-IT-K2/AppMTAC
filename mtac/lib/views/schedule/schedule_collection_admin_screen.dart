@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/constants/text.dart';
 import 'package:mtac/data/schedule_screen/item_trip_collection.dart';
-import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
@@ -51,9 +50,7 @@ class ScheduleCollectionAdminScreen extends StatelessWidget {
 }
 
 class _BodyScheduleCollectionAdminScreen extends StatelessWidget {
-  const _BodyScheduleCollectionAdminScreen({
-    super.key,
-  });
+  const _BodyScheduleCollectionAdminScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +77,7 @@ class _BodyScheduleCollectionAdminScreen extends StatelessWidget {
 }
 
 class _HeaderScheduleCollectionAdminScreen extends StatelessWidget {
-  const _HeaderScheduleCollectionAdminScreen({
-    super.key,
-  });
+  const _HeaderScheduleCollectionAdminScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +109,6 @@ class _HeaderScheduleCollectionAdminScreen extends StatelessWidget {
 
 class _ItemTripCollection extends StatelessWidget {
   const _ItemTripCollection({
-    super.key,
     required this.txtCode,
     required this.txtGlandHead,
     required this.txtGlandEnd,

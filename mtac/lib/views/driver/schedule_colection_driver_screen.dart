@@ -15,6 +15,7 @@ class ScheduleColectionDriverScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     // Get day ToDay
     DateTime now = DateTime.now();
     String day = now.day.toString().padLeft(2, '0');
