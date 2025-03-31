@@ -11,6 +11,20 @@ class DetailScheduleCollectionDriverScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //
+    final Map<String, dynamic> arguments = Get.arguments ?? {};
+    final String daySendCollection = arguments["daySendCollection"] ?? "";
+    final String nameBusiness = arguments["nameBusiness"] ?? "";
+    final String areaTransit = arguments["areaTransit"] ?? "";
+    final String typeWaste = arguments["typeWaste"] ?? "";
+    final String contactPerson = arguments["contactPerson"] ?? "";
+    final String timeCollection = arguments["timeCollection"] ?? "";
+    final String numberPlate = arguments["numberPlate"] ?? "";
+    final String addressCollection = arguments["addressCollection"] ?? "";
+    final String debtStatus = arguments["debtStatus"] ?? "";
+    final String dayCollection = arguments["dayCollection"] ?? "";
+    final String costTransit = arguments["costTransit"] ?? "";
+    final List<String>? imageList = arguments["image"] as List<String>? ?? [];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -48,51 +62,51 @@ class DetailScheduleCollectionDriverScreen extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(5.w),
                 ),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _ItemInforDetail(
                       title: "Tên công ty",
-                      subTitle: "Công ty TNHH Active Creation",
+                      subTitle: nameBusiness,
                     ),
                     _ItemRowInforDetail(
                       title1: "Ngày thu gom",
-                      subTitle1: "06-01-2025",
+                      subTitle1: dayCollection,
                       title2: "Biển số xe",
-                      subTitle2: "50H-04282",
+                      subTitle2: numberPlate,
                     ),
                     _ItemInforDetail(
                       title: "Địa chỉ thu gom",
                       subTitle:
-                          "359A, Ấp Long Bình, Xã Long Hiệp, Huyện Biên Lức, Tỉnh Long An",
+                          addressCollection,
                     ),
                     _ItemRowInforDetail(
                       title1: "Thời gian thu gom",
-                      subTitle1: "null",
+                      subTitle1: timeCollection,
                       title2: "Loại hàng",
-                      subTitle2: "Chất thải nguy hại",
+                      subTitle2: typeWaste,
                     ),
                     _ItemInforDetail(
                       title: "Khu vực vận chuyển",
-                      subTitle: "Thủ Thừa(Long An) => Bình Tân(TP.HCM)",
+                      subTitle: areaTransit,
                     ),
                     _ItemRowInforDetail(
                       title1: "Ngày gửi lịch gom",
-                      subTitle1: "05-01-2025",
+                      subTitle1: daySendCollection,
                       title2: "Đơn giá vận chuyển",
-                      subTitle2: "2,400,000,00",
+                      subTitle2: costTransit,
                     ),
-                    _ItemInforDetail(
+                    const _ItemInforDetail(
                       title: "Số lượng nhân công",
                       subTitle: "Nguyễn Văn A, Lê Văn B",
                     ),
                     _ItemRowInforDetail(
                       title1: "Thông tin người liên hệ",
-                      subTitle1: "Chị Giao",
+                      subTitle1: contactPerson,
                       title2: "Trạng thái công nợ",
-                      subTitle2: "Chưa nghiệm thu",
+                      subTitle2: debtStatus,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     )
                   ],
@@ -149,18 +163,22 @@ class DetailScheduleCollectionDriverScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: ListView.builder(
-                          itemCount: listCostData.length,
-                          itemBuilder: (context, index) {
-                            final data = listCostData[index];
-                            return _ItemListCost(
+                        itemCount: listCostData.length,
+                        itemBuilder: (context, index) {
+                          final data = listCostData[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: _ItemListCost(
                                 id: data.id,
                                 category: data.category,
                                 cost: data.cost,
                                 quantity: data.quantity,
                                 totalMoney: data.totalMoney,
                                 note: data.note,
-                                status: data.status);
-                          }),
+                                status: data.status),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -178,23 +196,53 @@ class DetailScheduleCollectionDriverScreen extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(5.w),
                 ),
-                child: Expanded(
-                  child: ListView.builder(
-                      itemCount: listMerchandiseData.length,
-                      itemBuilder: (context, index) {
-                        final data = listMerchandiseData[index];
-                        return _ItemMerchandise(
-                            id: data.id,
-                            nameGoods: data.nameGoods,
-                            idGoods: data.idGoods,
-                            totalWeight: data.totalWeight,
-                            warehouse: data.warehouse,
-                            processingOwner: data.processingOwner);
-                      }),
+                child: ListView.builder(
+                  itemCount: listMerchandiseData.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    final data = listMerchandiseData[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: _ItemMerchandise(
+                          id: data.id,
+                          nameGoods: data.nameGoods,
+                          idGoods: data.idGoods,
+                          totalWeight: data.totalWeight,
+                          warehouse: data.warehouse,
+                          processingOwner: data.processingOwner),
+                    );
+                  },
                 ),
               ),
               SizedBox(
                 height: 5.w,
+              ),
+              imageList != null
+                  ? Text(
+                      "Hình ảnh thu gom",
+                      style: PrimaryFont.headerTextBold(),
+                    )
+                  : const SizedBox(),
+              imageList != null
+                  ? SizedBox(
+                      width: 100.w,
+                      height: 30.w,
+                      child: ListView.builder(
+                        itemCount: imageList.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(2.w),
+                            child: Image.network(
+                              imageList[index],
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
+                      ))
+                  : const SizedBox(),
+              SizedBox(
+                height: 10.w,
               ),
             ],
           ),
@@ -224,7 +272,7 @@ class _ItemListCost extends StatelessWidget {
       children: [
         Container(
           width: 100.w,
-          margin: EdgeInsets.only(bottom: 5.w),
+          margin: EdgeInsets.only(bottom: 2.w),
           padding: EdgeInsets.all(5.w),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -302,7 +350,7 @@ class _ItemMerchandise extends StatelessWidget {
       children: [
         Container(
           width: 100.w,
-          margin: EdgeInsets.only(bottom: 5.w),
+          margin: EdgeInsets.only(bottom: 2.w),
           padding: EdgeInsets.all(5.w),
           decoration: BoxDecoration(
             color: Colors.white,
