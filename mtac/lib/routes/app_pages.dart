@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 import 'package:mtac/routes/app_routes.dart';
-import 'package:mtac/views/driver/detail_schedule_collection_driver_screen.dart';
+import 'package:mtac/views/schedule/detail_schedule_collection_admin_screen.dart';
 import 'package:mtac/views/driver/driver_screen.dart';
-import 'package:mtac/views/driver/schedule_collection_arranged_screen.dart';
-import 'package:mtac/views/driver/schedule_collection_driver_screen.dart';
+import 'package:mtac/views/schedule/schedule_collection_arranged_admin_screen.dart';
+import 'package:mtac/views/schedule/schedule_collection_today_admin_screen.dart';
 import 'package:mtac/views/main_screen.dart';
-import 'package:mtac/views/schedule/handover_record_screen.dart';
-import 'package:mtac/views/schedule/map_screen.dart';
-import 'package:mtac/views/schedule/schedule_collection_screen.dart';
-import 'package:mtac/views/schedule/schedule_screen.dart';
+import 'package:mtac/views/driver/handover_record_driver_screen.dart';
+import 'package:mtac/views/driver/map_driver_screen.dart';
+import 'package:mtac/views/schedule/schedule_collection_admin_screen.dart';
+import 'package:mtac/views/driver/schedule_colection_driver_screen.dart';
 
 class AppPages {
   static final routes = [
@@ -17,36 +17,36 @@ class AppPages {
       page: () => const MainScreen(),
     ),
     GetPage(
-      name: AppRoutes.SCHEDULECOLLECTION,
-      page: () => const ScheduleCollectionScreen(),
+      name: AppRoutes.HANDOVERRECORDDRIVER,
+      page: () => HandoverRecordDriverScreen(),
     ),
     GetPage(
-      name: AppRoutes.HANDOVERRECORD,
-      page: () => HandoverRecordScreen(),
+      name: AppRoutes.SCHEDULEDRIVER,
+      page: () => ScheduleColectionDriverScreen(),
     ),
     GetPage(
-      name: AppRoutes.SCHEDULE,
-      page: () => ScheduleScreen(),
-    ),
-    GetPage(
-      name: AppRoutes.MAP,
-      page: () => MapScreen(),
+      name: AppRoutes.MAPDRIVER,
+      page: () => MapDriverScreen(),
     ),
     GetPage(
       name: AppRoutes.DRIVER,
       page: () => DriverScreen(),
     ),
     GetPage(
-      name: AppRoutes.SCHEDULECOLLECTIONDRIVER,
-      page: () => const ScheduleCollectionDriverScreen(),
+      name: AppRoutes.SCHEDULECOLLECTIONADMIN,
+      page: () => const ScheduleCollectionAdminScreen(),
     ),
     GetPage(
-      name: AppRoutes.DETAILSCHEDULECOLLECTIONDRIVER,
-      page: () => const DetailScheduleCollectionDriverScreen(),
+      name: AppRoutes.SCHEDULECOLLECTIONTODAYADMIN,
+      page: () => const ScheduleCollectionTodayAdminScreen(),
     ),
     GetPage(
-      name: AppRoutes.SCHEDULECOLLECTIONARRANGED,
-      page: () => const ScheduleCollectionArrangedScreen(),
+      name: AppRoutes.DETAILSCHEDULECOLLECTIONADMIN,
+      page: () => const DetailScheduleCollectionAdminScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.SCHEDULECOLLECTIONARRANGEDADMIN,
+      page: () => const ScheduleCollectionArrangedAdminScreen(),
     ),
   ];
 }

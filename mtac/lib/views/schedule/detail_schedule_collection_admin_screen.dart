@@ -6,8 +6,8 @@ import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
-class DetailScheduleCollectionDriverScreen extends StatelessWidget {
-  const DetailScheduleCollectionDriverScreen({super.key});
+class DetailScheduleCollectionAdminScreen extends StatelessWidget {
+  const DetailScheduleCollectionAdminScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

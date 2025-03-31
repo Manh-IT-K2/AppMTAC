@@ -14,8 +14,8 @@ import 'package:mtac/widgets/schedule_widget/bottom_preview_image_sheet.dart';
 import 'package:sizer/sizer.dart';
 
 // ignore: must_be_immutable
-class HandoverRecordScreen extends StatelessWidget {
-  HandoverRecordScreen({super.key});
+class HandoverRecordDriverScreen extends StatelessWidget {
+  HandoverRecordDriverScreen({super.key});
 
   // Initial _handoverRecordController
   final HandoverRecordController _handoverRecordController =

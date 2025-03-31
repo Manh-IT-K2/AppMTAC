@@ -152,7 +152,7 @@ class _BodyHomeScreen extends StatelessWidget {
           return InkWell(
             onTap: () {
               if (item["text"] == "Sắp lịch") {
-                Get.toNamed(AppRoutes.SCHEDULE);
+                Get.toNamed(AppRoutes.SCHEDULECOLLECTIONTODAYADMIN);
               } else if (item["text"] == "Tài xế"){
                 Get.toNamed(AppRoutes.DRIVER);
               } else if (item["text"] == "Năng lực"){

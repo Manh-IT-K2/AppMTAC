@@ -7,8 +7,8 @@ import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
-class ScheduleCollectionScreen extends StatelessWidget {
-  const ScheduleCollectionScreen({super.key});
+class ScheduleCollectionAdminScreen extends StatelessWidget {
+  const ScheduleCollectionAdminScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +42,16 @@ class ScheduleCollectionScreen extends StatelessWidget {
       ),
       body: const Column(
         children: [
-          _HeaderScheduleCollectionScreen(),
-          _BodyScheduleCollectionScreen(),
+          _HeaderScheduleCollectionAdminScreen(),
+          _BodyScheduleCollectionAdminScreen(),
         ],
       ),
     );
   }
 }
 
-class _BodyScheduleCollectionScreen extends StatelessWidget {
-  const _BodyScheduleCollectionScreen({
+class _BodyScheduleCollectionAdminScreen extends StatelessWidget {
+  const _BodyScheduleCollectionAdminScreen({
     super.key,
   });
 
@@ -70,7 +70,7 @@ class _BodyScheduleCollectionScreen extends StatelessWidget {
             txtDay: trip.txtDay,
             txtPrice: trip.txtPrice,
             onTapSchedule: () {
-              Get.toNamed(AppRoutes.MAP);
+              //Get.toNamed(AppRoutes.MAP);
             },
           );
         },
@@ -79,8 +79,8 @@ class _BodyScheduleCollectionScreen extends StatelessWidget {
   }
 }
 
-class _HeaderScheduleCollectionScreen extends StatelessWidget {
-  const _HeaderScheduleCollectionScreen({
+class _HeaderScheduleCollectionAdminScreen extends StatelessWidget {
+  const _HeaderScheduleCollectionAdminScreen({
     super.key,
   });
 

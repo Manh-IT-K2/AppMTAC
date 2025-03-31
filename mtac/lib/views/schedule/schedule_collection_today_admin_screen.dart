@@ -2,24 +2,23 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:mtac/controllers/driver_controller.dart';
+import 'package:mtac/controllers/schedule_controller.dart';
 import 'package:mtac/routes/app_routes.dart';
-import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
-class ScheduleCollectionArrangedScreen extends StatefulWidget {
-  const ScheduleCollectionArrangedScreen({super.key});
+class ScheduleCollectionTodayAdminScreen extends StatefulWidget {
+  const ScheduleCollectionTodayAdminScreen({super.key});
 
   @override
-  State<ScheduleCollectionArrangedScreen> createState() =>
-      _ScheduleCollectionArrangedScreenState();
+  State<ScheduleCollectionTodayAdminScreen> createState() =>
+      _ScheduleCollectionTodayAdminScreenState();
 }
 
-class _ScheduleCollectionArrangedScreenState
-    extends State<ScheduleCollectionArrangedScreen> {
+class _ScheduleCollectionTodayAdminScreenState
+    extends State<ScheduleCollectionTodayAdminScreen> {
   //
-  final DriverController controller = Get.put(DriverController());
+  final ScheduleController controller = Get.put(ScheduleController());
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class _ScheduleCollectionArrangedScreenState
           children: [
             Text.rich(
               TextSpan(
-                  text: "SP764\n",
+                  text: "Xin chào tài xế!\n",
                   style:
                       PrimaryFont.bodyTextMedium().copyWith(color: Colors.grey),
                   children: [
@@ -63,7 +62,7 @@ class _ScheduleCollectionArrangedScreenState
               width: 100.w,
               alignment: Alignment.center,
               child: Text(
-                "*Lịch Gom Đã Xếp*",
+                "*Lịch thu gom*",
                 style: PrimaryFont.headerTextBold(),
               ),
             ),
@@ -162,49 +161,10 @@ class _ScheduleCollectionArrangedScreenState
                       Icon(HugeIcons.strokeRoundedFilter,
                           color: Colors.black, size: 5.w),
                       SizedBox(width: 1.w),
-                      Text(
-                        "Lọc",
-                        style: PrimaryFont.bodyTextMedium(),
-                      ),
+                      Text("Lọc", style: PrimaryFont.bodyTextMedium()),
                     ],
                   ),
-                ),
-                SizedBox(
-                  width: 3.w,
-                ),
-                Container(
-                  width: 35.w,
-                  height: 10.w,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: kPrimaryColor.withOpacity(0.4),
-                    ),
-                    borderRadius: BorderRadius.circular(10.w),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "March, 2025",
-                        style: PrimaryFont.bodyTextMedium(),
-                      ),
-                      SizedBox(
-                        width: 4.w,
-                      ),
-                      Icon(
-                        Icons.arrow_back_ios,
-                        size: 4.w,
-                        color: Colors.black,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 4.w,
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
-                ),
+                )
               ],
             ),
             SizedBox(
@@ -234,23 +194,23 @@ class _ScheduleCollectionArrangedScreenState
                             timeCollection: data.timeCollection,
                             status: data.status,
                             onTap: () {
-                              // Get.toNamed(
-                              //   AppRoutes.DETAILSCHEDULECOLLECTIONDRIVER,
-                              //   arguments: {
-                              //     "costTransit": data.costTransit,
-                              //     "nameBusiness": data.nameBusiness,
-                              //     "areaTransit": data.areaTransit,
-                              //     "typeWaste": data.typeWaste,
-                              //     "contactPerson": data.contactPerson,
-                              //     "timeCollection": data.timeCollection,
-                              //     "numberPlate": data.numberPlate,
-                              //     "addressCollection": data.addressCollection,
-                              //     "debtStatus": data.debtStatus,
-                              //     "dayCollection": data.dayCollection,
-                              //     "daySendCollection": data.daySendCollection,
-                              //     "image": data.image,
-                              //   },
-                              // );
+                              Get.toNamed(
+                                AppRoutes.DETAILSCHEDULECOLLECTIONADMIN,
+                                arguments: {
+                                  "costTransit": data.costTransit,
+                                  "nameBusiness": data.nameBusiness,
+                                  "areaTransit": data.areaTransit,
+                                  "typeWaste": data.typeWaste,
+                                  "contactPerson": data.contactPerson,
+                                  "timeCollection": data.timeCollection,
+                                  "numberPlate": data.numberPlate,
+                                  "addressCollection": data.addressCollection,
+                                  "debtStatus": data.debtStatus,
+                                  "dayCollection": data.dayCollection,
+                                  "daySendCollection": data.daySendCollection,
+                                  "image": data.image, 
+                                },
+                              );
                             },
                           );
                         },
@@ -287,7 +247,7 @@ class _ItemMainScheduleCollection extends StatelessWidget {
       typeWaste,
       contactPerson,
       timeCollection;
-  final DriverController controller;
+  final ScheduleController controller;
   final Function()? onTap;
 
   @override
@@ -376,7 +336,7 @@ class _ItemMainScheduleCollection extends StatelessWidget {
               subTitle: typeWaste,
             ),
             _ItemInfoScheduleCollection(
-              title: "Tài xế phụ trách: ",
+              title: "Người liên hệ:",
               subTitle: contactPerson,
             ),
             Align(
@@ -403,26 +363,10 @@ class _ItemMainScheduleCollection extends StatelessWidget {
                         ),
                       ),
                     )
-                  : Container(
-                      width: 35.w,
-                      height: 10.w,
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(20.w),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            offset: const Offset(2, 2),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Đã thu gom",
-                          style: PrimaryFont.titleTextBold()
-                              .copyWith(color: Colors.white),
-                        ),
-                      ),
+                  : Text(
+                      timeCollection,
+                      style: PrimaryFont.titleTextBold()
+                          .copyWith(color: Colors.blue),
                     ),
             ),
           ],
@@ -460,7 +404,7 @@ class _ItemInfoScheduleCollection extends StatelessWidget {
 
 class _ItemListCollection extends StatelessWidget {
   final String title;
-  final DriverController controller = Get.find<DriverController>();
+  final ScheduleController controller = Get.find<ScheduleController>();
 
   _ItemListCollection({required this.title});
 
