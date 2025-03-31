@@ -155,6 +155,8 @@ class _BodyHomeScreen extends StatelessWidget {
                 Get.toNamed(AppRoutes.SCHEDULE);
               } else if (item["text"] == "Tài xế"){
                 Get.toNamed(AppRoutes.DRIVER);
+              } else if (item["text"] == "Năng lực"){
+                //Get.toNamed(AppRoutes.SCHEDULECOLLECTIONARRANGED);
               }
               // Get.snackbar(
               //   "Notification",

@@ -271,7 +271,7 @@ class _HeaderDriverScreen extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                Get.toNamed(AppRoutes.SCHEDULECOLLECTIONDRIVER);
+               Get.toNamed(AppRoutes.SCHEDULECOLLECTIONARRANGED);
               },
               child: _UtilDriver(
                 color: Colors.purple.withOpacity(0.2),
