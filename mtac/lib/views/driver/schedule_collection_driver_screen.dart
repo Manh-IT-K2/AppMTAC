@@ -195,7 +195,22 @@ class _ScheduleCollectionDriverScreenState
                             status: data.status,
                             onTap: () {
                               Get.toNamed(
-                                  AppRoutes.DETAILSCHEDULECOLLECTIONDRIVER);
+                                AppRoutes.DETAILSCHEDULECOLLECTIONDRIVER,
+                                arguments: {
+                                  "costTransit": data.costTransit,
+                                  "nameBusiness": data.nameBusiness,
+                                  "areaTransit": data.areaTransit,
+                                  "typeWaste": data.typeWaste,
+                                  "contactPerson": data.contactPerson,
+                                  "timeCollection": data.timeCollection,
+                                  "numberPlate": data.numberPlate,
+                                  "addressCollection": data.addressCollection,
+                                  "debtStatus": data.debtStatus,
+                                  "dayCollection": data.dayCollection,
+                                  "daySendCollection": data.daySendCollection,
+                                  "image": data.image, 
+                                },
+                              );
                             },
                           );
                         },
