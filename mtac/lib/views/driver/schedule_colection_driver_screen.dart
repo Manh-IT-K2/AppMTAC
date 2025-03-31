@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/constants/text.dart';
-import 'package:mtac/controllers/schedule_controller.dart';
+import 'package:mtac/controllers/driver_controller.dart';
 import 'package:mtac/data/schedule_screen/item_trip_work.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
-class ScheduleScreen extends StatelessWidget {
-  ScheduleScreen({super.key});
+class ScheduleColectionDriverScreen extends StatelessWidget {
+  ScheduleColectionDriverScreen({super.key});
 
-  final ScheduleController controller = Get.put(ScheduleController());
+  final DriverController controller = Get.put(DriverController());
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +127,9 @@ class ScheduleScreen extends StatelessWidget {
               child: PageView(
                 controller: controller.pageController,
                 onPageChanged: controller.onPageChanged,
-                children: controller.items.map((title) {
-                  return ListView.builder(
+                children: controller.items.map(
+                  (title) {
+                    return ListView.builder(
                       itemCount: tripWorkData.length,
                       itemBuilder: (context, index) {
                         final data = tripWorkData[index];
@@ -138,8 +139,10 @@ class ScheduleScreen extends StatelessWidget {
                             addressBusiness: data.addressBusiness,
                             day: data.day,
                             status: data.status);
-                      });
-                }).toList(),
+                      },
+                    );
+                  },
+                ).toList(),
               ),
             ),
           ],
@@ -240,7 +243,7 @@ class _ItemTripWork extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Get.toNamed(AppRoutes.SCHEDULECOLLECTION);
+              Get.toNamed(AppRoutes.MAPDRIVER);
             },
             child: Container(
               height: double.infinity,
@@ -284,7 +287,7 @@ class _ItemTripWork extends StatelessWidget {
 
 class _ItemListTrip extends StatelessWidget {
   final String title;
-  final ScheduleController controller = Get.find<ScheduleController>();
+  final DriverController controller = Get.find<DriverController>();
 
   _ItemListTrip({super.key, required this.title});
 

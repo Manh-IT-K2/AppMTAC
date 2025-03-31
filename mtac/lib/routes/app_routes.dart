@@ -1,13 +1,13 @@
 class AppRoutes {
   
   static const MAIN = "/main";
-  static const SCHEDULE = "/schedule";
-  static const MAP = "/map";
-  static const SCHEDULECOLLECTION = "/scheduleCollection";
-  static const HANDOVERRECORD = "/handoverRecord";
+  static const SCHEDULEDRIVER = "/scheduleDriver";
+  static const MAPDRIVER = "/mapDriver";
+  static const HANDOVERRECORDDRIVER = "/handoverRecordDriver";
   static const DRIVER = "/driver";
-  static const SCHEDULECOLLECTIONDRIVER = "/scheduleCollectionDriver";
-  static const SCHEDULECOLLECTIONARRANGED = "/scheduleCollectionArranged";
-  static const DETAILSCHEDULECOLLECTIONDRIVER = "/detailScheduleCollectionDriver";
+  static const SCHEDULECOLLECTIONADMIN = "/scheduleCollectionAdmin";
+  static const SCHEDULECOLLECTIONTODAYADMIN = "/scheduleCollectionTodayAdmin";
+  static const SCHEDULECOLLECTIONARRANGEDADMIN = "/scheduleCollectionArrangedAdmin";
+  static const DETAILSCHEDULECOLLECTIONADMIN = "/detailScheduleCollectionAdmin";
   
 }

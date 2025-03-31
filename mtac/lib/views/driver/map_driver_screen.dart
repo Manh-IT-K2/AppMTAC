@@ -10,8 +10,8 @@ import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
-class MapScreen extends StatelessWidget {
-  MapScreen({super.key});
+class MapDriverScreen extends StatelessWidget {
+  MapDriverScreen({super.key});
 
   final MapController controller = Get.put(MapController());
   @override
@@ -391,7 +391,7 @@ class _ItemDestination extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.toNamed(AppRoutes.HANDOVERRECORD);
+                Get.toNamed(AppRoutes.HANDOVERRECORDDRIVER);
               },
               child: Text(
                 txtWriteRecordM,
