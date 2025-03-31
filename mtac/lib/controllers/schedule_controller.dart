@@ -169,4 +169,26 @@ class ScheduleController extends GetxController {
     selectedFilter.value = filter;
     filterData();
   }
+
+  //
+  var isMenuOpen = false.obs;
+  Offset dragStart = Offset.zero;
+
+  void toggleMenu() {
+  
+      isMenuOpen.value = !isMenuOpen.value;
+    
+  }
+
+  void onDragStart(DragStartDetails details) {
+    dragStart = details.globalPosition;
+  }
+
+  void onDragUpdate(DragUpdateDetails details) {
+    double dragDistance = details.globalPosition.dx - dragStart.dx;
+
+    if (isMenuOpen.value && dragDistance > 50) {
+      toggleMenu();
+    }
+  }
 }
