@@ -7,6 +7,7 @@ class ScheduleController extends GetxController {
 
    // schedule collection driver
   var pageControllerDriver = PageController();
+  var pageControllerDriver1 = PageController();
   var selectedTitleDriver = "Hôm nay".obs;
   // initial variable schedule collection driver
   var checkedItems = <String>[].obs;
@@ -28,6 +29,8 @@ class ScheduleController extends GetxController {
   @override
   void onClose() {
     pageControllerDriver.dispose();
+    pageControllerDriver1.dispose();
+
     super.onClose();
   }
 

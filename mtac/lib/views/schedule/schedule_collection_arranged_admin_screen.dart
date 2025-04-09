@@ -211,7 +211,7 @@ class _ScheduleCollectionArrangedAdminScreenState
             ),
             Expanded(
               child: PageView(
-                controller: controller.pageControllerDriver,
+                controller: controller.pageControllerDriver1,
                 onPageChanged: controller.onPageChangedScheduleDriver,
                 children: controller.itemScheduleCollectionDriver.map(
                   (title) {
