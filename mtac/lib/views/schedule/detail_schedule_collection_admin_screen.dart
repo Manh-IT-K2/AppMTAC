@@ -6,8 +6,21 @@ import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
-class DetailScheduleCollectionAdminScreen extends StatelessWidget {
+class DetailScheduleCollectionAdminScreen extends StatefulWidget {
   const DetailScheduleCollectionAdminScreen({super.key});
+
+  @override
+  State<DetailScheduleCollectionAdminScreen> createState() => _DetailScheduleCollectionAdminScreenState();
+}
+
+class _DetailScheduleCollectionAdminScreenState extends State<DetailScheduleCollectionAdminScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +37,7 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
     final String debtStatus = arguments["debtStatus"] ?? "";
     final String dayCollection = arguments["dayCollection"] ?? "";
     final String costTransit = arguments["costTransit"] ?? "";
-    final List<String>? imageList = arguments["image"] as List<String>? ?? [];
+    final List<String>? imageList = arguments["image"] as List<String>? ?? null;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -63,48 +76,66 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5.w),
                 ),
                 child: Column(
+                  //mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 5.w,
+                    ),
                     _ItemInforDetail(
-                      title: "Tên công ty",
+                      title: "Tên công ty: ",
                       subTitle: nameBusiness,
                     ),
-                    _ItemRowInforDetail(
-                      title1: "Ngày thu gom",
-                      subTitle1: dayCollection,
-                      title2: "Biển số xe",
-                      subTitle2: numberPlate,
+                    _ItemInforDetail(
+                      title: "Ngày thu gom: ",
+                      subTitle: dayCollection,
                     ),
                     _ItemInforDetail(
-                      title: "Địa chỉ thu gom",
-                      subTitle:
-                          addressCollection,
-                    ),
-                    _ItemRowInforDetail(
-                      title1: "Thời gian thu gom",
-                      subTitle1: timeCollection,
-                      title2: "Loại hàng",
-                      subTitle2: typeWaste,
+                      title: "Biển số xe: ",
+                      subTitle: numberPlate,
                     ),
                     _ItemInforDetail(
-                      title: "Khu vực vận chuyển",
-                      subTitle: areaTransit,
+                      title: "Thời gian thu gom: ",
+                      subTitle: timeCollection,
                     ),
-                    _ItemRowInforDetail(
-                      title1: "Ngày gửi lịch gom",
-                      subTitle1: daySendCollection,
-                      title2: "Đơn giá vận chuyển",
-                      subTitle2: costTransit,
+                    _ItemInforDetail(
+                      title: "Loại hàng: ",
+                      subTitle: typeWaste,
+                    ),
+                    _ItemInforDetail(
+                      title: "Ngày gửi lịch gom: ",
+                      subTitle: daySendCollection,
+                    ),
+                    _ItemInforDetail(
+                      title: "Đơn giá vận chuyển: ",
+                      subTitle: costTransit,
+                    ),
+                    _ItemInforDetail(
+                      title: "Thông tin người liên hệ: ",
+                      subTitle: contactPerson,
+                    ),
+                    _ItemInforDetail(
+                      title: "Trạng thái công nợ: ",
+                      subTitle: debtStatus,
                     ),
                     const _ItemInforDetail(
-                      title: "Số lượng nhân công",
-                      subTitle: "Nguyễn Văn A, Lê Văn B",
+                      title: "Số lượng nhân công: ",
+                      subTitle:
+                          "Nguyễn Văn A, Lê Văn B Nguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn B",
                     ),
-                    _ItemRowInforDetail(
-                      title1: "Thông tin người liên hệ",
-                      subTitle1: contactPerson,
-                      title2: "Trạng thái công nợ",
-                      subTitle2: debtStatus,
+                    SizedBox(
+                      height: 3.w,
+                    ),
+                    _ItemInforDetail(
+                      title: "Địa chỉ thu gom: ",
+                      subTitle: addressCollection,
+                    ),
+                    SizedBox(
+                      height: 3.w,
+                    ),
+                    _ItemInforDetail(
+                      title: "Khu vực vận chuyển: ",
+                      subTitle: areaTransit,
                     ),
                     const SizedBox(
                       height: 10,
@@ -117,14 +148,11 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
                 style: PrimaryFont.headerTextBold(),
               ),
               Container(
-                padding: const EdgeInsets.all(16.0),
+                //padding: const EdgeInsets.all(16.0),
                 margin: EdgeInsets.only(top: 3.w),
                 width: 100.w,
                 height: 50.h,
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(5.w),
-                ),
+
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -161,25 +189,45 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
                     SizedBox(
                       height: 3.w,
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: listCostData.length,
-                        itemBuilder: (context, index) {
-                          final data = listCostData[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: _ItemListCost(
-                                id: data.id,
-                                category: data.category,
-                                cost: data.cost,
-                                quantity: data.quantity,
-                                totalMoney: data.totalMoney,
-                                note: data.note,
-                                status: data.status),
-                          );
-                        },
-                      ),
-                    ),
+                    SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          controller: _scrollController,
+          child: Row(
+            children: const [
+              _HeaderItem(title: "ID", width: 80),
+              _HeaderItem(title: "Hạng mục", width: 100),
+              _HeaderItem(title: "Đơn giá", width: 80),
+              _HeaderItem(title: "Số lượng", width: 80),
+              _HeaderItem(title: "Thành tiền", width: 100),
+              _HeaderItem(title: "Ghi chú", width: 120),
+              _HeaderItem(title: "Trạng thái", width: 100),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        // List content
+        Expanded(
+          child: ListView.builder(
+            itemCount: listCostData.length,
+            itemBuilder: (context, index) {
+              final data = listCostData[index];
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                controller: _scrollController,
+                child: Row(
+                  children: [
+                    _CellItem(text: data.id, width: 80),
+                    _CellItem(text: data.category, width: 100),
+                    _CellItem(text: data.cost, width: 80),
+                    _CellItem(text: data.quantity, width: 80),
+                    _CellItem(text: data.totalMoney, width: 100),
+                    _CellItem(text: data.note, width: 120),
+                    _CellItem(text: data.status, width: 100),
+                  ],
+                ),
+              );
+            },
+          ),)
                   ],
                 ),
               ),
@@ -267,66 +315,40 @@ class _ItemListCost extends StatelessWidget {
   final String id, category, cost, quantity, totalMoney, note, status;
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          width: 100.w,
-          margin: EdgeInsets.only(bottom: 2.w),
-          padding: EdgeInsets.all(5.w),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: kPrimaryColor.withOpacity(0.2), width: 1),
-            borderRadius: BorderRadius.circular(3.w),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _ItemTable(
-                title: "Hạng mục: ",
-                subTitle: category,
-              ),
-              _ItemTable(
-                title: "Đơn giá: ",
-                subTitle: cost,
-              ),
-              _ItemTable(
-                title: "Số Lượng",
-                subTitle: quantity,
-              ),
-              _ItemTable(
-                title: "Thành tiền: ",
-                subTitle: totalMoney,
-              ),
-              _ItemTable(
-                title: "Ghi chú: ",
-                subTitle: note,
-              ),
-              _ItemTable(
-                title: "Trạng thái: ",
-                subTitle: status,
-              ),
-            ],
-          ),
+    return Container(
+      width: 100.w,
+      margin: EdgeInsets.only(bottom: 2.w),
+      //padding: EdgeInsets.symmetric(vertical: 5.w),
+
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+                width: 50,
+                child: Text(id, style: PrimaryFont.bodyTextMedium())),
+            SizedBox(
+                width: 100,
+                child: Text(category, style: PrimaryFont.bodyTextMedium())),
+            SizedBox(
+                width: 80,
+                child: Text(cost, style: PrimaryFont.bodyTextMedium())),
+            SizedBox(
+                width: 80,
+                child: Text(quantity, style: PrimaryFont.bodyTextMedium())),
+            SizedBox(
+                width: 100,
+                child: Text(totalMoney, style: PrimaryFont.bodyTextMedium())),
+            SizedBox(
+                width: 120,
+                child: Text(note, style: PrimaryFont.bodyTextMedium())),
+            SizedBox(
+                width: 100,
+                child: Text(status, style: PrimaryFont.bodyTextMedium())),
+          ],
         ),
-        Positioned(
-          top: -10,
-          left: 10,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.green,
-              border:
-                  Border.all(color: kPrimaryColor.withOpacity(0.2), width: 1),
-              borderRadius: BorderRadius.circular(3.w),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-            child: Text(
-              id,
-              style: PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -406,6 +428,45 @@ class _ItemMerchandise extends StatelessWidget {
   }
 }
 
+class _ItemInforDetail extends StatelessWidget {
+  const _ItemInforDetail({
+    super.key,
+    required this.title,
+    required this.subTitle,
+  });
+  final String title, subTitle;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 8.w,
+      width: 100.w,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            width: 12.0,
+          ),
+          Text(
+            title,
+            style: PrimaryFont.bodyTextMedium(),
+          ),
+          Expanded(
+            child: Text(
+              subTitle,
+              style: PrimaryFont.bodyTextBold(),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(
+            width: 12.0,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _ItemTable extends StatelessWidget {
   const _ItemTable({
     super.key,
@@ -436,129 +497,32 @@ class _ItemTable extends StatelessWidget {
     );
   }
 }
+class _HeaderItem extends StatelessWidget {
+  final String title;
+  final double width;
 
-class _ItemInforDetail extends StatelessWidget {
-  const _ItemInforDetail({
-    super.key,
-    required this.title,
-    required this.subTitle,
-  });
-  final String title, subTitle;
+  const _HeaderItem({required this.title, required this.width});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      padding: EdgeInsets.symmetric(horizontal: 3.w),
-      width: 100.w,
-      height: 14.w,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(3.w),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            offset: const Offset(4, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: PrimaryFont.bodyTextMedium(),
-          ),
-          Text(
-            subTitle,
-            style: PrimaryFont.bodyTextBold(),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
+    return SizedBox(
+      width: width,
+      child: Text(title, style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black)),
     );
   }
 }
 
-class _ItemRowInforDetail extends StatelessWidget {
-  const _ItemRowInforDetail({
-    super.key,
-    required this.title1,
-    required this.title2,
-    required this.subTitle1,
-    required this.subTitle2,
-  });
-  final String title1, title2, subTitle1, subTitle2;
+class _CellItem extends StatelessWidget {
+  final String text;
+  final double width;
+
+  const _CellItem({required this.text, required this.width});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      width: 100.w,
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 3.w),
-            width: 42.w,
-            height: 12.w,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(3.w),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  offset: const Offset(4, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  title1,
-                  style: PrimaryFont.bodyTextMedium(),
-                ),
-                Text(
-                  subTitle1,
-                  style: PrimaryFont.bodyTextBold(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-          const Spacer(),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 3.w),
-            width: 42.w,
-            height: 12.w,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(3.w),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  offset: const Offset(4, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  title2,
-                  style: PrimaryFont.bodyTextMedium(),
-                ),
-                Text(
-                  subTitle2,
-                  style: PrimaryFont.bodyTextBold(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return SizedBox(
+      width: width,
+      child: Text(text, style: PrimaryFont.bodyTextMedium()),
     );
   }
 }
