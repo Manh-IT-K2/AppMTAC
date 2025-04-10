@@ -48,7 +48,7 @@ class _ScheduleCollectionTodayAdminScreenState
             GestureDetector(
               onTap: () {
                 controller.toggleMenu();
-                print("hello ${controller.isMenuOpen.value}");
+                //print("hello ${controller.isMenuOpen.value}");
               },
               child: Container(
                 width: 10.w,
@@ -232,55 +232,67 @@ class _ScheduleCollectionTodayAdminScreenState
                     onPageChanged: controller.onPageChangedScheduleDriver,
                     children: controller.itemScheduleCollectionDriver.map(
                       (title) {
-                        return Obx(() {
-                          if (controller.isLoading.value) {
-                            return Center(
-                              child: Image.asset(
-                                "assets/images/loadingDot.gif",
-                                width: 80,
-                                height: 80,
-                                fit: BoxFit.fill,
-                              ),
-                            );
-                          }
-                          return ListView.builder(
-                            itemCount: controller.filteredItems.length,
-                            itemBuilder: (context, index) {
-                              final data = controller.filteredItems[index];
-                              return _ItemMainScheduleCollection(
-                                controller: controller,
-                                collectionId: data.collectionId,
-                                nameBusiness: data.nameBusiness,
-                                areaTransit: data.areaTransit,
-                                typeWaste: data.typeWaste,
-                                contactPerson: data.contactPerson,
-                                timeCollection: data.timeCollection,
-                                status: data.status,
-                                onTap: () {
-                                  Get.toNamed(
-                                    AppRoutes.detailScheduleCollection,
-                                    arguments: {
-                                      "costTransit": data.costTransit,
-                                      "nameBusiness": data.nameBusiness,
-                                      "areaTransit": data.areaTransit,
-                                      "typeWaste": data.typeWaste,
-                                      "contactPerson": data.contactPerson,
-                                      "timeCollection": data.timeCollection,
-                                      "numberPlate": data.numberPlate,
-                                      "addressCollection":
-                                          data.addressCollection,
-                                      "debtStatus": data.debtStatus,
-                                      "dayCollection": data.dayCollection,
-                                      "daySendCollection":
-                                          data.daySendCollection,
-                                      "image": data.image,
-                                    },
-                                  );
-                                },
+                        return Obx(
+                          () {
+                            if (controller.isLoading.value) {
+                              return Center(
+                                child: Image.asset(
+                                  "assets/images/loadingDot.gif",
+                                  width: 80,
+                                  height: 80,
+                                  fit: BoxFit.fill,
+                                ),
                               );
-                            },
-                          );
-                        });
+                            }
+                            return CustomScrollView(
+                              slivers: [
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (context, index) {
+                                      final data =
+                                          controller.filteredItems[index];
+                                      return _ItemMainScheduleCollection(
+                                        controller: controller,
+                                        collectionId: data.collectionId,
+                                        nameBusiness: data.nameBusiness,
+                                        areaTransit: data.areaTransit,
+                                        typeWaste: data.typeWaste,
+                                        contactPerson: data.contactPerson,
+                                        timeCollection: data.timeCollection,
+                                        status: data.status,
+                                        onTap: () {
+                                          Get.toNamed(
+                                            AppRoutes.detailScheduleCollection,
+                                            arguments: {
+                                              "costTransit": data.costTransit,
+                                              "nameBusiness": data.nameBusiness,
+                                              "areaTransit": data.areaTransit,
+                                              "typeWaste": data.typeWaste,
+                                              "contactPerson":
+                                                  data.contactPerson,
+                                              "timeCollection":
+                                                  data.timeCollection,
+                                              "numberPlate": data.numberPlate,
+                                              "addressCollection":
+                                                  data.addressCollection,
+                                              "debtStatus": data.debtStatus,
+                                              "dayCollection":
+                                                  data.dayCollection,
+                                              "daySendCollection":
+                                                  data.daySendCollection,
+                                              "image": data.image,
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                    childCount: controller.filteredItems.length,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                     ).toList(),
                   ),

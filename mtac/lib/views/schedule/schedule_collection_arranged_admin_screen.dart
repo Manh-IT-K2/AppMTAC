@@ -219,40 +219,46 @@ class _ScheduleCollectionArrangedAdminScreenState
                       if (controller.isLoading.value) {
                         return const Center(child: CircularProgressIndicator());
                       }
-                      return ListView.builder(
-                        itemCount: controller.filteredItems.length,
-                        itemBuilder: (context, index) {
-                          final data = controller.filteredItems[index];
-                          return _ItemMainScheduleCollection(
-                            controller: controller,
-                            collectionId: data.collectionId,
-                            nameBusiness: data.nameBusiness,
-                            areaTransit: data.areaTransit,
-                            typeWaste: data.typeWaste,
-                            contactPerson: data.contactPerson,
-                            timeCollection: data.timeCollection,
-                            status: data.status,
-                            onTap: () {
-                              // Get.toNamed(
-                              //   AppRoutes.DETAILSCHEDULECOLLECTIONDRIVER,
-                              //   arguments: {
-                              //     "costTransit": data.costTransit,
-                              //     "nameBusiness": data.nameBusiness,
-                              //     "areaTransit": data.areaTransit,
-                              //     "typeWaste": data.typeWaste,
-                              //     "contactPerson": data.contactPerson,
-                              //     "timeCollection": data.timeCollection,
-                              //     "numberPlate": data.numberPlate,
-                              //     "addressCollection": data.addressCollection,
-                              //     "debtStatus": data.debtStatus,
-                              //     "dayCollection": data.dayCollection,
-                              //     "daySendCollection": data.daySendCollection,
-                              //     "image": data.image,
-                              //   },
-                              // );
-                            },
-                          );
-                        },
+                      return CustomScrollView(
+                        slivers: [
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                final data = controller.filteredItems[index];
+                                return _ItemMainScheduleCollection(
+                                  controller: controller,
+                                  collectionId: data.collectionId,
+                                  nameBusiness: data.nameBusiness,
+                                  areaTransit: data.areaTransit,
+                                  typeWaste: data.typeWaste,
+                                  contactPerson: data.contactPerson,
+                                  timeCollection: data.timeCollection,
+                                  status: data.status,
+                                  onTap: () {
+                                    // Get.toNamed(
+                                    //   AppRoutes.DETAILSCHEDULECOLLECTIONDRIVER,
+                                    //   arguments: {
+                                    //     "costTransit": data.costTransit,
+                                    //     "nameBusiness": data.nameBusiness,
+                                    //     "areaTransit": data.areaTransit,
+                                    //     "typeWaste": data.typeWaste,
+                                    //     "contactPerson": data.contactPerson,
+                                    //     "timeCollection": data.timeCollection,
+                                    //     "numberPlate": data.numberPlate,
+                                    //     "addressCollection": data.addressCollection,
+                                    //     "debtStatus": data.debtStatus,
+                                    //     "dayCollection": data.dayCollection,
+                                    //     "daySendCollection": data.daySendCollection,
+                                    //     "image": data.image,
+                                    //   },
+                                    // );
+                                  },
+                                );
+                              },
+                              childCount: controller.filteredItems.length,
+                            ),
+                          ),
+                        ],
                       );
                     });
                   },

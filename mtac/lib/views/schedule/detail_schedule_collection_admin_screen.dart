@@ -250,19 +250,26 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
                   ? SizedBox(
                       width: 100.w,
                       height: 30.w,
-                      child: ListView.builder(
-                        itemCount: imageList.length,
+                      child: CustomScrollView(
                         scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(2.w),
-                            child: Image.network(
-                              imageList[index],
-                              fit: BoxFit.cover,
+                        slivers: [
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (contex, index) {
+                                return Padding(
+                                  padding: EdgeInsets.all(2.w),
+                                  child: Image.network(
+                                    imageList[index],
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              },
+                              childCount: imageList.length,
                             ),
-                          );
-                        },
-                      ))
+                          ),
+                        ],
+                      ),
+                    )
                   : const SizedBox(),
               SizedBox(
                 height: 10.w,
