@@ -4,27 +4,15 @@ import 'package:mtac/data/schedule_screen/item_cost_collection.dart';
 import 'package:mtac/data/schedule_screen/item_merchandise_collection.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
+import 'package:mtac/widgets/schedule_widget/sync_horizontal_table.dart';
 import 'package:sizer/sizer.dart';
 
-class DetailScheduleCollectionAdminScreen extends StatefulWidget {
+class DetailScheduleCollectionAdminScreen extends StatelessWidget {
   const DetailScheduleCollectionAdminScreen({super.key});
 
   @override
-  State<DetailScheduleCollectionAdminScreen> createState() => _DetailScheduleCollectionAdminScreenState();
-}
-
-class _DetailScheduleCollectionAdminScreenState extends State<DetailScheduleCollectionAdminScreen> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    //
+    // get data from other screen back
     final Map<String, dynamic> arguments = Get.arguments ?? {};
     final String daySendCollection = arguments["daySendCollection"] ?? "";
     final String nameBusiness = arguments["nameBusiness"] ?? "";
@@ -189,45 +177,32 @@ class _DetailScheduleCollectionAdminScreenState extends State<DetailScheduleColl
                     SizedBox(
                       height: 3.w,
                     ),
-                    SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          controller: _scrollController,
-          child: Row(
-            children: const [
-              _HeaderItem(title: "ID", width: 80),
-              _HeaderItem(title: "Hạng mục", width: 100),
-              _HeaderItem(title: "Đơn giá", width: 80),
-              _HeaderItem(title: "Số lượng", width: 80),
-              _HeaderItem(title: "Thành tiền", width: 100),
-              _HeaderItem(title: "Ghi chú", width: 120),
-              _HeaderItem(title: "Trạng thái", width: 100),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        // List content
-        Expanded(
-          child: ListView.builder(
-            itemCount: listCostData.length,
-            itemBuilder: (context, index) {
-              final data = listCostData[index];
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                controller: _scrollController,
-                child: Row(
-                  children: [
-                    _CellItem(text: data.id, width: 80),
-                    _CellItem(text: data.category, width: 100),
-                    _CellItem(text: data.cost, width: 80),
-                    _CellItem(text: data.quantity, width: 80),
-                    _CellItem(text: data.totalMoney, width: 100),
-                    _CellItem(text: data.note, width: 120),
-                    _CellItem(text: data.status, width: 100),
-                  ],
-                ),
-              );
-            },
-          ),)
+                    SizedBox(
+                      width: 100.w,
+                      height: 40.h,
+                      child: SyncHorizontalTable(
+                        headers: [
+                          _HeaderItem(title: "ID", width: 15.w),
+                          _HeaderItem(title: "HẠNG MỤC", width: 25.w),
+                          _HeaderItem(title: "ĐƠN GIÁ", width: 20.w),
+                          _HeaderItem(title: "THÀNH TIỀN", width: 20.w),
+                          _HeaderItem(title: "SỐ LƯỢNG", width: 20.w),
+                          _HeaderItem(title: "GHI CHÚ", width: 30.w),
+                          _HeaderItem(title: "TRẠNG THÁI", width: 25.w),
+                        ],
+                        rows: listCostData.map((data) {
+                          return [
+                            _CellItem(text: data.id, width: 15.w),
+                            _CellItem(text: data.category, width: 25.w),
+                            _CellItem(text: data.cost, width: 20.w),
+                            _CellItem(text: data.totalMoney, width: 20.w),
+                            _CellItem(text: data.quantity, width: 20.w),
+                            _CellItem(text: data.note, width: 30.w),
+                            _CellItem(text: data.status, width: 25.w),
+                          ];
+                        }).toList(),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -235,31 +210,31 @@ class _DetailScheduleCollectionAdminScreenState extends State<DetailScheduleColl
                 "Danh sách hành hoá",
                 style: PrimaryFont.headerTextBold(),
               ),
-              Container(
-                padding: const EdgeInsets.all(16.0),
-                margin: EdgeInsets.only(top: 3.w),
+              SizedBox(
+                height: 5.w,
+              ),
+              SizedBox(
                 width: 100.w,
                 height: 40.h,
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(5.w),
-                ),
-                child: ListView.builder(
-                  itemCount: listMerchandiseData.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    final data = listMerchandiseData[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: _ItemMerchandise(
-                          id: data.id,
-                          nameGoods: data.nameGoods,
-                          idGoods: data.idGoods,
-                          totalWeight: data.totalWeight,
-                          warehouse: data.warehouse,
-                          processingOwner: data.processingOwner),
-                    );
-                  },
+                child: SyncHorizontalTable(
+                  headers: [
+                    _HeaderItem(title: "ID", width: 15.w),
+                    _HeaderItem(title: "TÊN HÀNG HOÁ", width: 25.w),
+                    _HeaderItem(title: "KL GOM - KG", width: 20.w),
+                    _HeaderItem(title: "MÃ HÀNG HOÁ", width: 22.w),
+                    _HeaderItem(title: "KHO NHẬP", width: 20.w),
+                    _HeaderItem(title: "CHỦ XỬ LÝ", width: 30.w),
+                  ],
+                  rows: listMerchandiseData.map((data) {
+                    return [
+                      _CellItem(text: data.id, width: 15.w),
+                      _CellItem(text: data.nameGoods, width: 25.w),
+                      _CellItem(text: data.totalWeight, width: 20.w),
+                      _CellItem(text: data.idGoods, width: 22.w),
+                      _CellItem(text: data.warehouse, width: 20.w),
+                      _CellItem(text: data.processingOwner, width: 30.w),
+                    ];
+                  }).toList(),
                 ),
               ),
               SizedBox(
@@ -296,134 +271,6 @@ class _DetailScheduleCollectionAdminScreenState extends State<DetailScheduleColl
           ),
         ),
       ),
-    );
-  }
-}
-
-class _ItemListCost extends StatelessWidget {
-  const _ItemListCost({
-    super.key,
-    required this.id,
-    required this.category,
-    required this.cost,
-    required this.quantity,
-    required this.totalMoney,
-    required this.note,
-    required this.status,
-  });
-
-  final String id, category, cost, quantity, totalMoney, note, status;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 100.w,
-      margin: EdgeInsets.only(bottom: 2.w),
-      //padding: EdgeInsets.symmetric(vertical: 5.w),
-
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-                width: 50,
-                child: Text(id, style: PrimaryFont.bodyTextMedium())),
-            SizedBox(
-                width: 100,
-                child: Text(category, style: PrimaryFont.bodyTextMedium())),
-            SizedBox(
-                width: 80,
-                child: Text(cost, style: PrimaryFont.bodyTextMedium())),
-            SizedBox(
-                width: 80,
-                child: Text(quantity, style: PrimaryFont.bodyTextMedium())),
-            SizedBox(
-                width: 100,
-                child: Text(totalMoney, style: PrimaryFont.bodyTextMedium())),
-            SizedBox(
-                width: 120,
-                child: Text(note, style: PrimaryFont.bodyTextMedium())),
-            SizedBox(
-                width: 100,
-                child: Text(status, style: PrimaryFont.bodyTextMedium())),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ItemMerchandise extends StatelessWidget {
-  const _ItemMerchandise({
-    super.key,
-    required this.id,
-    required this.nameGoods,
-    required this.idGoods,
-    required this.totalWeight,
-    required this.warehouse,
-    required this.processingOwner,
-  });
-
-  final String id, nameGoods, idGoods, totalWeight, warehouse, processingOwner;
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          width: 100.w,
-          margin: EdgeInsets.only(bottom: 2.w),
-          padding: EdgeInsets.all(5.w),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: kPrimaryColor.withOpacity(0.2), width: 1),
-            borderRadius: BorderRadius.circular(3.w),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _ItemTable(
-                title: "Tên hàng hoá: ",
-                subTitle: nameGoods,
-              ),
-              _ItemTable(
-                title: "Mã hàng hoá: ",
-                subTitle: idGoods,
-                color: Colors.red,
-              ),
-              _ItemTable(
-                title: "KL Gom - Kg: ",
-                subTitle: totalWeight,
-              ),
-              _ItemTable(
-                title: "Kho nhập: ",
-                subTitle: warehouse,
-              ),
-              _ItemTable(
-                title: "Chờ xử lý: ",
-                subTitle: processingOwner,
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          top: -10,
-          left: 10,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.green,
-              border:
-                  Border.all(color: kPrimaryColor.withOpacity(0.2), width: 1),
-              borderRadius: BorderRadius.circular(3.w),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-            child: Text(
-              id,
-              style: PrimaryFont.bodyTextBold().copyWith(color: Colors.white),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -467,36 +314,6 @@ class _ItemInforDetail extends StatelessWidget {
   }
 }
 
-class _ItemTable extends StatelessWidget {
-  const _ItemTable({
-    super.key,
-    required this.title,
-    required this.subTitle,
-    this.color,
-  });
-
-  final String title, subTitle;
-  final Color? color;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          title,
-          style: PrimaryFont.bodyTextMedium(),
-        ),
-        Expanded(
-          child: Text(
-            subTitle,
-            style: PrimaryFont.bodyTextBold().copyWith(color: color),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
-    );
-  }
-}
 class _HeaderItem extends StatelessWidget {
   final String title;
   final double width;
@@ -505,9 +322,13 @@ class _HeaderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: EdgeInsets.only(right: 3.w),
       width: width,
-      child: Text(title, style: PrimaryFont.bodyTextMedium().copyWith(color: Colors.black)),
+      child: Text(
+        title,
+        style: PrimaryFont.bodyTextBold().copyWith(color: Colors.black),
+      ),
     );
   }
 }
@@ -520,9 +341,15 @@ class _CellItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: EdgeInsets.only(right: 3.w),
       width: width,
-      child: Text(text, style: PrimaryFont.bodyTextMedium()),
+      child: Text(
+        text,
+        style: PrimaryFont.bodyTextMedium(),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 }
