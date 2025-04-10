@@ -55,24 +55,29 @@ class _BodyScheduleCollectionAdminScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
-        itemCount: tripData.length,
-        itemBuilder: (context, index) {
-          final trip = tripData[index];
-          return _ItemTripCollection(
-            txtCode: trip.txtCode,
-            txtGlandHead: trip.txtGlandHead,
-            txtGlandEnd: trip.txtGlandEnd,
-            txtType: trip.txtType,
-            txtDay: trip.txtDay,
-            txtPrice: trip.txtPrice,
-            onTapSchedule: () {
-              //Get.toNamed(AppRoutes.MAP);
+        child: CustomScrollView(
+      slivers: [
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final trip = tripData[index];
+              return _ItemTripCollection(
+                txtCode: trip.txtCode,
+                txtGlandHead: trip.txtGlandHead,
+                txtGlandEnd: trip.txtGlandEnd,
+                txtType: trip.txtType,
+                txtDay: trip.txtDay,
+                txtPrice: trip.txtPrice,
+                onTapSchedule: () {
+                  //Get.toNamed(AppRoutes.MAP);
+                },
+              );
             },
-          );
-        },
-      ),
-    );
+            childCount: tripData.length,
+          ),
+        ),
+      ],
+    ));
   }
 }
 

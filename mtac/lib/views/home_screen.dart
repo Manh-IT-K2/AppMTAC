@@ -12,7 +12,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(10.h),
@@ -20,11 +19,9 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: Colors.white,
           centerTitle: false,
           flexibleSpace: Padding(
-            padding: const EdgeInsets.only(
-                left: 12, bottom: 10),
+            padding: const EdgeInsets.only(left: 12, bottom: 10),
             child: Column(
-              mainAxisAlignment:
-                  MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -102,32 +99,39 @@ class _BottomHomeScreen extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           height: sHeightTransport,
-          child: ListView.builder(
-            itemCount: 10,
+          child: CustomScrollView(
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 6, right: 6),
-                child: GestureDetector(
-                  onTap: () {
-                    Get.snackbar(
-                      "Notification",
-                      "You clicked: function is being performed",
-                      snackPosition: SnackPosition.TOP,
-                      duration: const Duration(seconds: 2),
-                      backgroundColor: Colors.blue.withOpacity(0.8),
-                      colorText: Colors.white,
+            slivers: [
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  
+                  (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 6, right: 6),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.snackbar(
+                            "Notification",
+                            "You clicked: function is being performed",
+                            snackPosition: SnackPosition.TOP,
+                            duration: const Duration(seconds: 2),
+                            backgroundColor: Colors.blue.withOpacity(0.8),
+                            colorText: Colors.white,
+                          );
+                        },
+                        child: const _ItemInviteTransport(
+                          image:
+                              "https://moitruongachau.com/vnt_upload/quisle/07_2022/z3568321784195_18891717b27f71f34f4f974c0644dc67.jpg",
+                          text:
+                              "Mời thầu vận chuyển vải vụn, nguyên, nhiên liệu thay thế phục vụ ngành xi măng, tại khu vực miền tây (tuyến tiền giang - tp. hồ chí minh)",
+                        ),
+                      ),
                     );
                   },
-                  child: const _ItemInviteTransport(
-                    image:
-                        "https://moitruongachau.com/vnt_upload/quisle/07_2022/z3568321784195_18891717b27f71f34f4f974c0644dc67.jpg",
-                    text:
-                        "Mời thầu vận chuyển vải vụn, nguyên, nhiên liệu thay thế phục vụ ngành xi măng, tại khu vực miền tây (tuyến tiền giang - tp. hồ chí minh)",
-                  ),
+                  childCount: 10,
                 ),
-              );
-            },
+              ),
+            ],
           ),
         ),
       ],
@@ -153,7 +157,7 @@ class _BodyHomeScreen extends StatelessWidget {
             onTap: () {
               if (item["text"] == "Sắp lịch") {
                 Get.toNamed(AppRoutes.scheduleCollectionToday);
-              } else if (item["text"] == "Năng lực"){
+              } else if (item["text"] == "Năng lực") {
                 //Get.toNamed(AppRoutes.SCHEDULECOLLECTIONARRANGED);
               }
               // Get.snackbar(
