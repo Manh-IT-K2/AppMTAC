@@ -252,7 +252,7 @@ class _ScheduleCollectionTodayAdminScreenState
                                 status: data.status,
                                 onTap: () {
                                   Get.toNamed(
-                                    AppRoutes.DETAILSCHEDULECOLLECTIONADMIN,
+                                    AppRoutes.detailScheduleCollection,
                                     arguments: {
                                       "costTransit": data.costTransit,
                                       "nameBusiness": data.nameBusiness,
@@ -337,7 +337,7 @@ class _ScheduleCollectionTodayAdminScreenState
                         ),
                         onTap: (){
                           controller.toggleMenu;
-                          Get.toNamed(AppRoutes.SCHEDULECOLLECTIONARRANGEDADMIN);
+                          Get.toNamed(AppRoutes.scheduleCollectionArranged);
                         },
                       ),
                       ListTile(
@@ -353,7 +353,7 @@ class _ScheduleCollectionTodayAdminScreenState
                         ),
                         onTap: (){
                           controller.toggleMenu;
-                          Get.toNamed(AppRoutes.SCHEDULECOLLECTIONADMIN);
+                          Get.toNamed(AppRoutes.scheduleCollection);
                         },
                       ),
                     ],
