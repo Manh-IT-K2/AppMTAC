@@ -46,7 +46,7 @@ class _ScheduleCollectionTodayAdminScreenState
             ),
             const Spacer(),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 controller.toggleMenu();
                 print("hello ${controller.isMenuOpen.value}");
               },
@@ -234,8 +234,14 @@ class _ScheduleCollectionTodayAdminScreenState
                       (title) {
                         return Obx(() {
                           if (controller.isLoading.value) {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return Center(
+                              child: Image.asset(
+                                "assets/images/loadingDot.gif",
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit.fill,
+                              ),
+                            );
                           }
                           return ListView.builder(
                             itemCount: controller.filteredItems.length,
@@ -335,7 +341,7 @@ class _ScheduleCollectionTodayAdminScreenState
                           style: PrimaryFont.bodyTextMedium()
                               .copyWith(color: Colors.white),
                         ),
-                        onTap: (){
+                        onTap: () {
                           controller.toggleMenu;
                           Get.toNamed(AppRoutes.scheduleCollectionArranged);
                         },
@@ -351,7 +357,7 @@ class _ScheduleCollectionTodayAdminScreenState
                           style: PrimaryFont.bodyTextMedium()
                               .copyWith(color: Colors.white),
                         ),
-                        onTap: (){
+                        onTap: () {
                           controller.toggleMenu;
                           Get.toNamed(AppRoutes.scheduleCollection);
                         },
