@@ -74,7 +74,7 @@ class _ScheduleCollectionArrangedAdminScreenState
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: controller.itemScheduleCollectionDriver
+                children: controller.itemScheduleCollectionArranged
                     .map(
                       (title) => _ItemListCollection(title: title),
                     )
@@ -83,74 +83,74 @@ class _ScheduleCollectionArrangedAdminScreenState
             ),
             Row(
               children: [
-                Obx(
-                  () => controller.checkedItems.isNotEmpty
-                      ? Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () => controller.toggleSelectAll(
-                                controller.filteredItems
-                                    .map((e) => e.collectionId)
-                                    .toList(),
-                              ),
-                              child: Container(
-                                width: 5.w,
-                                height: 5.w,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.black, width: 0.5),
-                                  borderRadius: BorderRadius.circular(1.w),
-                                  color: controller.isAllSelected(
-                                    controller.filteredItems
-                                        .map((e) => e.collectionId)
-                                        .toList(),
-                                  )
-                                      ? Colors.red
-                                      : Colors.white,
-                                ),
-                                child: controller.isAllSelected(
-                                  controller.filteredItems
-                                      .map((e) => e.collectionId)
-                                      .toList(),
-                                )
-                                    ? Icon(Icons.check,
-                                        color: Colors.white, size: 3.w)
-                                    : null,
-                              ),
-                            ),
-                            SizedBox(width: 1.w),
-                            Text("Chọn tất cả",
-                                style: PrimaryFont.bodyTextMedium()),
-                          ],
-                        )
-                      : const SizedBox(),
-                ),
+                // Obx(
+                //   () => controller.checkedItems.isNotEmpty
+                //       ? Row(
+                //           children: [
+                //             GestureDetector(
+                //               onTap: () => controller.toggleSelectAll(
+                //                 controller.filteredItemsScheduleArranged
+                //                     .map((e) => e.collectionId)
+                //                     .toList(),
+                //               ),
+                //               child: Container(
+                //                 width: 5.w,
+                //                 height: 5.w,
+                //                 decoration: BoxDecoration(
+                //                   border: Border.all(
+                //                       color: Colors.black, width: 0.5),
+                //                   borderRadius: BorderRadius.circular(1.w),
+                //                   color: controller.isAllSelected(
+                //                     controller.filteredItemsScheduleArranged
+                //                         .map((e) => e.collectionId)
+                //                         .toList(),
+                //                   )
+                //                       ? Colors.red
+                //                       : Colors.white,
+                //                 ),
+                //                 child: controller.isAllSelected(
+                //                   controller.filteredItemsScheduleArranged
+                //                       .map((e) => e.collectionId)
+                //                       .toList(),
+                //                 )
+                //                     ? Icon(Icons.check,
+                //                         color: Colors.white, size: 3.w)
+                //                     : null,
+                //               ),
+                //             ),
+                //             SizedBox(width: 1.w),
+                //             Text("Chọn tất cả",
+                //                 style: PrimaryFont.bodyTextMedium()),
+                //           ],
+                //         )
+                //       : const SizedBox(),
+                // ),
                 const Spacer(),
-                Obx(
-                  () => controller.checkedItems.isNotEmpty
-                      ? GestureDetector(
-                          onTap: () {
-                            controller.deleteSelectedItems();
-                          },
-                          child: Row(
-                            children: [
-                              Icon(HugeIcons.strokeRoundedDelete01,
-                                  color: Colors.red, size: 5.w),
-                              SizedBox(width: 1.w),
-                              Text(
-                                "Xoá",
-                                style: PrimaryFont.bodyTextMedium(),
-                              ),
-                            ],
-                          ),
-                        )
-                      : const SizedBox(),
+                GestureDetector(
+                  onTap: () {
+                    if (controller.checkedItemsScheduleArranged.isNotEmpty){
+                      controller.deleteSelectedItemsScheduleArranged();
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      Icon(HugeIcons.strokeRoundedDelete01,
+                          color: Colors.red, size: 5.w),
+                      SizedBox(width: 1.w),
+                      Text(
+                        "Xoá",
+                        style: PrimaryFont.bodyTextMedium(),
+                      ),
+                    ],
+                  ),
                 ),
+                //: const SizedBox(),
+
                 SizedBox(width: 3.w),
                 PopupMenuButton<String>(
                   color: Colors.white,
                   onSelected: (String value) {
-                    controller.updateFilter(value);
+                    controller.updateFilterScheduleArranged(value);
                   },
                   itemBuilder: (BuildContext context) => [
                     const PopupMenuItem(value: "Khoáng", child: Text("Khoáng")),
@@ -211,20 +211,28 @@ class _ScheduleCollectionArrangedAdminScreenState
             ),
             Expanded(
               child: PageView(
-                controller: controller.pageControllerDriver1,
-                onPageChanged: controller.onPageChangedScheduleDriver,
-                children: controller.itemScheduleCollectionDriver.map(
+                controller: controller.pageControllerScheduleArranged,
+                onPageChanged: controller.onPageChangedScheduleArranged,
+                children: controller.itemScheduleCollectionArranged.map(
                   (title) {
                     return Obx(() {
-                      if (controller.isLoading.value) {
-                        return const Center(child: CircularProgressIndicator());
+                      if (controller.isLoadingScheduleArranged.value) {
+                        return Center(
+                          child: Image.asset(
+                            "assets/images/loadingDot.gif",
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.fill,
+                          ),
+                        );
                       }
                       return CustomScrollView(
                         slivers: [
                           SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
-                                final data = controller.filteredItems[index];
+                                final data = controller
+                                    .filteredItemsScheduleArranged[index];
                                 return _ItemMainScheduleCollection(
                                   controller: controller,
                                   collectionId: data.collectionId,
@@ -255,7 +263,8 @@ class _ScheduleCollectionArrangedAdminScreenState
                                   },
                                 );
                               },
-                              childCount: controller.filteredItems.length,
+                              childCount: controller
+                                  .filteredItemsScheduleArranged.length,
                             ),
                           ),
                         ],
@@ -348,7 +357,7 @@ class _ItemMainScheduleCollection extends StatelessWidget {
                 ),
                 const Spacer(),
                 GestureDetector(
-                  onTap: () => controller.toggleCheck(collectionId),
+                  onTap: () => controller.toggleCheckScheduleArranged(collectionId),
                   child: Obx(
                     () => Container(
                       width: 5.w,
@@ -356,11 +365,11 @@ class _ItemMainScheduleCollection extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 1),
                         borderRadius: BorderRadius.circular(1.w),
-                        color: controller.isChecked(collectionId)
+                        color: controller.isCheckedScheduleArranged(collectionId)
                             ? Colors.red
                             : Colors.white,
                       ),
-                      child: controller.isChecked(collectionId)
+                      child: controller.isCheckedScheduleArranged(collectionId)
                           ? Icon(Icons.check, color: Colors.white, size: 3.w)
                           : null,
                     ),
@@ -473,12 +482,13 @@ class _ItemListCollection extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        controller.selectItemScheduleDriver(title);
-        controller.updateFilter(title);
+        controller.selectItemScheduleArranged(title);
+        controller.updateFilterScheduleArranged(title);
       },
       child: Obx(
         () {
-          bool isSelected = controller.selectedTitleDriver.value == title;
+          bool isSelected =
+              controller.selectedTitleScheduleArranged.value == title;
           return IntrinsicWidth(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
