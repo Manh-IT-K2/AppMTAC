@@ -4,14 +4,11 @@ import 'package:mtac/data/schedule_screen/item_schedule_collection_today.dart';
 import 'package:mtac/models/schedule_collection_today_model.dart';
 
 class ScheduleController extends GetxController {
-
-   // schedule collection driver
-  var pageControllerDriver = PageController();
-  var pageControllerDriver1 = PageController();
-  var selectedTitleDriver = "Hôm nay".obs;
-  // initial variable schedule collection driver
+  /* schedule collection today */
+  var pageControllerScheduleToday = PageController();
+  var selectedTitleScheduleToday = "Hôm nay".obs;
+  // initial variable schedule collection today
   var checkedItems = <String>[].obs;
-  
   final List<String> itemScheduleCollectionDriver = [
     "Hôm nay",
     "Đã gom",
@@ -23,24 +20,24 @@ class ScheduleController extends GetxController {
   void onInit() {
     super.onInit();
     filterData();
+    filterDataScheduleArranged();
   }
 
   // depose
   @override
   void onClose() {
-    pageControllerDriver.dispose();
-    pageControllerDriver1.dispose();
-
+    pageControllerScheduleToday.dispose();
+    pageControllerScheduleArranged.dispose();
     super.onClose();
   }
 
-  // function chose item
-  void selectItemScheduleDriver(String title) {
+  // function chose item schedule today
+  void selectItemScheduleToday(String title) {
     int index = itemScheduleCollectionDriver.indexOf(title);
     if (index != -1) {
-      selectedTitleDriver.value = title;
-      if (pageControllerDriver.hasClients) {
-        pageControllerDriver.animateToPage(
+      selectedTitleScheduleToday.value = title;
+      if (pageControllerScheduleToday.hasClients) {
+        pageControllerScheduleToday.animateToPage(
           index,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
@@ -49,13 +46,14 @@ class ScheduleController extends GetxController {
     }
   }
 
-  // Update status on swipe
-  void onPageChangedScheduleDriver(int index) {
+  // Update status on swipe schedule today
+  void onPageChangedScheduleToday(int index) {
     if (index >= 0 && index < itemScheduleCollectionDriver.length) {
-      selectedTitleDriver.value = itemScheduleCollectionDriver[index];
+      selectedTitleScheduleToday.value = itemScheduleCollectionDriver[index];
     }
   }
 
+  // tranfer chose
   void toggleCheck(String collectionId) {
     if (checkedItems.contains(collectionId)) {
       checkedItems.remove(collectionId);
@@ -70,7 +68,6 @@ class ScheduleController extends GetxController {
   }
 
   // delete from collectionId
-  // Hàm xóa các mục đã chọn
   void deleteSelectedItems() {
     // Cập nhật danh sách gốc (allItems)
     allItems.removeWhere((item) => checkedItems.contains(item.collectionId));
@@ -91,6 +88,7 @@ class ScheduleController extends GetxController {
     }
   }
 
+  // check chose all
   bool isAllSelected(List<String> allCollectionIds) {
     return checkedItems.length == allCollectionIds.length;
   }
@@ -113,11 +111,11 @@ class ScheduleController extends GetxController {
     List<ScheduleCollectionTodayModel> tempList = List.from(allItems);
 
     // filter by status "Đã gom" or "Chưa gom"
-    if (selectedTitleDriver.value == "Đã gom") {
+    if (selectedTitleScheduleToday.value == "Đã gom") {
       tempList = tempList
           .where((item) => !item.timeCollection.contains("Chưa thu gom"))
           .toList();
-    } else if (selectedTitleDriver.value == "Chưa gom") {
+    } else if (selectedTitleScheduleToday.value == "Chưa gom") {
       tempList = tempList
           .where((item) => item.timeCollection.contains("Chưa thu gom"))
           .toList();
@@ -132,28 +130,28 @@ class ScheduleController extends GetxController {
 
     // filter by status "Khoáng" hoặc "Cân ký" of "Đã gom" or "Chưa gom"
     if (selectedFilter.value == "Khoáng" &&
-        selectedTitleDriver.value == "Đã gom") {
+        selectedTitleScheduleToday.value == "Đã gom") {
       tempList = tempList
           .where((item) =>
               item.status == true &&
               !item.timeCollection.contains("Chưa thu gom"))
           .toList();
     } else if (selectedFilter.value == "Cân ký" &&
-        selectedTitleDriver.value == "Đã gom") {
+        selectedTitleScheduleToday.value == "Đã gom") {
       tempList = tempList
           .where((item) =>
               item.status == false &&
               !item.timeCollection.contains("Chưa thu gom"))
           .toList();
     } else if (selectedFilter.value == "Cân ký" &&
-        selectedTitleDriver.value == "Chưa gom") {
+        selectedTitleScheduleToday.value == "Chưa gom") {
       tempList = tempList
           .where((item) =>
               item.status == false &&
               item.timeCollection.contains("Chưa thu gom"))
           .toList();
     } else if (selectedFilter.value == "Khoáng" &&
-        selectedTitleDriver.value == "Chưa gom") {
+        selectedTitleScheduleToday.value == "Chưa gom") {
       tempList = tempList
           .where((item) =>
               item.status == true &&
@@ -178,9 +176,7 @@ class ScheduleController extends GetxController {
   Offset dragStart = Offset.zero;
 
   void toggleMenu() {
-  
-      isMenuOpen.value = !isMenuOpen.value;
-    
+    isMenuOpen.value = !isMenuOpen.value;
   }
 
   void onDragStart(DragStartDetails details) {
@@ -194,4 +190,157 @@ class ScheduleController extends GetxController {
       toggleMenu();
     }
   }
+
+  /* schedule collection arranged */
+  // initial variable schedule collection today
+  var checkedItemsScheduleArranged = <String>[].obs;
+  var pageControllerScheduleArranged = PageController();
+  var selectedTitleScheduleArranged = "Tất cả".obs;
+  final List<String> itemScheduleCollectionArranged = [
+    "Tất cả",
+    "Đã gom",
+    "Chưa gom"
+  ];
+
+  // function chose item schedule arranged
+  void selectItemScheduleArranged(String title) {
+    int index = itemScheduleCollectionArranged.indexOf(title);
+    if (index != -1) {
+      selectedTitleScheduleArranged.value = title;
+      if (pageControllerScheduleArranged.hasClients) {
+        pageControllerScheduleArranged.animateToPage(
+          index,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
+  }
+
+  // Update status on swipe schedule arranged
+  void onPageChangedScheduleArranged(int index) {
+    if (index >= 0 && index < itemScheduleCollectionArranged.length) {
+      selectedTitleScheduleArranged.value =
+          itemScheduleCollectionArranged[index];
+    }
+  }
+  // tranfer chose
+  void toggleCheckScheduleArranged(String collectionId) {
+    if (checkedItemsScheduleArranged.contains(collectionId)) {
+      checkedItemsScheduleArranged.remove(collectionId);
+    } else {
+      checkedItemsScheduleArranged.add(collectionId);
+      
+    }
+  }
+
+  // check chose
+  bool isCheckedScheduleArranged(String collectionId) {
+    return checkedItemsScheduleArranged.contains(collectionId);
+  }
+
+  // delete from collectionId
+  void deleteSelectedItemsScheduleArranged() {
+    // Cập nhật danh sách gốc (allItems)
+    allItems.removeWhere((item) => checkedItemsScheduleArranged.contains(item.collectionId));
+
+    // Cập nhật danh sách hiển thị sau khi xóa
+    filterDataScheduleArranged();
+
+    // Xóa danh sách mục đã chọn
+    checkedItemsScheduleArranged.clear();
+  }
+
+  // chose all
+  void toggleSelectAllScheduleArranged(List<String> allCollectionIds) {
+    if (checkedItemsScheduleArranged.length == allCollectionIds.length) {
+      checkedItemsScheduleArranged.clear();
+    } else {
+      checkedItemsScheduleArranged.assignAll(allCollectionIds);
+    }
+  }
+
+  // check chose all
+  bool isAllSelectedScheduleArranged(List<String> allCollectionIds) {
+    return checkedItemsScheduleArranged.length == allCollectionIds.length;
+  }
+
+  // filter
+  // list original
+  final List<ScheduleCollectionTodayModel> allItemsScheduleArranged = itemCollectionTodayDatas;
+  var isLoadingScheduleArranged = false.obs;
+  // status filter current
+  var selectedFilterScheduleArranged = "null".obs;
+
+  // list filtered
+  var filteredItemsScheduleArranged = <ScheduleCollectionTodayModel>[].obs;
+
+  // function filter by status
+  void filterDataScheduleArranged() async {
+    // start
+    isLoadingScheduleArranged.value = true;
+    await Future.delayed(const Duration(milliseconds: 1000));
+    List<ScheduleCollectionTodayModel> tempList = List.from(allItemsScheduleArranged);
+
+    // filter by status "Đã gom" or "Chưa gom"
+    if (selectedTitleScheduleArranged.value == "Đã gom") {
+      tempList = tempList
+          .where((item) => !item.timeCollection.contains("Chưa thu gom"))
+          .toList();
+    } else if (selectedTitleScheduleArranged.value == "Chưa gom") {
+      tempList = tempList
+          .where((item) => item.timeCollection.contains("Chưa thu gom"))
+          .toList();
+    }
+
+    // filter by status "Khoáng" hoặc "Cân ký" of Today
+    if (selectedFilterScheduleArranged.value == "Khoáng") {
+      tempList = tempList.where((item) => item.status == true).toList();
+    } else if (selectedFilterScheduleArranged.value == "Cân ký") {
+      tempList = tempList.where((item) => item.status == false).toList();
+    }
+
+    // filter by status "Khoáng" hoặc "Cân ký" of "Đã gom" or "Chưa gom"
+    if (selectedFilterScheduleArranged.value == "Khoáng" &&
+        selectedTitleScheduleArranged.value == "Đã gom") {
+      tempList = tempList
+          .where((item) =>
+              item.status == true &&
+              !item.timeCollection.contains("Chưa thu gom"))
+          .toList();
+    } else if (selectedFilterScheduleArranged.value == "Cân ký" &&
+        selectedTitleScheduleArranged.value == "Đã gom") {
+      tempList = tempList
+          .where((item) =>
+              item.status == false &&
+              !item.timeCollection.contains("Chưa thu gom"))
+          .toList();
+    } else if (selectedFilterScheduleArranged.value == "Cân ký" &&
+        selectedTitleScheduleArranged.value == "Chưa gom") {
+      tempList = tempList
+          .where((item) =>
+              item.status == false &&
+              item.timeCollection.contains("Chưa thu gom"))
+          .toList();
+    } else if (selectedFilterScheduleArranged.value == "Khoáng" &&
+        selectedTitleScheduleArranged.value == "Chưa gom") {
+      tempList = tempList
+          .where((item) =>
+              item.status == true &&
+              item.timeCollection.contains("Chưa thu gom"))
+          .toList();
+    }
+
+    // update list filtered
+    filteredItemsScheduleArranged.value = tempList;
+    // end
+    isLoadingScheduleArranged.value = false;
+  }
+
+  // update filter
+  void updateFilterScheduleArranged(String filter) {
+    selectedFilterScheduleArranged.value = filter;
+    filterDataScheduleArranged();
+  }
+
 }

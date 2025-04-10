@@ -137,54 +137,54 @@ class _ScheduleCollectionTodayAdminScreenState
                 ),
                 Row(
                   children: [
-                    Obx(
-                      () => controller.checkedItems.isNotEmpty
-                          ? Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () => controller.toggleSelectAll(
-                                    controller.filteredItems
-                                        .map((e) => e.collectionId)
-                                        .toList(),
-                                  ),
-                                  child: Container(
-                                    width: 5.w,
-                                    height: 5.w,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.black, width: 0.5),
-                                      borderRadius: BorderRadius.circular(1.w),
-                                      color: controller.isAllSelected(
-                                        controller.filteredItems
-                                            .map((e) => e.collectionId)
-                                            .toList(),
-                                      )
-                                          ? Colors.red
-                                          : Colors.white,
-                                    ),
-                                    child: controller.isAllSelected(
-                                      controller.filteredItems
-                                          .map((e) => e.collectionId)
-                                          .toList(),
-                                    )
-                                        ? Icon(Icons.check,
-                                            color: Colors.white, size: 3.w)
-                                        : null,
-                                  ),
-                                ),
-                                SizedBox(width: 1.w),
-                                Text("Chọn tất cả",
-                                    style: PrimaryFont.bodyTextMedium()),
-                              ],
-                            )
-                          : const SizedBox(),
-                    ),
+                    // Obx(
+                    //   () => controller.checkedItems.isNotEmpty
+                    //       ? Row(
+                    //           children: [
+                    //             GestureDetector(
+                    //               onTap: () => controller.toggleSelectAll(
+                    //                 controller.filteredItems
+                    //                     .map((e) => e.collectionId)
+                    //                     .toList(),
+                    //               ),
+                    //               child: Container(
+                    //                 width: 5.w,
+                    //                 height: 5.w,
+                    //                 decoration: BoxDecoration(
+                    //                   border: Border.all(
+                    //                       color: Colors.black, width: 0.5),
+                    //                   borderRadius: BorderRadius.circular(1.w),
+                    //                   color: controller.isAllSelected(
+                    //                     controller.filteredItems
+                    //                         .map((e) => e.collectionId)
+                    //                         .toList(),
+                    //                   )
+                    //                       ? Colors.red
+                    //                       : Colors.white,
+                    //                 ),
+                    //                 child: controller.isAllSelected(
+                    //                   controller.filteredItems
+                    //                       .map((e) => e.collectionId)
+                    //                       .toList(),
+                    //                 )
+                    //                     ? Icon(Icons.check,
+                    //                         color: Colors.white, size: 3.w)
+                    //                     : null,
+                    //               ),
+                    //             ),
+                    //             SizedBox(width: 1.w),
+                    //             Text("Chọn tất cả",
+                    //                 style: PrimaryFont.bodyTextMedium()),
+                    //           ],
+                    //         )
+                    //       : const SizedBox(),
+                    // ),
                     const Spacer(),
-                    Obx(
-                      () => controller.checkedItems.isNotEmpty
-                          ? GestureDetector(
+                    GestureDetector(
                               onTap: () {
-                                controller.deleteSelectedItems();
+                               if(controller.checkedItems.isNotEmpty){
+                                 controller.deleteSelectedItems();
+                               }
                               },
                               child: Row(
                                 children: [
@@ -197,9 +197,9 @@ class _ScheduleCollectionTodayAdminScreenState
                                   ),
                                 ],
                               ),
-                            )
-                          : const SizedBox(),
-                    ),
+                            ),
+                          // : const SizedBox(),
+                    
                     SizedBox(width: 3.w),
                     PopupMenuButton<String>(
                       color: Colors.white,
@@ -228,8 +228,8 @@ class _ScheduleCollectionTodayAdminScreenState
                 ),
                 Expanded(
                   child: PageView(
-                    controller: controller.pageControllerDriver,
-                    onPageChanged: controller.onPageChangedScheduleDriver,
+                    controller: controller.pageControllerScheduleToday,
+                    onPageChanged: controller.onPageChangedScheduleToday,
                     children: controller.itemScheduleCollectionDriver.map(
                       (title) {
                         return Obx(
@@ -304,14 +304,14 @@ class _ScheduleCollectionTodayAdminScreenState
           Obx(
             () => AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
-              right: controller.isMenuOpen.value ? 0 : -50.w,
+              right: controller.isMenuOpen.value ? 0 : -100.w,
               top: 5,
               bottom: 0,
               child: GestureDetector(
                 onHorizontalDragStart: controller.onDragStart,
                 onHorizontalDragUpdate: controller.onDragUpdate,
                 child: Container(
-                  width: 50.w,
+                  width: 100.w,
                   decoration: BoxDecoration(
                     color: kPrimaryColor,
                     borderRadius: const BorderRadius.only(
@@ -572,12 +572,12 @@ class _ItemListCollection extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        controller.selectItemScheduleDriver(title);
+        controller.selectItemScheduleToday(title);
         controller.updateFilter(title);
       },
       child: Obx(
         () {
-          bool isSelected = controller.selectedTitleDriver.value == title;
+          bool isSelected = controller.selectedTitleScheduleToday.value == title;
           return IntrinsicWidth(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
