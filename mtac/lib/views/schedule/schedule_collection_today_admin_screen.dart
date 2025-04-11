@@ -6,6 +6,8 @@ import 'package:mtac/controllers/schedule_controller.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
+import 'package:mtac/widgets/menu_remote_main.dart';
+import 'package:mtac/widgets/schedule_widget/curved_line.dart';
 import 'package:sizer/sizer.dart';
 
 class ScheduleCollectionTodayAdminScreen extends StatefulWidget {
@@ -20,6 +22,14 @@ class _ScheduleCollectionTodayAdminScreenState
     extends State<ScheduleCollectionTodayAdminScreen> {
   //
   final ScheduleController controller = Get.put(ScheduleController());
+  bool showMenu = false;
+
+  void toggleMenu() {
+    setState(() {
+      showMenu = !showMenu;
+      print("Show menu: $showMenu");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +57,8 @@ class _ScheduleCollectionTodayAdminScreenState
             const Spacer(),
             GestureDetector(
               onTap: () {
-                controller.toggleMenu();
-                //print("hello ${controller.isMenuOpen.value}");
+                toggleMenu();
+                print("hello ${controller.isMenuOpen.value}");
               },
               child: Container(
                 width: 10.w,
@@ -181,25 +191,25 @@ class _ScheduleCollectionTodayAdminScreenState
                     // ),
                     const Spacer(),
                     GestureDetector(
-                              onTap: () {
-                               if(controller.checkedItems.isNotEmpty){
-                                 controller.deleteSelectedItems();
-                               }
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(HugeIcons.strokeRoundedDelete01,
-                                      color: Colors.red, size: 5.w),
-                                  SizedBox(width: 1.w),
-                                  Text(
-                                    "Xoá",
-                                    style: PrimaryFont.bodyTextMedium(),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          // : const SizedBox(),
-                    
+                      onTap: () {
+                        if (controller.checkedItems.isNotEmpty) {
+                          controller.deleteSelectedItems();
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Icon(HugeIcons.strokeRoundedDelete01,
+                              color: Colors.red, size: 5.w),
+                          SizedBox(width: 1.w),
+                          Text(
+                            "Xoá",
+                            style: PrimaryFont.bodyTextMedium(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // : const SizedBox(),
+
                     SizedBox(width: 3.w),
                     PopupMenuButton<String>(
                       color: Colors.white,
@@ -301,86 +311,274 @@ class _ScheduleCollectionTodayAdminScreenState
             ),
           ),
           // Menu glide from right
-          Obx(
-            () => AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
-              right: controller.isMenuOpen.value ? 0 : -100.w,
-              top: 5,
-              bottom: 0,
-              child: GestureDetector(
-                onHorizontalDragStart: controller.onDragStart,
-                onHorizontalDragUpdate: controller.onDragUpdate,
-                child: Container(
-                  width: 100.w,
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 5,
-                        offset: const Offset(-2, 0),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ListTile(
-                        leading: Icon(
-                          HugeIcons.strokeRoundedCalendar03,
-                          size: 5.w,
-                          color: Colors.white,
-                        ),
-                        title: Text(
-                          'Lịch gom hôm nay',
-                          style: PrimaryFont.bodyTextMedium()
-                              .copyWith(color: Colors.white),
-                        ),
-                        onTap: controller.toggleMenu,
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          HugeIcons.strokeRoundedAppointment02,
-                          size: 5.w,
-                          color: Colors.white,
-                        ),
-                        title: Text(
-                          'Lịch gom đã sắp',
-                          style: PrimaryFont.bodyTextMedium()
-                              .copyWith(color: Colors.white),
-                        ),
-                        onTap: () {
-                          controller.toggleMenu;
-                          Get.toNamed(AppRoutes.scheduleCollectionArranged);
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          HugeIcons.strokeRoundedCalendar03,
-                          size: 5.w,
-                          color: Colors.white,
-                        ),
-                        title: Text(
-                          'Lịch gom chưa sắp',
-                          style: PrimaryFont.bodyTextMedium()
-                              .copyWith(color: Colors.white),
-                        ),
-                        onTap: () {
-                          controller.toggleMenu;
-                          Get.toNamed(AppRoutes.scheduleCollection);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+        
+            MenuRemoteMain(
+              isMenuOpen: showMenu,
+              onClose: toggleMenu,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget menuRemoteMain() {
+    return Obx(
+      () => AnimatedPositioned(
+        duration: const Duration(milliseconds: 300),
+        right: controller.isMenuOpen.value ? 0 : -60.w,
+        top: 5,
+        bottom: 0,
+        child: GestureDetector(
+          onHorizontalDragStart: controller.onDragStart,
+          onHorizontalDragUpdate: controller.onDragUpdate,
+          child: Container(
+            width: 60.w,
+            decoration: BoxDecoration(
+              color: kPrimaryColor,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 5,
+                  offset: const Offset(-2, 0),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 5.w,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Icon(
+                      HugeIcons.strokeRoundedCalendar03,
+                      size: 5.w,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Text(
+                      'Lịch thu gom',
+                      style: PrimaryFont.bodyTextMedium()
+                          .copyWith(color: Colors.white),
+                    ),
+                    // SizedBox(
+                    //   width: 10.w,
+                    // ),
+                    // Icon(
+                    //   HugeIcons.strokeRoundedArrowDown01,
+                    //   size: 5.w,
+                    //   color: Colors.white,
+                    // ),
+                  ],
+                ),
+                Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 7.w),
+                      width: 1,
+                      height: 12.h,
+                      color: Colors.grey,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 5.w,
+                        ),
+                        Row(
+                          children: [
+                            CustomPaint(
+                              size: const Size(30, 0),
+                              painter: CurvedLinePainter(),
+                            ),
+                            Container(
+                              width: 40.w,
+                              height: 10.w,
+                              decoration: BoxDecoration(
+                                color: Colors.blue.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(5.w),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.blue,
+                                    offset: Offset(2, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    'Lịch gom hôm nay',
+                                    style: PrimaryFont.bodyTextMedium()
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                  Container(
+                                    width: 5.w,
+                                    height: 5.w,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.red),
+                                    child: Text(
+                                      '6',
+                                      style: PrimaryFont.bodyTextBold()
+                                          .copyWith(color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 2.w,
+                        ),
+                        Row(
+                          children: [
+                            CustomPaint(
+                              size: const Size(30, 0),
+                              painter: CurvedLinePainter(),
+                            ),
+                            Text(
+                              'Lịch gom đã sắp',
+                              style: PrimaryFont.bodyTextMedium()
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 2.w,
+                        ),
+                        Row(
+                          children: [
+                            CustomPaint(
+                              size: const Size(30, 0),
+                              painter: CurvedLinePainter(),
+                            ),
+                            Text(
+                              'Lịch gom chưa sắp',
+                              style: PrimaryFont.bodyTextMedium()
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 5.w,
+                ),
+                //
+                //
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Icon(
+                      HugeIcons.strokeRoundedDollarSquare,
+                      size: 5.w,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Text(
+                      'Công nợ',
+                      style: PrimaryFont.bodyTextBold()
+                          .copyWith(color: Colors.white),
+                    ),
+                    // SizedBox(
+                    //   width: 10.w,
+                    // ),
+                    // Icon(
+                    //   HugeIcons.strokeRoundedArrowDown01,
+                    //   size: 5.w,
+                    //   color: Colors.white,
+                    // ),
+                  ],
+                ),
+                SizedBox(
+                  height: 5.w,
+                ),
+                //
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Icon(
+                      HugeIcons.strokeRoundedAlertSquare,
+                      size: 5.w,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Text(
+                      'Thông tin xe',
+                      style: PrimaryFont.bodyTextBold()
+                          .copyWith(color: Colors.white),
+                    ),
+                    // SizedBox(
+                    //   width: 10.w,
+                    // ),
+                    // Icon(
+                    //   HugeIcons.strokeRoundedArrowDown01,
+                    //   size: 5.w,
+                    //   color: Colors.white,
+                    // ),
+                  ],
+                ),
+                SizedBox(
+                  height: 5.w,
+                ),
+                //
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Icon(
+                      HugeIcons.strokeRoundedShieldUser,
+                      size: 5.w,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Text(
+                      'Năng lực nhà thầu',
+                      style: PrimaryFont.bodyTextBold()
+                          .copyWith(color: Colors.white),
+                    ),
+                    // SizedBox(
+                    //   width: 10.w,
+                    // ),
+                    // Icon(
+                    //   HugeIcons.strokeRoundedArrowDown01,
+                    //   size: 5.w,
+                    //   color: Colors.white,
+                    // ),
+                  ],
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -577,7 +775,8 @@ class _ItemListCollection extends StatelessWidget {
       },
       child: Obx(
         () {
-          bool isSelected = controller.selectedTitleScheduleToday.value == title;
+          bool isSelected =
+              controller.selectedTitleScheduleToday.value == title;
           return IntrinsicWidth(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
