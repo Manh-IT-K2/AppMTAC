@@ -131,6 +131,9 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 3.w,
+              ),
               Text(
                 "Danh sách chi phí đi kèm",
                 style: PrimaryFont.headerTextBold(),
