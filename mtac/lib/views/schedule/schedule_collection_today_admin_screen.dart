@@ -47,7 +47,7 @@ class _ScheduleCollectionTodayAdminScreenState
         title: Row(
           children: [
             GestureDetector(
-              onTap: () => Get.back(),
+              onTap: () => Get.toNamed(AppRoutes.main),
               child: Icon(
                 Icons.arrow_back_ios,
                 size: 5.w,
@@ -311,11 +311,10 @@ class _ScheduleCollectionTodayAdminScreenState
             ),
           ),
           // Menu glide from right
-        
-            MenuRemoteMain(
-              isMenuOpen: showMenu,
-              onClose: toggleMenu,
-            ),
+          MenuRemoteMain(
+            isMenuOpen: showMenu,
+            onClose: toggleMenu,
+          ),
         ],
       ),
     );
