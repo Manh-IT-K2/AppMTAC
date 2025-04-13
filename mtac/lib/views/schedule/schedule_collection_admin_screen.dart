@@ -2,12 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/constants/text.dart';
 import 'package:mtac/data/schedule_screen/item_trip_collection.dart';
+import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
+import 'package:mtac/widgets/menu_remote_main.dart';
 import 'package:sizer/sizer.dart';
 
-class ScheduleCollectionAdminScreen extends StatelessWidget {
+class ScheduleCollectionAdminScreen extends StatefulWidget {
   const ScheduleCollectionAdminScreen({super.key});
+
+  @override
+  State<ScheduleCollectionAdminScreen> createState() =>
+      _ScheduleCollectionAdminScreenState();
+}
+
+class _ScheduleCollectionAdminScreenState
+    extends State<ScheduleCollectionAdminScreen> {
+  bool showMenu = false;
+
+  void toggleMenu() {
+    setState(() {
+      showMenu = !showMenu;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +35,7 @@ class ScheduleCollectionAdminScreen extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                Get.back();
+               Get.toNamed(AppRoutes.scheduleCollectionToday);
               },
               child: Icon(
                 Icons.arrow_back_ios,
@@ -34,17 +51,51 @@ class ScheduleCollectionAdminScreen extends StatelessWidget {
                     PrimaryFont.headerTextBold().copyWith(color: Colors.black),
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                toggleMenu();
+                //print("hello ${controller.isMenuOpen.value}");
+              },
+              child: Container(
+                width: 10.w,
+                height: 10.w,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.w),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(2, 2),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  Icons.menu,
+                  color: Colors.black,
+                  size: 5.w,
+                ),
+              ),
+            ),
           ],
         ),
         backgroundColor: Colors.white,
         centerTitle: false,
       ),
-      body: const Column(
-        children: [
-          _HeaderScheduleCollectionAdminScreen(),
-          _BodyScheduleCollectionAdminScreen(),
-        ],
-      ),
+      body: Stack(children: [
+        const Column(
+          children: [
+            _HeaderScheduleCollectionAdminScreen(),
+            _BodyScheduleCollectionAdminScreen(),
+          ],
+        ),
+        // Menu glide from right
+        MenuRemoteMain(
+          isMenuOpen: showMenu,
+          onClose: toggleMenu,
+        ),
+      ]),
     );
   }
 }

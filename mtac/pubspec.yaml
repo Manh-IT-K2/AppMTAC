@@ -47,15 +47,6 @@ dependencies:
   
   # preview mobile, ios, ipad,destop
   device_preview: ^1.1.0
-  
-  # map
-  google_maps_flutter: ^2.10.1
-  # Open Google Map, Phone Call
-  url_launcher: ^6.3.1
-  # Convert LatLng coordinates to specific address
-  geocoding: ^3.0.0
-  # Get current location
-  geolocator: ^13.0.2
 
   # icon
   hugeicons: ^0.0.10
