@@ -60,12 +60,12 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
                 width: 100.w,
                 //height: 60.h,
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Colors.grey.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(5.w),
                 ),
                 child: Column(
-                  //mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                 //crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(
                       height: 5.w,
@@ -213,6 +213,7 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
                 "Danh sách hành hoá",
                 style: PrimaryFont.headerTextBold(),
               ),
+              const Divider(),
               SizedBox(
                 height: 5.w,
               ),
@@ -296,12 +297,13 @@ class _ItemInforDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 8.w,
-      width: 100.w,
+      width: 100.w, 
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        
         children: [
           const SizedBox(
-            width: 12.0,
+            width: 20.0,
           ),
           Text(
             title,
