@@ -27,7 +27,7 @@ class _ScheduleCollectionTodayAdminScreenState
   void toggleMenu() {
     setState(() {
       showMenu = !showMenu;
-      print("Show menu: $showMenu");
+      //print("Show menu: $showMenu");
     });
   }
 
@@ -41,6 +41,7 @@ class _ScheduleCollectionTodayAdminScreenState
     String today = "$day - $month - $year";
 
     return Scaffold(
+      
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,

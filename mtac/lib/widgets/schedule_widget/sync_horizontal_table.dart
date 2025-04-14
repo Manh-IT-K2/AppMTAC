@@ -48,14 +48,21 @@ class _SyncHorizontalTableState extends State<SyncHorizontalTable> {
 
     return Column(
       children: [
-        // Header
-        SingleChildScrollView(
+        // Header with scrollbar
+        Scrollbar(
           controller: _headerScrollController,
-          scrollDirection: Axis.horizontal,
-          child: Row(children: widget.headers),
+          thumbVisibility: true,
+          //trackVisibility: true,
+          thickness: 7,
+          radius: const Radius.circular(8), 
+          child: SingleChildScrollView(
+            controller: _headerScrollController,
+            scrollDirection: Axis.horizontal,
+            child: Row(children: widget.headers),
+          ),
         ),
         const SizedBox(height: 10),
-        // Body
+        // Body with scrollbar
         Expanded(
           child: SingleChildScrollView(
             controller: _bodyScrollController,
