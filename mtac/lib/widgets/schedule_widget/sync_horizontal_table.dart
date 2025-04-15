@@ -54,7 +54,7 @@ class _SyncHorizontalTableState extends State<SyncHorizontalTable> {
           thumbVisibility: true,
           //trackVisibility: true,
           thickness: 7,
-          radius: const Radius.circular(8), 
+          radius: const Radius.circular(8),
           child: SingleChildScrollView(
             controller: _headerScrollController,
             scrollDirection: Axis.horizontal,
@@ -69,20 +69,13 @@ class _SyncHorizontalTableState extends State<SyncHorizontalTable> {
             scrollDirection: Axis.horizontal,
             child: SizedBox(
               width: tableWidth,
-              child: CustomScrollView(
-                slivers: [
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        return SizedBox(
-                          height: widget.rowHeight,
-                          child: Row(children: widget.rows[index]),
-                        );
-                      },
-                      childCount: widget.rows.length,
-                    ),
-                  )
-                ],
+              child: Column(
+                children: List.generate(widget.rows.length, (index) {
+                  return SizedBox(
+                    height: widget.rowHeight,
+                    child: Row(children: widget.rows[index]),
+                  );
+                }),
               ),
             ),
           ),
