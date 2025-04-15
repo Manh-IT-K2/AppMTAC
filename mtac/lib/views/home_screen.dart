@@ -17,6 +17,7 @@ class HomeScreen extends StatelessWidget {
         preferredSize: Size.fromHeight(10.h),
         child: AppBar(
           backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
           centerTitle: false,
           flexibleSpace: Padding(
             padding: const EdgeInsets.only(left: 12, bottom: 10),

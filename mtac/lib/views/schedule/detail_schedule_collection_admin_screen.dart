@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:mtac/data/schedule_screen/item_cost_collection.dart';
 import 'package:mtac/data/schedule_screen/item_merchandise_collection.dart';
 import 'package:mtac/themes/color.dart';
@@ -30,18 +31,28 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        title: Align(
-          alignment: Alignment.centerLeft,
-          child: GestureDetector(
-            onTap: () {
-              Get.back();
-            },
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-              size: 5.w,
+        title: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+                size: 5.w,
+              ),
             ),
-          ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Chi tiết lịch gom hôm nay",
+                  style: PrimaryFont.headerTextBold(),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       body: Padding(
@@ -51,10 +62,6 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Thông tin chi tiết",
-                style: PrimaryFont.headerTextBold(),
-              ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 3.w),
                 width: 100.w,
@@ -65,57 +72,107 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
                 ),
                 child: Column(
                   //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                 //crossAxisAlignment: CrossAxisAlignment.stretch,
+                  //crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(
                       height: 5.w,
                     ),
                     _ItemInforDetail(
                       title: "Tên công ty: ",
+                      icon: HugeIcons.strokeRoundedNewOffice,
                       subTitle: nameBusiness,
                     ),
                     _ItemInforDetail(
-                      title: "Ngày thu gom: ",
-                      subTitle: dayCollection,
+                      title: "Ngày & giờ thu gom: ",
+                      icon: HugeIcons.strokeRoundedAppointment02,
+                      subTitle: "$dayCollection • $timeCollection",
                     ),
                     _ItemInforDetail(
                       title: "Biển số xe: ",
+                      icon: HugeIcons.strokeRoundedTruckDelivery,
                       subTitle: numberPlate,
                     ),
                     _ItemInforDetail(
-                      title: "Thời gian thu gom: ",
-                      subTitle: timeCollection,
-                    ),
-                    _ItemInforDetail(
                       title: "Loại hàng: ",
+                      icon: HugeIcons.strokeRoundedPackageMoving,
                       subTitle: typeWaste,
+                    ),
+                    const Divider(),
+                    SizedBox(
+                      height: 3.w,
                     ),
                     _ItemInforDetail(
                       title: "Ngày gửi lịch gom: ",
+                      icon: HugeIcons.strokeRoundedCalendarCheckIn01,
                       subTitle: daySendCollection,
                     ),
                     _ItemInforDetail(
                       title: "Đơn giá vận chuyển: ",
+                      icon: HugeIcons.strokeRoundedSaveMoneyDollar,
                       subTitle: costTransit,
+                    ),
+                   
+                    SizedBox(
+                      height: 8.w,
+                      width: 100.w,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            width: 20.0,
+                          ),
+                          Icon(
+                            HugeIcons.strokeRoundedDocumentValidation,
+                            size: 5.w,
+                            color: Colors.black,
+                          ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          Text(
+                            "Trạng thái công nợ: ",
+                            style: PrimaryFont.bodyTextMedium(),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(2.w),
+                            decoration: BoxDecoration(
+                              color: Colors.green.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(3.w),
+                            ),
+                            child: Text(
+                              debtStatus,
+                              style: PrimaryFont.bodyTextBold(),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 12.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    SizedBox(
+                      height: 3.w,
                     ),
                     _ItemInforDetail(
                       title: "Thông tin người liên hệ: ",
+                      icon: HugeIcons.strokeRoundedCallRinging04,
                       subTitle: contactPerson,
-                    ),
-                    _ItemInforDetail(
-                      title: "Trạng thái công nợ: ",
-                      subTitle: debtStatus,
                     ),
                     const _ItemInforDetail(
                       title: "Số lượng nhân công: ",
-                      subTitle:
-                          "Nguyễn Văn A, Lê Văn B Nguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn BNguyễn Văn A, Lê Văn B",
+                      icon: HugeIcons.strokeRoundedLabor,
+                      subTitle: "Nguyễn Văn A, Lê Văn B Nguyễn Văn A",
                     ),
+                    const Divider(),
                     SizedBox(
                       height: 3.w,
                     ),
                     _ItemInforDetail(
                       title: "Địa chỉ thu gom: ",
+                      icon: HugeIcons.strokeRoundedLocation04,
                       subTitle: addressCollection,
                     ),
                     SizedBox(
@@ -123,6 +180,7 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
                     ),
                     _ItemInforDetail(
                       title: "Khu vực vận chuyển: ",
+                      icon: HugeIcons.strokeRoundedSquareArrowRightDouble,
                       subTitle: areaTransit,
                     ),
                     const SizedBox(
@@ -136,7 +194,7 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
               ),
               Text(
                 "Danh sách chi phí đi kèm",
-                style: PrimaryFont.headerTextBold(),
+                style: PrimaryFont.titleTextBold(),
               ),
               Container(
                 //padding: const EdgeInsets.all(16.0),
@@ -211,7 +269,7 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
               ),
               Text(
                 "Danh sách hành hoá",
-                style: PrimaryFont.headerTextBold(),
+                style: PrimaryFont.titleTextBold(),
               ),
               const Divider(),
               SizedBox(
@@ -247,7 +305,7 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
               imageList != null
                   ? Text(
                       "Hình ảnh thu gom",
-                      style: PrimaryFont.headerTextBold(),
+                      style: PrimaryFont.titleTextBold(),
                     )
                   : const SizedBox(),
               imageList != null
@@ -291,19 +349,28 @@ class _ItemInforDetail extends StatelessWidget {
     super.key,
     required this.title,
     required this.subTitle,
+    required this.icon,
   });
   final String title, subTitle;
+  final IconData icon;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 8.w,
-      width: 100.w, 
+      width: 100.w,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        
         children: [
           const SizedBox(
             width: 20.0,
+          ),
+          Icon(
+            icon,
+            size: 5.w,
+            color: Colors.black,
+          ),
+          const SizedBox(
+            width: 10.0,
           ),
           Text(
             title,
