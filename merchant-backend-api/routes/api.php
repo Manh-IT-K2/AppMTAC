@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ScheduleCollectionController;
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login',    [AuthController::class, 'login']);
-Route::post('/test', function () {
-    return response()->json(['message' => 'API ok']);
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('/me', [UserController::class, 'me']);
 });
 
+Route::get('/schedule-today', [ScheduleCollectionController::class, 'index']);
 
 
-// Các route yêu cầu xác thực
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-});
