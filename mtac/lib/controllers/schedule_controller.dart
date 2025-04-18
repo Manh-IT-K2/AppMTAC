@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/data/schedule_screen/item_schedule_collection_today.dart';
 import 'package:mtac/models/schedule_collection_today_model.dart';
+import 'package:mtac/services/schedule_collection_service.dart';
 
 class ScheduleController extends GetxController {
   /* schedule collection today */
@@ -19,7 +20,8 @@ class ScheduleController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    filterData();
+    fetchScheduleToday();
+    //filterData();
     filterDataScheduleArranged();
   }
 
@@ -95,7 +97,18 @@ class ScheduleController extends GetxController {
 
   // filter
   // list original
-  final List<ScheduleCollectionTodayModel> allItems = itemCollectionTodayDatas;
+  var allItems = <ScheduleCollectionTodayModel>[].obs;
+  Future<void> fetchScheduleToday() async {
+    try {
+      final result = await ScheduleCollectionService()
+          .fetchTodaySchedule(); // service bạn đã tạo
+      allItems.assignAll(result); // cập nhật list
+      filterData(); // lọc sau khi load xong
+    } catch (e) {
+      Get.snackbar('Lỗi', 'Không thể tải dữ liệu: $e');
+    }
+  }
+
   var isLoading = false.obs;
   // status filter current
   var selectedFilter = "null".obs;
@@ -224,13 +237,13 @@ class ScheduleController extends GetxController {
           itemScheduleCollectionArranged[index];
     }
   }
+
   // tranfer chose
   void toggleCheckScheduleArranged(String collectionId) {
     if (checkedItemsScheduleArranged.contains(collectionId)) {
       checkedItemsScheduleArranged.remove(collectionId);
     } else {
       checkedItemsScheduleArranged.add(collectionId);
-      
     }
   }
 
@@ -242,7 +255,8 @@ class ScheduleController extends GetxController {
   // delete from collectionId
   void deleteSelectedItemsScheduleArranged() {
     // Cập nhật danh sách gốc (allItems)
-    allItems.removeWhere((item) => checkedItemsScheduleArranged.contains(item.collectionId));
+    allItems.removeWhere(
+        (item) => checkedItemsScheduleArranged.contains(item.collectionId));
 
     // Cập nhật danh sách hiển thị sau khi xóa
     filterDataScheduleArranged();
@@ -267,7 +281,8 @@ class ScheduleController extends GetxController {
 
   // filter
   // list original
-  final List<ScheduleCollectionTodayModel> allItemsScheduleArranged = itemCollectionTodayDatas;
+  final List<ScheduleCollectionTodayModel> allItemsScheduleArranged =
+      itemCollectionTodayDatas;
   var isLoadingScheduleArranged = false.obs;
   // status filter current
   var selectedFilterScheduleArranged = "null".obs;
@@ -280,7 +295,8 @@ class ScheduleController extends GetxController {
     // start
     isLoadingScheduleArranged.value = true;
     await Future.delayed(const Duration(milliseconds: 1000));
-    List<ScheduleCollectionTodayModel> tempList = List.from(allItemsScheduleArranged);
+    List<ScheduleCollectionTodayModel> tempList =
+        List.from(allItemsScheduleArranged);
 
     // filter by status "Đã gom" or "Chưa gom"
     if (selectedTitleScheduleArranged.value == "Đã gom") {
@@ -342,5 +358,4 @@ class ScheduleController extends GetxController {
     selectedFilterScheduleArranged.value = filter;
     filterDataScheduleArranged();
   }
-
 }

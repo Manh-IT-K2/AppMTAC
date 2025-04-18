@@ -6,7 +6,7 @@ class ScheduleCollectionTodayModel {
   final String typeWaste;
   final String areaTransit;
   final String numberPlate;
-  final String numberWorker;
+  final int numberWorker;
   final String timeCollection;
   final String dayCollection;
   final String daySendCollection;
@@ -46,10 +46,10 @@ class ScheduleCollectionTodayModel {
       numberWorker: map['numberWorker'],
       timeCollection: map['timeCollection'],
       contactPerson: map['contactPerson'],
-      dayCollection: map[''],
-      daySendCollection: map[''],
-      debtStatus: map[''],
-      costTransit: map[''],
+      dayCollection: map['dayCollection'],
+      daySendCollection: map['daySendCollection'],
+      debtStatus: map['debtStatus'],
+      costTransit: map['costTransit'],
       image: map['image'] != null ? List<String>.from(map['image']) : [],
     );
   }
