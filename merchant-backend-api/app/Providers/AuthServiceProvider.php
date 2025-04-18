@@ -21,6 +21,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Passport::routes();
+        // Định nghĩa tuổi thọ cho Personal Access Token và Access Token
+        //Passport::routes();
+
+        // Đặt thời gian sống cho access token (60 phút)
+        Passport::tokensExpireIn(now()->addMinutes(60));
+
+        // Đặt thời gian sống cho refresh token (1 tháng)
+        Passport::refreshTokensExpireIn(now()->addMonths(1));
     }
 }
