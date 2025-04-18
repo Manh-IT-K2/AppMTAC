@@ -10,8 +10,6 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/me', [UserController::class, 'me']);
+    Route::get('/schedule-today', [ScheduleCollectionController::class, 'index']);
 });
-
-Route::get('/schedule-today', [ScheduleCollectionController::class, 'index']);
-
 

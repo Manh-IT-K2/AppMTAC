@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,5 +21,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        Passport::tokensCan([
+            'view-schedule' => 'Xem lịch trình',
+            'view-profile' => 'Xem thông tin cá nhân',
+        ]);
+    
+        Passport::setDefaultScope([
+            'view-profile',
+        ]);
+        
     }
 }
