@@ -20,7 +20,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-
+       // Passport::route();
         // Định nghĩa tuổi thọ cho Personal Access Token và Access Token
         //Passport::routes();
 
@@ -29,5 +29,6 @@ class AuthServiceProvider extends ServiceProvider
 
         // Đặt thời gian sống cho refresh token (1 tháng)
         Passport::refreshTokensExpireIn(now()->addMonths(1));
+
     }
 }
