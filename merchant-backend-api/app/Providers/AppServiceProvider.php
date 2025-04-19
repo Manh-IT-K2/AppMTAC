@@ -21,14 +21,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        Passport::tokensCan([
-            'view-schedule' => 'Xem lịch trình',
-            'view-profile' => 'Xem thông tin cá nhân',
-        ]);
+        // Passport::tokensCan([
+        //     'view-schedule' => 'Xem lịch trình',
+        //     'view-profile' => 'Xem thông tin cá nhân',
+        // ]);
     
-        Passport::setDefaultScope([
-            'view-profile',
-        ]);
+        // Passport::setDefaultScope([
+        //     'view-profile',
+        // ]);
         
     }
 }
