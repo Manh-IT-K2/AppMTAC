@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/data/schedule_screen/item_schedule_collection_today.dart';
 import 'package:mtac/models/schedule_collection_today_model.dart';
-import 'package:mtac/services/schedule_collection_service.dart';
+import 'package:mtac/services/schedule/schedule_collection_service.dart';
 
 class ScheduleController extends GetxController {
   /* schedule collection today */
