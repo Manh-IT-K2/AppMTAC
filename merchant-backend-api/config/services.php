@@ -13,11 +13,12 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
-    'passport' => [
-        'login_endpoint' => env('APP_URL') . '/oauth/token',
-        'client_id' => env('PASSPORT_CLIENT_ID'),
-        'client_secret' => env('PASSPORT_CLIENT_SECRET'),
-    ],
+   'passport' => [
+    'login_endpoint' => env('PASSPORT_LOGIN_ENDPOINT', 'http://127.0.0.1:8000/oauth/token'),
+    'client_id' => env('PASSPORT_CLIENT_ID'),
+    'client_secret' => env('PASSPORT_CLIENT_SECRET'),
+],
+
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),

@@ -13,3 +13,4 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/schedule-today', [ScheduleCollectionController::class, 'index']);
 });
 
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:api');

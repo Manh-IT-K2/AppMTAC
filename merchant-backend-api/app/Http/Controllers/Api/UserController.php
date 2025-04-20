@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
@@ -7,11 +8,14 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Laravel\Passport\HasApiTokens;
-
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Laravel\Passport\Http\Controllers\AccessTokenController;
 
 class UserController extends Controller
 {
+    // function register
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -21,7 +25,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 404);
+            return response()->json($validator->errors(), 422);
         }
 
         $user = User::create([
@@ -30,43 +34,67 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Tạo token cho user sau khi đăng ký
-        $tokenResult = $user->createToken('Personal Access Token');
         return response()->json([
-            'token_type'   => 'Bearer',
-            'access_token' => $tokenResult->accessToken,
-            'user'         => $user,
-        ]);
+            'message' => 'Đăng ký thành công',
+            'user'    => $user,
+        ], 200);
     }
 
+    // function login
     public function login(Request $request)
     {
-        $request->validate([
-            'username' => 'required|email',
-            'password' => 'required'
-        ]);
+        try {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required'
+            ]);
 
-        $response = Http::asForm()->post(config('services.passport.login_endpoint'), [
-            'grant_type' => 'password',
-            'client_id' => config('services.passport.client_id'),
-            'client_secret' => config('services.passport.client_secret'),
-            'username' => $request->username,
-            'password' => $request->password,
-            'scope' => '',
-        ]);
+            // Create fake request to call internal AccessTokenController
+            $serverRequest = (new Psr17Factory)->createServerRequest('POST', '/oauth/token')
+                ->withParsedBody([
+                    'grant_type' => 'password',
+                    'client_id' => config('services.passport.client_id'),
+                    'client_secret' => config('services.passport.client_secret'),
+                    'username' => $request->email,
+                    'password' => $request->password,
+                    'scope' => '',
+                ]);
 
-        if ($response->successful()) {
-            return response()->json($response->json(), 200);
+            $tokenController = app()->make(AccessTokenController::class);
+            $response = $tokenController->issueToken($serverRequest);
+
+            // get content body
+            $body = $response->getContent();
+            $data = json_decode($body, true);
+
+            return response()->json([
+                'message' => 'Login success',
+                'details' => $data
+            ], $response->getStatusCode());
+        } catch (\Exception $e) {
+            Log::error('Exception in login', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'message' => 'Server Error',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        return response()->json([
-            'message' => 'Login failed',
-            'details' => $response->json()
-        ], $response->status());
     }
 
+    //
     public function me(Request $request)
     {
         return response()->json($request->user());
+    }
+
+    // function logout
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+
+        return response()->json(['message' => 'Đăng xuất thành công']);
     }
 }
