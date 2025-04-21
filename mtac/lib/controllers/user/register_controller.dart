@@ -39,11 +39,11 @@ class RegisterController extends GetxController {
 
     if (success) {
       Get.snackbar("Thành công", "Đăng ký thành công!",
-          snackPosition: SnackPosition.BOTTOM);
-      //Get.offAllNamed('/home'); // Thay đổi theo route màn hình chính của bạn
+          snackPosition: SnackPosition.TOP);
+      Get.offAllNamed('/login');
     } else {
       Get.snackbar("Lỗi", "Đăng ký thất bại. Vui lòng kiểm tra lại.",
-          snackPosition: SnackPosition.BOTTOM);
+          snackPosition: SnackPosition.TOP);
     }
   }
 

@@ -5,6 +5,7 @@ import 'package:mtac/views/schedule/schedule_collection_arranged_admin_screen.da
 import 'package:mtac/views/schedule/schedule_collection_today_admin_screen.dart';
 import 'package:mtac/views/main_screen.dart';
 import 'package:mtac/views/schedule/schedule_collection_admin_screen.dart';
+import 'package:mtac/views/user/login_screen.dart';
 import 'package:mtac/views/user/register_screen.dart';
 
 class AppPages {
@@ -16,6 +17,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.register,
       page: () => const RegisterScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.login,
+      page: () => const LoginScreen(),
     ),
     GetPage(
       name: AppRoutes.scheduleCollection,

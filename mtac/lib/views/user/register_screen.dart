@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mtac/controllers/register_controller.dart';
+import 'package:mtac/controllers/user/register_controller.dart';
+import 'package:mtac/routes/app_routes.dart';
+import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
-
+import 'package:sizer/sizer.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -25,7 +27,8 @@ class RegisterScreen extends StatelessWidget {
                 Center(
                   child: Text(
                     "Screen Register",
-                    style: PrimaryFont.headerTextBold().copyWith(color: Colors.black),
+                    style: PrimaryFont.headerTextBold()
+                        .copyWith(color: Colors.black),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -37,8 +40,9 @@ class RegisterScreen extends StatelessWidget {
                     labelText: 'Username',
                     border: OutlineInputBorder(),
                   ),
-                  validator: (value) =>
-                      value == null || value.isEmpty ? 'Vui lòng nhập username' : null,
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'Vui lòng nhập username'
+                      : null,
                 ),
                 const SizedBox(height: 16),
 
@@ -51,7 +55,8 @@ class RegisterScreen extends StatelessWidget {
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'Vui lòng nhập email';
+                    if (value == null || value.isEmpty)
+                      return 'Vui lòng nhập email';
                     if (!value.contains('@')) return 'Email không hợp lệ';
                     return null;
                   },
@@ -113,6 +118,27 @@ class RegisterScreen extends StatelessWidget {
                     child: const Text('Đăng ký'),
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Bạn đã có tài khoản?",
+                      style: PrimaryFont.bodyTextMedium()
+                          .copyWith(color: Colors.black),
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    GestureDetector(
+                      onTap: () => Get.toNamed(AppRoutes.login),
+                      child: Text(
+                        "Đăng nhập",
+                        style: PrimaryFont.bodyTextMedium()
+                            .copyWith(color: kPrimaryColor),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
