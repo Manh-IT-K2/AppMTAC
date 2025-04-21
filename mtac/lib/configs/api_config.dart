@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 
 class ApiConfig {
   // initial 
-  static const String baseUrl = 'http://127.0.0.1:8000/api';
+  static const String baseUrl = 'http://127.0.0.1:8000';
 
   //
   Future<bool> checkServerStatus() async {
-    final url = Uri.parse("http://127.0.0.1:8000"); // Uri.parse("$baseUrl/ping")
+    final url = Uri.parse(baseUrl); // Uri.parse("$baseUrl/ping")
 
     try {
       final response = await http.get(url).timeout(const Duration(seconds: 5));

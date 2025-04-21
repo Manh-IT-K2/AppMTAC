@@ -10,12 +10,12 @@ class ScheduleCollectionService {
 
   Future<List<ScheduleCollectionTodayModel>> fetchTodaySchedule() async {
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('access_token'); // access_token đã lưu sau khi login
+    final token = prefs.getString('access_token');
 
     if (token == null) throw Exception('Chưa có token, cần login lại');
 
     final response = await http.get(
-      Uri.parse('$baseUrl/schedule-today'),
+      Uri.parse('$baseUrl/api/schedule-today'),
       headers: {
         'Authorization': 'Bearer $token',
         'Accept': 'application/json',

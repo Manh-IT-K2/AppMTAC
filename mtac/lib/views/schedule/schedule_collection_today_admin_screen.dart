@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:mtac/controllers/schedule_controller.dart';
+import 'package:mtac/controllers/schedule/schedule_controller.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';

@@ -14,7 +14,7 @@ class RegisterService extends GetxService {
     required String password,
     required String confirmPassword,
   }) async {
-    final url = Uri.parse("$baseUrl/register");
+    final url = Uri.parse("$baseUrl/api/register");
 
     final response = await http.post(
       url,

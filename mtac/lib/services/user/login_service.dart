@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mtac/configs/api_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
-
   // initial url
   final String baseUrl = ApiConfig.baseUrl;
 
@@ -15,7 +13,7 @@ class LoginService {
     required String email,
     required String password,
   }) async {
-    final url = Uri.parse("$baseUrl/login");
+    final url = Uri.parse("$baseUrl/api/login");
     final response = await http.post(
       url,
       body: {
@@ -32,7 +30,8 @@ class LoginService {
         await prefs.setString('access_token', accessToken);
         await prefs.setString(
             'refresh_token', data['details']?['refresh_token']);
-        final expiry = DateTime.now().add(Duration(seconds: data['details']?['expires_in']));
+        final expiry = DateTime.now()
+            .add(Duration(seconds: data['details']?['expires_in']));
         await prefs.setString('expiry_time', expiry.toIso8601String());
         return true;
       } else {
@@ -47,6 +46,27 @@ class LoginService {
       }
       return false;
     }
+  }
+
+  // function logout
+  Future<bool> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('access_token');
+
+    final url = Uri.parse("$baseUrl/api/logout");
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      },
+    );
+
+    if(response.statusCode == 200){
+      await prefs.remove('access_token');
+      return true;
+    }
+    return false;
   }
 
   // Call api from server with function checkLoginStatus
@@ -69,17 +89,17 @@ class LoginService {
       return true;
     } else {
       final loginService = LoginService();
-      if(await loginService.refreshTokenWhenExpire()){
+      if (await loginService.refreshTokenWhenExpire()) {
         return true;
-      }else{
-         return false;
+      } else {
+        return false;
       }
     }
   }
 
   // call api from server with function login refresh token
   Future<bool> refreshTokenWhenExpire() async {
-    final url = Uri.parse("$baseUrl/refresh-token");
+    final url = Uri.parse("$baseUrl/api/refresh-token");
 
     final prefs = await SharedPreferences.getInstance();
     final refreshToken = prefs.getString('refresh_token');
@@ -100,8 +120,7 @@ class LoginService {
         final data = jsonDecode(response.body);
         final newAccessToken = data['access_token'];
         final newRefreshToken = data['refresh_token'];
-        final expiresIn =
-            data['expires_in'] ?? 3600; 
+        final expiresIn = data['expires_in'] ?? 3600;
 
         final newExpiry = DateTime.now().add(Duration(seconds: expiresIn));
 
@@ -127,19 +146,13 @@ class LoginService {
     return prefs.getString('access_token');
   }
 
-  // function logout
-  Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('access_token');
-  }
-
   // call api from server with function getProfile
   Future<Map<String, dynamic>?> getProfile() async {
     final token = await getToken();
     if (token == null) return null;
 
     final response = await http.get(
-      Uri.parse("$baseUrl/me"),
+      Uri.parse("$baseUrl/api/me"),
       headers: {'Authorization': 'Bearer $token'},
     );
 
