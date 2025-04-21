@@ -84,6 +84,36 @@ class UserController extends Controller
         }
     }
 
+    // refresh token
+    public function refreshToken(Request $request)
+    {
+        $refreshToken = $request->input('refresh_token');
+
+        $serverRequest = (new Psr17Factory)->createServerRequest('POST', '/oauth/token')
+            ->withParsedBody(
+                [
+                    'grant_type' => 'refresh_token',
+                    'refresh_token' => $refreshToken,
+                    'client_id' => env('PASSPORT_CLIENT_ID'),
+                    'client_secret' => env('PASSPORT_CLIENT_SECRET'),
+                    'scope' => '',
+                ]
+            );
+        $tokenController = app()->make(AccessTokenController::class);
+        $response = $tokenController->issueToken($serverRequest);
+
+        // get content body
+        $body = $response->getContent();
+        $data = json_decode($body, true);
+        
+        if ($response->getStatusCode() === 200) {
+            return response()->json($data);
+        } else {
+            return response()->json(['error' => 'Refresh token failed'], 400);
+        }
+        
+    }
+
     //
     public function me(Request $request)
     {

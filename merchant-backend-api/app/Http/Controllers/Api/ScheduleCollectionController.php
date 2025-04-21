@@ -7,7 +7,7 @@ use App\Models\ScheduleCollection;
 
 class ScheduleCollectionController extends Controller
 {
-    public function index()
+    public function scheduleColectionToday()
     {
         $schedules = ScheduleCollection::with('images')->get();
 
