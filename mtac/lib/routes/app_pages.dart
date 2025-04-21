@@ -5,11 +5,16 @@ import 'package:mtac/views/schedule/schedule_collection_arranged_admin_screen.da
 import 'package:mtac/views/schedule/schedule_collection_today_admin_screen.dart';
 import 'package:mtac/views/main_screen.dart';
 import 'package:mtac/views/schedule/schedule_collection_admin_screen.dart';
+import 'package:mtac/views/splash_screen.dart';
 import 'package:mtac/views/user/login_screen.dart';
 import 'package:mtac/views/user/register_screen.dart';
 
 class AppPages {
   static final routes = [
+    GetPage(
+      name: AppRoutes.splashScreen,
+      page: () => const SplashScreen(),
+    ),
     GetPage(
       name: AppRoutes.main,
       page: () => const MainScreen(),

@@ -1,19 +1,21 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mtac/configs/api_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
-  
+
   // initial url
   final String baseUrl = ApiConfig.baseUrl;
+
+  // call api from server with function login
   Future<bool> login({
     required String email,
     required String password,
   }) async {
     final url = Uri.parse("$baseUrl/login");
-
     final response = await http.post(
       url,
       body: {
@@ -23,13 +25,15 @@ class LoginService {
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-
-      // Lấy access token đúng chỗ
       final accessToken = data['details']?['access_token'];
 
       if (accessToken != null) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('access_token', accessToken);
+        await prefs.setString(
+            'refresh_token', data['details']?['refresh_token']);
+        final expiry = DateTime.now().add(Duration(seconds: data['details']?['expires_in']));
+        await prefs.setString('expiry_time', expiry.toIso8601String());
         return true;
       } else {
         if (kDebugMode) {
@@ -45,16 +49,91 @@ class LoginService {
     }
   }
 
+  // Call api from server with function checkLoginStatus
+  Future<bool> checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString('access_token');
+    final refreshToken = prefs.getString('refresh_token');
+    final expiryString = prefs.getString('expiry_time');
+
+    // check token parameters
+    if (accessToken == null || refreshToken == null || expiryString == null) {
+      return false;
+    }
+
+    final expiryTime = DateTime.tryParse(expiryString);
+    final now = DateTime.now();
+
+    // check token is still valid
+    if (expiryTime != null && now.isBefore(expiryTime)) {
+      return true;
+    } else {
+      final loginService = LoginService();
+      if(await loginService.refreshTokenWhenExpire()){
+        return true;
+      }else{
+         return false;
+      }
+    }
+  }
+
+  // call api from server with function login refresh token
+  Future<bool> refreshTokenWhenExpire() async {
+    final url = Uri.parse("$baseUrl/refresh-token");
+
+    final prefs = await SharedPreferences.getInstance();
+    final refreshToken = prefs.getString('refresh_token');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          'refresh_token': refreshToken,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final newAccessToken = data['access_token'];
+        final newRefreshToken = data['refresh_token'];
+        final expiresIn =
+            data['expires_in'] ?? 3600; 
+
+        final newExpiry = DateTime.now().add(Duration(seconds: expiresIn));
+
+        // Save new token information to SharedPreferences
+        await prefs.setString('access_token', newAccessToken);
+        await prefs.setString('refresh_token', newRefreshToken);
+        await prefs.setString('expiry_time', newExpiry.toIso8601String());
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Lỗi khi refresh token: $e');
+      }
+      return false;
+    }
+  }
+
+  // function get token
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('access_token');
   }
 
+  // function logout
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('access_token');
   }
 
+  // call api from server with function getProfile
   Future<Map<String, dynamic>?> getProfile() async {
     final token = await getToken();
     if (token == null) return null;
@@ -73,31 +152,4 @@ class LoginService {
       return null;
     }
   }
-
-  //
-  Future<bool> checkServerStatus() async {
-  final url = Uri.parse(ApiConfig.baseUrl); // hoặc Uri.parse("$baseUrl/ping")
-
-  try {
-    final response = await http.get(url).timeout(const Duration(seconds: 5));
-
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      if (kDebugMode) {
-        print("✅ Server is running: ${response.body}");
-      }
-      return true;
-    } else {
-      if (kDebugMode) {
-        print("⚠️ Server responded with status: ${response.statusCode}");
-      }
-      return false;
-    }
-  } catch (e) {
-    if (kDebugMode) {
-      print("❌ Không thể kết nối đến server: $e");
-    }
-    return false;
-  }
-}
-
 }

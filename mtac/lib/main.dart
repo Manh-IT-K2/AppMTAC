@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
 
             debugShowCheckedModeBanner: false,
             theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-            initialRoute: AppRoutes.register,
+            initialRoute: AppRoutes.splashScreen,
             getPages: AppPages.routes);
       },
     );
