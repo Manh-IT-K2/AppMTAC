@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/services/user/login_service.dart';
+import 'package:mtac/themes/color.dart';
 
 class LoginController extends GetxController {
   // inital variable
@@ -37,12 +39,21 @@ class LoginController extends GetxController {
   Future<void> logOut() async {
     final success = await LoginService().logout();
     if (success) {
-      Get.snackbar("OK", "Đăng xuất thành công!.",
-          snackPosition: SnackPosition.TOP);
-      Get.offAllNamed('/login');
+      Get.snackbar(
+        "OK",
+        "Đăng xuất thành công!.",
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: kPrimaryColor.withOpacity(0.1),
+        colorText: Colors.green,
+      );
+      Get.offAllNamed(AppRoutes.login);
     } else {
-      Get.snackbar("Lỗi", "Đăng xuất thất bại!.",
-          snackPosition: SnackPosition.TOP);
+      Get.snackbar(
+        "Lỗi",
+        "Đăng xuất thất bại!.",
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.red,
+      );
     }
   }
 

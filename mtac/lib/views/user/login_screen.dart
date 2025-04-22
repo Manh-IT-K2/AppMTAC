@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/configs/api_config.dart';
 import 'package:mtac/controllers/user/login_controller.dart';
+import 'package:mtac/themes/color.dart';
+import 'package:mtac/utils/theme_text.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -41,9 +43,18 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Text("Login Screen",
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Text(
+                  "Welcom to",
+                  style: PrimaryFont.headerTextBold().copyWith(
+                    color: kPrimaryColor.withOpacity(0.7),
+                  ),
+                ),
+                Text(
+                  "MTAC-Merchant",
+                  style: PrimaryFont.headerTextBold().copyWith(
+                    color: kPrimaryColor,
+                  ),
+                ),
                 const SizedBox(height: 32),
                 TextField(
                   controller: controller.emailController,
