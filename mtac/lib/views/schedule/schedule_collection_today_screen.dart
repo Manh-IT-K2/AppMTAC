@@ -10,20 +10,20 @@ import 'package:mtac/widgets/menu_remote_main.dart';
 import 'package:mtac/widgets/schedule_widget/curved_line.dart';
 import 'package:sizer/sizer.dart';
 
-class ScheduleCollectionTodayAdminScreen extends StatefulWidget {
-  const ScheduleCollectionTodayAdminScreen({super.key});
+class ScheduleCollectionTodayScreen extends StatefulWidget {
+  const ScheduleCollectionTodayScreen({super.key});
 
   @override
-  State<ScheduleCollectionTodayAdminScreen> createState() =>
-      _ScheduleCollectionTodayAdminScreenState();
+  State<ScheduleCollectionTodayScreen> createState() =>
+      _ScheduleCollectionTodayScreenState();
 }
 
-class _ScheduleCollectionTodayAdminScreenState
-    extends State<ScheduleCollectionTodayAdminScreen> {
+class _ScheduleCollectionTodayScreenState
+    extends State<ScheduleCollectionTodayScreen> {
   //
   final ScheduleController controller = Get.put(ScheduleController());
   bool showMenu = false;
-
+  final indexPageViewBack = Get.arguments ?? 0;
   void toggleMenu() {
     setState(() {
       showMenu = !showMenu;
@@ -41,14 +41,15 @@ class _ScheduleCollectionTodayAdminScreenState
     String today = "$day - $month - $year";
 
     return Scaffold(
-      
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Row(
           children: [
             GestureDetector(
-              onTap: () => Get.back(),
+              onTap: () {
+                 Get.back(result: indexPageViewBack);
+              },
               child: Icon(
                 Icons.arrow_back_ios,
                 size: 5.w,
@@ -241,73 +242,11 @@ class _ScheduleCollectionTodayAdminScreenState
                   child: PageView(
                     controller: controller.pageControllerScheduleToday,
                     onPageChanged: controller.onPageChangedScheduleToday,
-                    children: controller.itemScheduleCollectionDriver.map(
-                      (title) {
-                        return Obx(
-                          () {
-                            if (controller.isLoading.value) {
-                              return Center(
-                                child: Image.asset(
-                                  "assets/images/loadingDot.gif",
-                                  width: 80,
-                                  height: 80,
-                                  fit: BoxFit.fill,
-                                ),
-                              );
-                            }
-                            return CustomScrollView(
-                              slivers: [
-                                SliverList(
-                                  delegate: SliverChildBuilderDelegate(
-                                    (context, index) {
-                                      final data =
-                                          controller.filteredItems[index];
-                                      return _ItemMainScheduleCollection(
-                                        id: data.id,
-                                        controller: controller,
-                                        collectionId: data.collectionId,
-                                        nameBusiness: data.nameBusiness,
-                                        areaTransit: data.areaTransit,
-                                        typeWaste: data.typeWaste,
-                                        contactPerson: data.contactPerson,
-                                        timeCollection: data.timeCollection,
-                                        status: data.status,
-                                        onTap: () {
-                                          Get.toNamed(
-                                            AppRoutes.detailScheduleCollection,
-                                            arguments: {
-                                              "id": data.id,
-                                              "costTransit": data.costTransit,
-                                              "nameBusiness": data.nameBusiness,
-                                              "areaTransit": data.areaTransit,
-                                              "typeWaste": data.typeWaste,
-                                              "contactPerson":
-                                                  data.contactPerson,
-                                              "timeCollection":
-                                                  data.timeCollection,
-                                              "numberPlate": data.numberPlate,
-                                              "addressCollection":
-                                                  data.addressCollection,
-                                              "debtStatus": data.debtStatus,
-                                              "dayCollection":
-                                                  data.dayCollection,
-                                              "daySendCollection":
-                                                  data.daySendCollection,
-                                              "image": data.image,
-                                            },
-                                          );
-                                        },
-                                      );
-                                    },
-                                    childCount: controller.filteredItems.length,
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    ).toList(),
+                    children:
+                        controller.itemScheduleCollectionDriver.map((title) {
+                      return _ScheduleTabView(
+                          title: title);
+                    }).toList(),
                   ),
                 ),
               ],
@@ -586,6 +525,74 @@ class _ScheduleCollectionTodayAdminScreenState
   }
 }
 
+class _ScheduleTabView extends StatelessWidget {
+  final String title;
+  final ScheduleController controller = Get.find();
+
+  _ScheduleTabView({required this.title});
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () {
+        if (controller.isLoading.value) {
+          return Center(
+            child: Image.asset(
+              "assets/images/loadingDot.gif",
+              width: 80,
+              height: 80,
+              fit: BoxFit.fill,
+            ),
+          );
+        }
+        return CustomScrollView(
+          key: PageStorageKey(title),
+          slivers: [
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final data = controller.filteredItems[index];
+                  return _ItemMainScheduleCollection(
+                    id: data.id,
+                    controller: controller,
+                    collectionId: data.collectionId,
+                    nameBusiness: data.nameBusiness,
+                    areaTransit: data.areaTransit,
+                    typeWaste: data.typeWaste,
+                    contactPerson: data.contactPerson,
+                    timeCollection: data.timeCollection,
+                    status: data.status,
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.detailScheduleCollection,
+                        arguments: {
+                          "id": data.id,
+                          "costTransit": data.costTransit,
+                          "nameBusiness": data.nameBusiness,
+                          "areaTransit": data.areaTransit,
+                          "typeWaste": data.typeWaste,
+                          "contactPerson": data.contactPerson,
+                          "timeCollection": data.timeCollection,
+                          "numberPlate": data.numberPlate,
+                          "addressCollection": data.addressCollection,
+                          "debtStatus": data.debtStatus,
+                          "dayCollection": data.dayCollection,
+                          "daySendCollection": data.daySendCollection,
+                          "image": data.image,
+                        },
+                      );
+                    },
+                  );
+                },
+                childCount: controller.filteredItems.length,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 class _ItemMainScheduleCollection extends StatelessWidget {
   const _ItemMainScheduleCollection({
     required this.controller,
@@ -596,7 +603,8 @@ class _ItemMainScheduleCollection extends StatelessWidget {
     required this.contactPerson,
     required this.timeCollection,
     required this.status,
-    this.onTap, required this.id,
+    this.onTap,
+    required this.id,
   });
 
   final bool status;

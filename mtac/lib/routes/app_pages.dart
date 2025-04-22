@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import 'package:mtac/routes/app_routes.dart';
-import 'package:mtac/views/schedule/detail_schedule_collection_admin_screen.dart';
+import 'package:mtac/views/schedule/detail_schedule_collection_screen.dart';
 import 'package:mtac/views/schedule/schedule_collection_arranged_admin_screen.dart';
-import 'package:mtac/views/schedule/schedule_collection_today_admin_screen.dart';
+import 'package:mtac/views/schedule/schedule_collection_today_screen.dart';
 import 'package:mtac/views/main_screen.dart';
-import 'package:mtac/views/schedule/schedule_collection_admin_screen.dart';
+import 'package:mtac/views/schedule/schedule_collection_not_yet_screen.dart';
 import 'package:mtac/views/splash_screen.dart';
 import 'package:mtac/views/user/login_screen.dart';
 import 'package:mtac/views/user/register_screen.dart';
@@ -28,20 +28,20 @@ class AppPages {
       page: () => LoginScreen(),
     ),
     GetPage(
-      name: AppRoutes.scheduleCollection,
-      page: () => const ScheduleCollectionAdminScreen(),
+      name: AppRoutes.scheduleCollectionNotYet,
+      page: () => const ScheduleCollectionNotYetScreen(),
     ),
     GetPage(
       name: AppRoutes.scheduleCollectionToday,
-      page: () => const ScheduleCollectionTodayAdminScreen(),
+      page: () => const ScheduleCollectionTodayScreen(),
     ),
     GetPage(
       name: AppRoutes.detailScheduleCollection,
-      page: () => const DetailScheduleCollectionAdminScreen(),
+      page: () => const DetailScheduleCollectionScreen(),
     ),
     GetPage(
       name: AppRoutes.scheduleCollectionArranged,
-      page: () => const ScheduleCollectionArrangedAdminScreen(),
+      page: () => const ScheduleCollectionArrangedScreen(),
     ),
   ];
 }

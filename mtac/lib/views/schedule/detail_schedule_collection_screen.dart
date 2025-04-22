@@ -8,8 +8,8 @@ import 'package:mtac/utils/theme_text.dart';
 import 'package:mtac/widgets/schedule_widget/sync_horizontal_table.dart';
 import 'package:sizer/sizer.dart';
 
-class DetailScheduleCollectionAdminScreen extends StatelessWidget {
-  const DetailScheduleCollectionAdminScreen({super.key});
+class DetailScheduleCollectionScreen extends StatelessWidget {
+  const DetailScheduleCollectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
     final String debtStatus = arguments["debtStatus"] ?? "";
     final String dayCollection = arguments["dayCollection"] ?? "";
     final String costTransit = arguments["costTransit"] ?? "";
-    final List<String>? imageList = arguments["image"] as List<String>? ?? null;
+    final List<String> imageList = arguments["image"] as List<String>? ?? [];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -302,13 +302,13 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
               SizedBox(
                 height: 5.w,
               ),
-              imageList != null
+              imageList.isNotEmpty
                   ? Text(
                       "Hình ảnh thu gom",
                       style: PrimaryFont.titleTextBold(),
                     )
                   : const SizedBox(),
-              imageList != null
+              imageList.isNotEmpty
                   ? SizedBox(
                       width: 100.w,
                       height: 30.w,

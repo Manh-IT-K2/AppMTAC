@@ -3,26 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mtac/controllers/schedule/schedule_controller.dart';
-import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:mtac/widgets/menu_remote_main.dart';
 import 'package:sizer/sizer.dart';
 
-class ScheduleCollectionArrangedAdminScreen extends StatefulWidget {
-  const ScheduleCollectionArrangedAdminScreen({super.key});
+class ScheduleCollectionArrangedScreen extends StatefulWidget {
+  const ScheduleCollectionArrangedScreen({super.key});
 
   @override
-  State<ScheduleCollectionArrangedAdminScreen> createState() =>
-      _ScheduleCollectionArrangedAdminScreenState();
+  State<ScheduleCollectionArrangedScreen> createState() =>
+      _ScheduleCollectionArrangedScreenState();
 }
 
-class _ScheduleCollectionArrangedAdminScreenState
-    extends State<ScheduleCollectionArrangedAdminScreen> {
+class _ScheduleCollectionArrangedScreenState
+    extends State<ScheduleCollectionArrangedScreen> {
   //
   final ScheduleController controller = Get.put(ScheduleController());
   bool showMenu = false;
-
+  final indexPageViewBack = Get.arguments ?? 0;
   void toggleMenu() {
     setState(() {
       showMenu = !showMenu;
@@ -38,7 +37,9 @@ class _ScheduleCollectionArrangedAdminScreenState
         title: Row(
           children: [
             GestureDetector(
-              onTap: () => Get.back(),
+               onTap: () {
+                 Get.back(result: indexPageViewBack);
+              },
               child: Icon(
                 Icons.arrow_back_ios,
                 size: 5.w,

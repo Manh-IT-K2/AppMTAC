@@ -103,19 +103,22 @@ class _MenuRemoteMainState extends State<MenuRemoteMain> {
                   setState(() {
                     selectedIndex = 0;
                   });
+                  toggleMenu();
                   Get.toNamed(AppRoutes.scheduleCollectionToday, arguments: 0);
                 },
                 onTap2: () {
                   setState(() {
                     selectedIndex = 1;
                   });
+                   toggleMenu();
                   Get.toNamed(AppRoutes.scheduleCollectionArranged, arguments: 1);
                 },
                 onTap3: () {
                   setState(() {
                     selectedIndex = 2;
                   });
-                  Get.toNamed(AppRoutes.scheduleCollection, arguments: 2);
+                   toggleMenu();
+                  Get.toNamed(AppRoutes.scheduleCollectionNotYet, arguments: 2);
                 },
               ),
               SizedBox(
@@ -281,6 +284,7 @@ class _MenuRemoteMainState extends State<MenuRemoteMain> {
   }
 }
 
+// ignore: must_be_immutable
 class ItemMenuBody extends StatelessWidget {
   ItemMenuBody(
       {super.key,
@@ -434,6 +438,7 @@ class ItemMenuHeader extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class ItemMenu extends StatelessWidget {
   ItemMenu({
     super.key,
