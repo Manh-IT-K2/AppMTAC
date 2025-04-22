@@ -6,6 +6,8 @@ import 'package:mtac/themes/color.dart';
 
 class LoginController extends GetxController {
   // inital variable
+  final formKey = GlobalKey<FormState>();
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final isLoading = false.obs;
@@ -16,8 +18,15 @@ class LoginController extends GetxController {
     obscurePassword.value = !obscurePassword.value;
   }
 
+  // clear input email
+  void clearTextEmail(){
+    emailController.text = "";
+  }
+
   // Call login from loginService
   Future<void> login() async {
+    if(!formKey.currentState!.validate()) return;
+    
     isLoading.value = true;
 
     final success = await LoginService().login(
@@ -31,7 +40,8 @@ class LoginController extends GetxController {
       Get.offAllNamed('/main');
     } else {
       Get.snackbar("Lỗi", "Đăng nhập thất bại. Kiểm tra lại thông tin.",
-          snackPosition: SnackPosition.TOP);
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.red);
     }
   }
 

@@ -64,25 +64,27 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 // Password
-                Obx(() => TextFormField(
-                      controller: controller.passwordController,
-                      obscureText: controller.obscurePassword.value,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        border: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            controller.obscurePassword.value
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                          ),
-                          onPressed: controller.togglePasswordVisibility,
+                Obx(
+                  () => TextFormField(
+                    controller: controller.passwordController,
+                    obscureText: controller.obscurePassword.value,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          controller.obscurePassword.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
+                        onPressed: controller.togglePasswordVisibility,
                       ),
-                      validator: (value) => value == null || value.length < 6
-                          ? 'Mật khẩu phải có ít nhất 6 ký tự'
-                          : null,
-                    )),
+                    ),
+                    validator: (value) => value == null || value.length < 6
+                        ? 'Mật khẩu phải có ít nhất 6 ký tự'
+                        : null,
+                  ),
+                ),
                 const SizedBox(height: 16),
 
                 // Confirm Password
@@ -130,7 +132,7 @@ class RegisterScreen extends StatelessWidget {
                       width: 5.w,
                     ),
                     GestureDetector(
-                      onTap: () => Get.toNamed(AppRoutes.login),
+                      onTap: () => Get.offNamed(AppRoutes.login),
                       child: Text(
                         "Đăng nhập",
                         style: PrimaryFont.bodyTextMedium()
@@ -138,7 +140,7 @@ class RegisterScreen extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
