@@ -17,8 +17,8 @@ Route::post('/refresh-token', [UserController::class, 'refreshToken']);
 // protect route
 Route::middleware('auth:api')->group(function () {
     Route::get('/me', [UserController::class, 'me']);
+    Route::post('/logout', [UserController::class, 'logout']);
     Route::get('/schedule-today', [ScheduleCollectionController::class, 'scheduleColectionToday']);
-});
+    Route::delete('/schedule/{id}', [ScheduleCollectionController::class, 'deleteScheduleCollection']);
 
-// logout
-Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:api');
+});

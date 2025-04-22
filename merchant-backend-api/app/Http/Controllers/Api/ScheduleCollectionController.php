@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ScheduleCollection;
+use App\Models\ImageScheduleCollection;
 
 class ScheduleCollectionController extends Controller
 {
@@ -35,5 +36,21 @@ class ScheduleCollectionController extends Controller
             'status' => true,
             'data' => $data,
         ]);
+    }
+
+    // delete schedule collection by Id
+    public function deleteScheduleCollection($id)
+    {
+        $ScheduleCollection = ScheduleCollection::find($id);
+        if (!$ScheduleCollection) {
+            return response()->json([
+                'message' => 'Schedule collection not found'
+            ], 404);
+        }
+        ImageScheduleCollection::where('schedule_collection_id', $id)->delete();
+        $ScheduleCollection->delete();
+        return response()->json([
+            'message' => 'Schedule collection and related images deleted successfully'
+        ], 200);
     }
 }
