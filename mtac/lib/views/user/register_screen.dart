@@ -1,140 +1,178 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:mtac/controllers/user/register_controller.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
+import 'package:mtac/widgets/user_widget/input_form_widget.dart';
 import 'package:sizer/sizer.dart';
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+  RegisterScreen({super.key});
+
+  //
+  final controller = Get.put(RegisterController());
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(RegisterController());
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Form(
-            key: controller.formKey,
+            key: controller.formKeyRegister,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 24),
-                Center(
-                  child: Text(
-                    "Screen Register",
-                    style: PrimaryFont.headerTextBold()
-                        .copyWith(color: Colors.black),
+                SizedBox(height: 20.w),
+                Text(
+                  "MTAC-Merchant",
+                  style: PrimaryFont.headerTextBold().copyWith(
+                    color: kPrimaryColor,
                   ),
                 ),
-                const SizedBox(height: 32),
-
-                // Username
-                TextFormField(
-                  controller: controller.usernameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Username',
-                    border: OutlineInputBorder(),
+                SizedBox(height: 5.w),
+                Text(
+                  "Please fill in all information to start registration.",
+                  style: PrimaryFont.bodyTextBold().copyWith(
+                    color: kPrimaryColor,
                   ),
+                ),
+                SizedBox(height: 5.w),
+                // Username
+                InputFormWidget(
+                  title: 'Username',
+                  obscureText: false,
+                  controller: controller.usernameController,
+                  iconStart: HugeIcons.strokeRoundedUser03,
                   validator: (value) => value == null || value.isEmpty
-                      ? 'Vui lòng nhập username'
+                      ? 'Please enter username'
                       : null,
                 ),
-                const SizedBox(height: 16),
+
+                SizedBox(height: 5.w),
 
                 // Email
-                TextFormField(
+                InputFormWidget(
+                  title: 'Email',
+                  obscureText: false,
                   controller: controller.emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
+                  iconStart: HugeIcons.strokeRoundedMail01,
                   validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'Vui lòng nhập email';
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter email';
+                    }
                     if (!value.contains('@')) return 'Email không hợp lệ';
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
-
+                SizedBox(height: 5.w),
                 // Password
                 Obx(
-                  () => TextFormField(
+                  () => InputFormWidget(
+                    title: 'Password',
                     controller: controller.passwordController,
                     obscureText: controller.obscurePassword.value,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          controller.obscurePassword.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                        onPressed: controller.togglePasswordVisibility,
-                      ),
+                    iconStart: HugeIcons.strokeRoundedLockPassword,
+                    suffixIcon: IconButton(
+                      icon: Icon(controller.obscurePassword.value
+                          ? HugeIcons.strokeRoundedView
+                          : HugeIcons.strokeRoundedViewOff),
+                      onPressed: controller.togglePasswordVisibility,
                     ),
-                    validator: (value) => value == null || value.length < 6
-                        ? 'Mật khẩu phải có ít nhất 6 ký tự'
-                        : null,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter password';
+                      }
+                      if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
+                      return null;
+                    },
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 5.w),
 
                 // Confirm Password
-                Obx(() => TextFormField(
-                      controller: controller.confirmPasswordController,
-                      obscureText: controller.obscureConfirmPassword.value,
-                      decoration: InputDecoration(
-                        labelText: 'Confirm Password',
-                        border: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            controller.obscureConfirmPassword.value
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                          ),
-                          onPressed: controller.toggleConfirmPasswordVisibility,
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value != controller.passwordController.text) {
-                          return 'Mật khẩu xác nhận không khớp';
-                        }
-                        return null;
-                      },
-                    )),
-                const SizedBox(height: 24),
-
-                // Nút đăng ký
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: controller.register,
-                    child: const Text('Đăng ký'),
+                Obx(
+                  () => InputFormWidget(
+                    title: 'Confirm Password',
+                    controller: controller.confirmPasswordController,
+                    obscureText: controller.obscureConfirmPassword.value,
+                    iconStart: HugeIcons.strokeRoundedForgotPassword,
+                    suffixIcon: IconButton(
+                      icon: Icon(controller.obscureConfirmPassword.value
+                          ? HugeIcons.strokeRoundedView
+                          : HugeIcons.strokeRoundedViewOff),
+                      onPressed: controller.toggleConfirmPasswordVisibility,
+                    ),
+                    validator: (value) {
+                      if (value != controller.passwordController.text) {
+                        return 'Confirmation password does not match';
+                      }
+                      return null;
+                    },
                   ),
                 ),
+                SizedBox(height: 5.w),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Bạn đã có tài khoản?",
+                      "Already have an account?",
                       style: PrimaryFont.bodyTextMedium()
                           .copyWith(color: Colors.black),
                     ),
                     SizedBox(
-                      width: 5.w,
+                      width: 1.w,
                     ),
                     GestureDetector(
                       onTap: () => Get.offNamed(AppRoutes.login),
                       child: Text(
-                        "Đăng nhập",
+                        "Login",
+                        style: PrimaryFont.bodyTextMedium()
+                            .copyWith(color: kPrimaryColor),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 5.w),
+                SizedBox(
+                  width: 100.w,
+                  child: ElevatedButton(
+                    onPressed: controller.register,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.w),
+                      ),
+                      elevation: 4,
+                      shadowColor: Colors.black.withOpacity(0.3),
+                    ),
+                    child: Text(
+                      "Register",
+                      style: PrimaryFont.bodyTextMedium().copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15.w),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "By logging in, you accept",
+                      style: PrimaryFont.bodyTextMedium()
+                          .copyWith(color: Colors.black),
+                    ),
+                    SizedBox(width: 1.w),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Text(
+                        "terms of use",
                         style: PrimaryFont.bodyTextMedium()
                             .copyWith(color: kPrimaryColor),
                       ),

@@ -6,7 +6,7 @@ import 'package:mtac/themes/color.dart';
 
 class LoginController extends GetxController {
   // inital variable
-  final formKey = GlobalKey<FormState>();
+  final formKeyLogin = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -25,8 +25,8 @@ class LoginController extends GetxController {
 
   // Call login from loginService
   Future<void> login() async {
-    if(!formKey.currentState!.validate()) return;
-    
+    if(!formKeyLogin.currentState!.validate()) return;
+
     isLoading.value = true;
 
     final success = await LoginService().login(
@@ -37,7 +37,7 @@ class LoginController extends GetxController {
     isLoading.value = false;
 
     if (success) {
-      Get.offAllNamed('/main');
+      Get.offAllNamed(AppRoutes.main);
     } else {
       Get.snackbar("Lỗi", "Đăng nhập thất bại. Kiểm tra lại thông tin.",
           snackPosition: SnackPosition.TOP,

@@ -7,6 +7,7 @@ import 'package:mtac/controllers/user/login_controller.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
+import 'package:mtac/widgets/user_widget/input_form_widget.dart';
 import 'package:sizer/sizer.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,11 +34,12 @@ void initState() {
   });
 }
 
+//
+final controller = Get.put(LoginController(), permanent: true);
+
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(LoginController());
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -45,10 +47,10 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Center(
           child: SingleChildScrollView(
             child: Form(
-              key: controller.formKey,
+              key: controller.formKeyLogin,
               child: Column(
                 children: [
-                   SizedBox(height: 20.w),
+                  SizedBox(height: 20.w),
                   Text(
                     "Welcom to",
                     style: PrimaryFont.bold(10.w).copyWith(
@@ -62,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 5.w),
-                  InputFormLogIn(
+                  InputFormWidget(
                     title: 'Email',
                     obscureText: false,
                     controller: controller.emailController,
@@ -72,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       iconSize: 5.w,
                       onPressed: controller.clearTextEmail,
                     ),
-                     validator: (value) {
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Vui lòng nhập email';
                       }
@@ -82,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 5.w),
                   Obx(
-                    () => InputFormLogIn(
+                    () => InputFormWidget(
                       title: 'Password',
                       controller: controller.passwordController,
                       obscureText: controller.obscurePassword.value,
@@ -91,15 +93,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         icon: Icon(controller.obscurePassword.value
                             ? HugeIcons.strokeRoundedView
                             : HugeIcons.strokeRoundedViewOff),
-                          
                         onPressed: controller.togglePasswordVisibility,
                       ),
                       validator: (value) => value == null || value.isEmpty
                           ? 'Vui lòng nhập password'
                           : null,
                     ),
-                     
-                    
                   ),
                   SizedBox(height: 5.w),
                   Row(
@@ -115,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Get.toNamed(AppRoutes.register);
+                          Get.offNamed(AppRoutes.register);
                         },
                         child: Text(
                           "Register",
@@ -130,16 +129,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     () => controller.isLoading.value
                         ? const CircularProgressIndicator()
                         : SizedBox(
-                          width: 100.w,
-                          child: ElevatedButton(
+                            width: 100.w,
+                            child: ElevatedButton(
                               onPressed: controller.login,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: kPrimaryColor, 
-                                
+                                backgroundColor: kPrimaryColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.w),
                                 ),
-                                elevation: 4, 
+                                elevation: 4,
                                 shadowColor: Colors.black.withOpacity(0.3),
                               ),
                               child: Text(
@@ -150,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
-                        ),
+                          ),
                   ),
                   SizedBox(height: 10.w),
                   Text(
@@ -188,59 +186,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class InputFormLogIn extends StatelessWidget {
-  InputFormLogIn(
-      {super.key,
-      required this.controller,
-      required this.title,
-      this.iconStart,
-      this.suffixIcon,
-      this.validator,
-      required this.obscureText});
-
-  final TextEditingController controller;
-  final String title;
-  IconData? iconStart;
-  Widget? suffixIcon;
-  bool obscureText;
-  String? Function(String?)? validator;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      validator: validator,
-      decoration: InputDecoration(
-        labelText: title,
-        labelStyle: const TextStyle(color: Colors.blueAccent),
-        prefixIcon: Icon(iconStart, color: Colors.blueAccent),
-        filled: true,
-        fillColor: Colors.blue.shade50,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-        suffixIcon: suffixIcon,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.white, width: 1),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.blue, width: 1),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.red, width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.red, width: 2),
         ),
       ),
     );

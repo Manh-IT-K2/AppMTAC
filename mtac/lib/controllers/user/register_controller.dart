@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/services/user/register_service.dart';
 
 class RegisterController extends GetxController {
-  final formKey = GlobalKey<FormState>();
+
+  // initial variable
+  final formKeyRegister = GlobalKey<FormState>();
 
   final usernameController = TextEditingController();
   final emailController = TextEditingController();
@@ -23,8 +26,9 @@ class RegisterController extends GetxController {
     obscureConfirmPassword.value = !obscureConfirmPassword.value;
   }
 
+  // Call register from RegisterService
   Future<void> register() async {
-    if (!formKey.currentState!.validate()) return;
+    if (!formKeyRegister.currentState!.validate()) return;
 
     isLoading.value = true;
 
@@ -39,8 +43,9 @@ class RegisterController extends GetxController {
 
     if (success) {
       Get.snackbar("Thành công", "Đăng ký thành công!",
-          snackPosition: SnackPosition.TOP);
-      Get.offAllNamed('/login');
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.green);
+      Get.toNamed(AppRoutes.login);
     } else {
       Get.snackbar("Lỗi", "Đăng ký thất bại. Vui lòng kiểm tra lại.",
           snackPosition: SnackPosition.TOP);
