@@ -9,7 +9,7 @@ class ScheduleController extends GetxController {
   var pageControllerScheduleToday = PageController();
   var selectedTitleScheduleToday = "Hôm nay".obs;
   // initial variable schedule collection today
-  var checkedItems = <String>[].obs;
+  var checkedItems = <int>[].obs;
   final List<String> itemScheduleCollectionDriver = [
     "Hôm nay",
     "Đã gom",
@@ -56,39 +56,57 @@ class ScheduleController extends GetxController {
   }
 
   // tranfer chose
-  void toggleCheck(String collectionId) {
-    if (checkedItems.contains(collectionId)) {
-      checkedItems.remove(collectionId);
+  void toggleCheck(int id) {
+    if (checkedItems.contains(id)) {
+      checkedItems.remove(id);
     } else {
-      checkedItems.add(collectionId);
+      checkedItems.add(id);
     }
   }
 
   // check chose
-  bool isChecked(String collectionId) {
-    return checkedItems.contains(collectionId);
+  bool isChecked(int id) {
+    return checkedItems.contains(id);
   }
 
   // delete from collectionId
-  void deleteSelectedItems() {
-    // Cập nhật danh sách gốc (allItems)
-    allItems.removeWhere((item) => checkedItems.contains(item.collectionId));
+void deleteSelectedItems() async {
+  if (checkedItems.isEmpty) {
+    Get.snackbar("Thông báo", "Chưa chọn mục nào để xoá");
+    return;
+  }
 
-    // Cập nhật danh sách hiển thị sau khi xóa
+  try {
+    // Xoá trên server từng item
+    for (int id in checkedItems) {
+      await ScheduleCollectionService().deleteScheduleCollection(id);
+    }
+
+    // Xoá local trong danh sách gốc
+    allItems.removeWhere((item) => checkedItems.contains(item.id));
+
+    // Lọc lại dữ liệu
     filterData();
 
-    // Xóa danh sách mục đã chọn
+    // Xoá danh sách mục đã chọn
     checkedItems.clear();
+
+    // Hiển thị thông báo thành công
+    Get.snackbar("Thành công", "Đã xoá các mục đã chọn");
+  } catch (e) {
+    Get.snackbar("Lỗi", "Không thể xoá: $e");
   }
+}
+
 
   // chose all
-  void toggleSelectAll(List<String> allCollectionIds) {
-    if (checkedItems.length == allCollectionIds.length) {
-      checkedItems.clear();
-    } else {
-      checkedItems.assignAll(allCollectionIds);
-    }
-  }
+  // void toggleSelectAll(List<String> allCollectionIds) {
+  //   if (checkedItems.length == allCollectionIds.length) {
+  //     checkedItems.clear();
+  //   } else {
+  //     checkedItems.assignAll(allCollectionIds);
+  //   }
+  // }
 
   // check chose all
   bool isAllSelected(List<String> allCollectionIds) {

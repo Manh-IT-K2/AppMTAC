@@ -1,4 +1,5 @@
 class ScheduleCollectionTodayModel {
+  final int id;
   final bool status;
   final String collectionId;
   final String nameBusiness;
@@ -16,6 +17,7 @@ class ScheduleCollectionTodayModel {
   final List<String>? image;
 
   ScheduleCollectionTodayModel({
+    required this.id,
     required this.status,
     required this.collectionId,
     required this.nameBusiness,
@@ -36,6 +38,7 @@ class ScheduleCollectionTodayModel {
   // Convert Map to scheduleCollectionTodayModel
   factory ScheduleCollectionTodayModel.fromMap(Map<String, dynamic> map) {
     return ScheduleCollectionTodayModel(
+      id: map['id'],
       status: map['status'],
       collectionId: map['collectionId'],
       nameBusiness: map['nameBusiness'],
@@ -57,6 +60,7 @@ class ScheduleCollectionTodayModel {
   // Convert scheduleCollectionTodayModel to Map
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'status': status,
       'collectionId': collectionId,
       'nameBusiness': nameBusiness,

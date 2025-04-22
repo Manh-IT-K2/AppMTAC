@@ -48,7 +48,7 @@ class _ScheduleCollectionTodayAdminScreenState
         title: Row(
           children: [
             GestureDetector(
-              onTap: () => Get.toNamed(AppRoutes.main),
+              onTap: () => Get.back(),
               child: Icon(
                 Icons.arrow_back_ios,
                 size: 5.w,
@@ -263,6 +263,7 @@ class _ScheduleCollectionTodayAdminScreenState
                                       final data =
                                           controller.filteredItems[index];
                                       return _ItemMainScheduleCollection(
+                                        id: data.id,
                                         controller: controller,
                                         collectionId: data.collectionId,
                                         nameBusiness: data.nameBusiness,
@@ -275,6 +276,7 @@ class _ScheduleCollectionTodayAdminScreenState
                                           Get.toNamed(
                                             AppRoutes.detailScheduleCollection,
                                             arguments: {
+                                              "id": data.id,
                                               "costTransit": data.costTransit,
                                               "nameBusiness": data.nameBusiness,
                                               "areaTransit": data.areaTransit,
@@ -594,10 +596,11 @@ class _ItemMainScheduleCollection extends StatelessWidget {
     required this.contactPerson,
     required this.timeCollection,
     required this.status,
-    this.onTap,
+    this.onTap, required this.id,
   });
 
   final bool status;
+  final int id;
   final String collectionId,
       nameBusiness,
       areaTransit,
@@ -660,7 +663,7 @@ class _ItemMainScheduleCollection extends StatelessWidget {
                 ),
                 const Spacer(),
                 GestureDetector(
-                  onTap: () => controller.toggleCheck(collectionId),
+                  onTap: () => controller.toggleCheck(id),
                   child: Obx(
                     () => Container(
                       width: 5.w,
@@ -668,11 +671,11 @@ class _ItemMainScheduleCollection extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 1),
                         borderRadius: BorderRadius.circular(1.w),
-                        color: controller.isChecked(collectionId)
+                        color: controller.isChecked(id)
                             ? Colors.red
                             : Colors.white,
                       ),
-                      child: controller.isChecked(collectionId)
+                      child: controller.isChecked(id)
                           ? Icon(Icons.check, color: Colors.white, size: 3.w)
                           : null,
                     ),

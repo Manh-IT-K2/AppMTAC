@@ -2,6 +2,7 @@ import 'package:mtac/models/schedule_collection_today_model.dart';
 
 final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
   ScheduleCollectionTodayModel(
+    id: 1,
     status: true, 
     collectionId: 'CTG-75161', 
     nameBusiness: 'TNHH Jones Lang Lasalle (Việt Nam)', 
@@ -25,6 +26,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     ],
   ),
   ScheduleCollectionTodayModel(
+    id: 2,
     status: false, 
     collectionId: 'CTG-75352', 
     nameBusiness: 'Công ty TNHH Active Creation', 
@@ -42,6 +44,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     image: null,
   ),
   ScheduleCollectionTodayModel(
+    id: 3,
     status: true, 
     collectionId: 'CTG-75415', 
     nameBusiness: 'Công ty Giày Rieker Việt Nam', 
@@ -59,6 +62,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     image: null,
   ),
   ScheduleCollectionTodayModel(
+    id: 4,
     status: false, 
     collectionId: 'CTG-75171', 
     nameBusiness: 'Công ty TNHH Cobi Cif', 
@@ -76,6 +80,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     image: null,
   ),
   ScheduleCollectionTodayModel(
+    id: 5,
     status: true, 
     collectionId: 'CTG-75158', 
     nameBusiness: 'Công Ty TNHH Freetrend Industrial A (Việt Nam)', 
@@ -93,6 +98,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     image: null,
   ),
   ScheduleCollectionTodayModel(
+    id: 6,
     status: true, 
     collectionId: 'CTG-75165', 
     nameBusiness: 'Công Ty TNHH MTV Clio Vina', 
@@ -116,6 +122,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     ],
   ),
   ScheduleCollectionTodayModel(
+    id: 7,
     status: false, 
     collectionId: 'CTG-75169', 
     nameBusiness: 'Công Ty TNHH GapaChi', 
@@ -137,6 +144,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     ],
   ),
   ScheduleCollectionTodayModel(
+    id: 8,
     status: true, 
     collectionId: 'CTG-75172', 
     nameBusiness: 'Công Ty TNHH Sản Xuất Thương Mại Dịch Vụ Hưng Thịnh', 
@@ -157,6 +165,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     ],
   ),
   ScheduleCollectionTodayModel(
+    id: 9,
     status: false, 
     collectionId: 'CTG-75173', 
     nameBusiness: 'Công Ty Cổ Phần Đầu Tư Xây Dựng Và Thương Mại Đại Phúc', 
@@ -174,6 +183,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     image: null,
   ),
   ScheduleCollectionTodayModel(
+    id: 10,
     status: true, 
     collectionId: 'CTG-75174', 
     nameBusiness: 'Công Ty TNHH Pouchen Việt Nam', 

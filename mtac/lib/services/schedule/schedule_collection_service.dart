@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:mtac/configs/api_config.dart';
 import 'package:mtac/models/schedule_collection_today_model.dart';
@@ -8,6 +9,7 @@ class ScheduleCollectionService {
   // initial url
   final String baseUrl = ApiConfig.baseUrl;
 
+  // get list schedule today
   Future<List<ScheduleCollectionTodayModel>> fetchTodaySchedule() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('access_token');
@@ -40,6 +42,29 @@ class ScheduleCollectionService {
       throw Exception('Chưa đăng nhập hoặc token hết hạn');
     } else {
       throw Exception('Lỗi kết nối API: ${response.statusCode}');
+    }
+  }
+
+  // delete schedule collection
+  Future<bool> deleteScheduleCollection(int id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('access_token');
+
+    final url = Uri.parse('$baseUrl/api/schedule/$id');
+    final response = await http.delete(url, headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      if (kDebugMode) {
+        print("Delete successfully");
+      }
+      return true;
+    } else {
+      if (kDebugMode) {
+        print("Error: ${response.body}");
+      }
+      return false;
     }
   }
 }

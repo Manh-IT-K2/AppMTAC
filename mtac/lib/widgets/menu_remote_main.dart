@@ -16,17 +16,17 @@ class MenuRemoteMain extends StatefulWidget {
   @override
   State<MenuRemoteMain> createState() => _MenuRemoteMainState();
 }
-
+late int selectedIndex;
 class _MenuRemoteMainState extends State<MenuRemoteMain> {
   @override
   void initState() {
     super.initState();
+    selectedIndex = Get.arguments ?? 0;
     isMenuOpen = true;
   }
 
   //
   bool isMenuOpen = false;
-  int? selectedIndex = 0;
   Offset dragStart = Offset.zero;
 
   void toggleMenu() {
@@ -103,19 +103,19 @@ class _MenuRemoteMainState extends State<MenuRemoteMain> {
                   setState(() {
                     selectedIndex = 0;
                   });
-                  Get.toNamed(AppRoutes.scheduleCollectionToday);
+                  Get.offNamed(AppRoutes.scheduleCollectionToday, arguments: 0);
                 },
                 onTap2: () {
                   setState(() {
                     selectedIndex = 1;
                   });
-                  Get.toNamed(AppRoutes.scheduleCollectionArranged);
+                  Get.offNamed(AppRoutes.scheduleCollectionArranged, arguments: 1);
                 },
                 onTap3: () {
                   setState(() {
                     selectedIndex = 2;
                   });
-                  Get.toNamed(AppRoutes.scheduleCollection);
+                  Get.offNamed(AppRoutes.scheduleCollection, arguments: 2);
                 },
               ),
               SizedBox(
