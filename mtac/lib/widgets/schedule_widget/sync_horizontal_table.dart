@@ -28,6 +28,7 @@ class _SyncHorizontalTableState extends State<SyncHorizontalTable> {
     _controllerGroup = LinkedScrollControllerGroup();
     _headerScrollController = _controllerGroup.addAndGet();
     _bodyScrollController = _controllerGroup.addAndGet();
+
   }
 
   @override
@@ -43,39 +44,38 @@ class _SyncHorizontalTableState extends State<SyncHorizontalTable> {
       if (cell is SizedBox) {
         return sum + (cell.width ?? 0);
       }
-      return sum + 100; // fallback width
+      return sum + 105; // fallback width
     });
 
     return Column(
       children: [
-        // Header with scrollbar
-        Scrollbar(
+        // Header content
+        SingleChildScrollView(
           controller: _headerScrollController,
-          thumbVisibility: true,
-          //trackVisibility: true,
-          thickness: 7,
-          radius: const Radius.circular(8),
-          child: SingleChildScrollView(
-            controller: _headerScrollController,
-            scrollDirection: Axis.horizontal,
-            child: Row(children: widget.headers),
-          ),
-        ),
+          scrollDirection: Axis.horizontal,
+          child: Row(children: widget.headers),
+        ),   
         const SizedBox(height: 10),
-        // Body with scrollbar
+        // Body content with Scrollbar
         Expanded(
-          child: SingleChildScrollView(
+          child: Scrollbar(
             controller: _bodyScrollController,
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: tableWidth,
-              child: Column(
-                children: List.generate(widget.rows.length, (index) {
-                  return SizedBox(
-                    height: widget.rowHeight,
-                    child: Row(children: widget.rows[index]),
-                  );
-                }),
+            //thumbVisibility: true,
+            thickness: 7,
+            radius: const Radius.circular(8),
+            child: SingleChildScrollView(
+              controller: _bodyScrollController,
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                width: tableWidth,
+                child: Column(
+                  children: List.generate(widget.rows.length, (index) {
+                    return SizedBox(
+                      height: widget.rowHeight,
+                      child: Row(children: widget.rows[index]),
+                    );
+                  }),
+                ),
               ),
             ),
           ),

@@ -38,7 +38,7 @@ class _ScheduleCollectionArrangedAdminScreenState
         title: Row(
           children: [
             GestureDetector(
-              onTap: () => Get.toNamed(AppRoutes.scheduleCollectionToday),
+              onTap: () => Get.back(),
               child: Icon(
                 Icons.arrow_back_ios,
                 size: 5.w,

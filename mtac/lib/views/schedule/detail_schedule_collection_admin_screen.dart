@@ -200,7 +200,7 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
                 //padding: const EdgeInsets.all(16.0),
                 margin: EdgeInsets.only(top: 3.w),
                 width: 100.w,
-                height: 50.h,
+                height: 52.h,
 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -236,11 +236,11 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
                     ),
                     const Divider(),
                     SizedBox(
-                      height: 3.w,
+                      height: 1.w,
                     ),
                     SizedBox(
                       width: 100.w,
-                      height: 40.h,
+                      height: 41.h,
                       child: SyncHorizontalTable(
                         headers: [
                           _HeaderItem(title: "ID", width: 15.w),
@@ -277,7 +277,7 @@ class DetailScheduleCollectionAdminScreen extends StatelessWidget {
               ),
               SizedBox(
                 width: 100.w,
-                height: 40.h,
+                height: 41.h,
                 child: SyncHorizontalTable(
                   headers: [
                     _HeaderItem(title: "ID", width: 15.w),

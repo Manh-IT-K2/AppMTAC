@@ -35,7 +35,7 @@ class _ScheduleCollectionAdminScreenState
           children: [
             GestureDetector(
               onTap: () {
-               Get.toNamed(AppRoutes.scheduleCollectionToday);
+               Get.back();
               },
               child: Icon(
                 Icons.arrow_back_ios,

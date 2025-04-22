@@ -103,19 +103,19 @@ class _MenuRemoteMainState extends State<MenuRemoteMain> {
                   setState(() {
                     selectedIndex = 0;
                   });
-                  Get.offNamed(AppRoutes.scheduleCollectionToday, arguments: 0);
+                  Get.toNamed(AppRoutes.scheduleCollectionToday, arguments: 0);
                 },
                 onTap2: () {
                   setState(() {
                     selectedIndex = 1;
                   });
-                  Get.offNamed(AppRoutes.scheduleCollectionArranged, arguments: 1);
+                  Get.toNamed(AppRoutes.scheduleCollectionArranged, arguments: 1);
                 },
                 onTap3: () {
                   setState(() {
                     selectedIndex = 2;
                   });
-                  Get.offNamed(AppRoutes.scheduleCollection, arguments: 2);
+                  Get.toNamed(AppRoutes.scheduleCollection, arguments: 2);
                 },
               ),
               SizedBox(
