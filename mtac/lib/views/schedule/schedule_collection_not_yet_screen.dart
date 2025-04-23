@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/constants/text.dart';
-import 'package:mtac/data/schedule_screen/item_trip_collection.dart';
+import 'package:mtac/controllers/schedule/schedule_notyet_controller.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:mtac/widgets/base_will_pop_widget.dart';
@@ -25,6 +25,9 @@ class _ScheduleCollectionNotYetScreenState
     });
   }
 
+  final ScheduleNotyetController controller =
+      Get.put(ScheduleNotyetController());
+
   @override
   Widget build(BuildContext context) {
     return BaseWillPopWidget(
@@ -34,7 +37,7 @@ class _ScheduleCollectionNotYetScreenState
           title: Row(
             children: [
               GestureDetector(
-                 onTap: () {
+                onTap: () {
                   Get.back();
                 },
                 child: Icon(
@@ -47,8 +50,8 @@ class _ScheduleCollectionNotYetScreenState
                 child: Text(
                   txtTitleSC,
                   textAlign: TextAlign.center,
-                  style:
-                      PrimaryFont.headerTextBold().copyWith(color: Colors.black),
+                  style: PrimaryFont.headerTextBold()
+                      .copyWith(color: Colors.black),
                 ),
               ),
               GestureDetector(
@@ -84,10 +87,10 @@ class _ScheduleCollectionNotYetScreenState
           centerTitle: false,
         ),
         body: Stack(children: [
-          const Column(
+          Column(
             children: [
-              _HeaderScheduleCollectionAdminScreen(),
-              _BodyScheduleCollectionAdminScreen(),
+              const _HeaderScheduleCollectionAdminScreen(),
+              _BodyScheduleCollectionAdminScreen(controller: controller),
             ],
           ),
           // Menu glide from right
@@ -102,34 +105,44 @@ class _ScheduleCollectionNotYetScreenState
 }
 
 class _BodyScheduleCollectionAdminScreen extends StatelessWidget {
-  const _BodyScheduleCollectionAdminScreen();
+  const _BodyScheduleCollectionAdminScreen({required this.controller});
+
+  final ScheduleNotyetController controller;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: CustomScrollView(
-      slivers: [
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final trip = tripData[index];
-              return _ItemTripCollection(
-                txtCode: trip.txtCode,
-                txtGlandHead: trip.txtGlandHead,
-                txtGlandEnd: trip.txtGlandEnd,
-                txtType: trip.txtType,
-                txtDay: trip.txtDay,
-                txtPrice: trip.txtPrice,
-                onTapSchedule: () {
-                  //Get.toNamed(AppRoutes.MAP);
+      child: Obx(
+        () => CustomScrollView(
+          slivers: [
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final trip = controller.allItemsScheduleNotYet[index];
+                  final areaParts = trip.areaTransit.split('=>');
+                  final glandHead = areaParts[0].trim();
+                  final glandEnd =
+                      areaParts.length > 1 ? areaParts[1].trim() : '';
+                  //print("object ${trip.areaTransit}");
+                  return _ItemTripCollection(
+                    txtCode: trip.collectionId,
+                    txtGlandHead: glandHead,
+                    txtGlandEnd: glandEnd,
+                    txtType: trip.typeWaste,
+                    txtDay: trip.dayCollection,
+                    txtPrice: trip.costTransit,
+                    onTapSchedule: () {
+                      //Get.toNamed(AppRoutes.MAP);
+                    },
+                  );
                 },
-              );
-            },
-            childCount: tripData.length,
-          ),
+                childCount: controller.allItemsScheduleNotYet.length,
+              ),
+            ),
+          ],
         ),
-      ],
-    ));
+      ),
+    );
   }
 }
 
@@ -376,6 +389,9 @@ class _ItemTripCollection extends StatelessWidget {
                 width: 12,
               ),
             ],
+          ),
+          SizedBox(
+            height: 5.w,
           ),
         ],
       ),

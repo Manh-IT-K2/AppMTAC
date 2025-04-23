@@ -56,7 +56,7 @@ class ScheduleCollectionService {
     }
   }
 
-    // get list schedule arranged
+  // get list schedule arranged
   Future<List<ScheduleCollectionModel>> fetchArrangedSchedule() async {
     try {
       final token = await _getToken();
@@ -77,11 +77,32 @@ class ScheduleCollectionService {
     }
   }
 
+   // get list schedule notyet
+  Future<List<ScheduleCollectionModel>> fetchNotYetSchedule() async {
+    try {
+      final token = await _getToken();
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/schedule-notyet'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      return _handleResponse(response);
+    } catch (e, stacktrace) {
+      debugPrint('Lỗi khi fetch schedule notyet: $e');
+      debugPrint('Stacktrace: $stacktrace');
+      rethrow;
+    }
+  }
+
 
   // delete schedule collection
   Future<bool> deleteScheduleCollection(int id) async {
     final token = await _getToken();
-    
+
     final url = Uri.parse('$baseUrl/api/schedule/$id');
     final response = await http.delete(url, headers: {
       'Accept': 'application/json',
