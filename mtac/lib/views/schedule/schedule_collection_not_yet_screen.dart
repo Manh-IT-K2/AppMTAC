@@ -4,7 +4,8 @@ import 'package:mtac/constants/text.dart';
 import 'package:mtac/data/schedule_screen/item_trip_collection.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
-import 'package:mtac/widgets/menu_remote_main.dart';
+import 'package:mtac/widgets/base_will_pop_widget.dart';
+import 'package:mtac/widgets/menu_remote_main_widget.dart';
 import 'package:sizer/sizer.dart';
 
 class ScheduleCollectionNotYetScreen extends StatefulWidget {
@@ -18,7 +19,6 @@ class ScheduleCollectionNotYetScreen extends StatefulWidget {
 class _ScheduleCollectionNotYetScreenState
     extends State<ScheduleCollectionNotYetScreen> {
   bool showMenu = false;
-  final indexPageViewBack = Get.arguments ?? 0;
   void toggleMenu() {
     setState(() {
       showMenu = !showMenu;
@@ -27,74 +27,76 @@ class _ScheduleCollectionNotYetScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            GestureDetector(
-               onTap: () {
-                Get.back(result: indexPageViewBack);
-              },
-              child: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-                size: 5.w,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                txtTitleSC,
-                textAlign: TextAlign.center,
-                style:
-                    PrimaryFont.headerTextBold().copyWith(color: Colors.black),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                toggleMenu();
-                //print("hello ${controller.isMenuOpen.value}");
-              },
-              child: Container(
-                width: 10.w,
-                height: 10.w,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.w),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(2, 2),
-                    ),
-                  ],
-                ),
+    return BaseWillPopWidget(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              GestureDetector(
+                 onTap: () {
+                  Get.back();
+                },
                 child: Icon(
-                  Icons.menu,
+                  Icons.arrow_back_ios,
                   color: Colors.black,
                   size: 5.w,
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Text(
+                  txtTitleSC,
+                  textAlign: TextAlign.center,
+                  style:
+                      PrimaryFont.headerTextBold().copyWith(color: Colors.black),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  toggleMenu();
+                  //print("hello ${controller.isMenuOpen.value}");
+                },
+                child: Container(
+                  width: 10.w,
+                  height: 10.w,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.w),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.menu,
+                    color: Colors.black,
+                    size: 5.w,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.white,
+          centerTitle: false,
         ),
-        backgroundColor: Colors.white,
-        centerTitle: false,
+        body: Stack(children: [
+          const Column(
+            children: [
+              _HeaderScheduleCollectionAdminScreen(),
+              _BodyScheduleCollectionAdminScreen(),
+            ],
+          ),
+          // Menu glide from right
+          MenuRemoteMainWidget(
+            isMenuOpen: showMenu,
+            onClose: toggleMenu,
+          ),
+        ]),
       ),
-      body: Stack(children: [
-        const Column(
-          children: [
-            _HeaderScheduleCollectionAdminScreen(),
-            _BodyScheduleCollectionAdminScreen(),
-          ],
-        ),
-        // Menu glide from right
-        MenuRemoteMain(
-          isMenuOpen: showMenu,
-          onClose: toggleMenu,
-        ),
-      ]),
     );
   }
 }

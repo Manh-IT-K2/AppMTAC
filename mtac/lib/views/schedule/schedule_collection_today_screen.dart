@@ -6,8 +6,9 @@ import 'package:mtac/controllers/schedule/schedule_controller.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
-import 'package:mtac/widgets/menu_remote_main.dart';
-import 'package:mtac/widgets/schedule_widget/curved_line.dart';
+import 'package:mtac/widgets/base_will_pop_widget.dart';
+import 'package:mtac/widgets/menu_remote_main_widget.dart';
+import 'package:mtac/widgets/schedule_widget/curved_line_widget.dart';
 import 'package:sizer/sizer.dart';
 
 class ScheduleCollectionTodayScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _ScheduleCollectionTodayScreenState
   //
   final ScheduleController controller = Get.put(ScheduleController());
   bool showMenu = false;
-  final indexPageViewBack = Get.arguments ?? 0;
+
   void toggleMenu() {
     setState(() {
       showMenu = !showMenu;
@@ -40,224 +41,226 @@ class _ScheduleCollectionTodayScreenState
     String year = now.year.toString();
     String today = "$day - $month - $year";
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        title: Row(
+    return BaseWillPopWidget(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                   Get.back();
+                },
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  size: 5.w,
+                  color: Colors.black,
+                ),
+              ),
+              const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  toggleMenu();
+                  // print("hello ${controller.isMenuOpen.value}");
+                },
+                child: Container(
+                  width: 10.w,
+                  height: 10.w,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.w),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.menu,
+                    color: Colors.black,
+                    size: 5.w,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: Stack(
           children: [
-            GestureDetector(
-              onTap: () {
-                 Get.back(result: indexPageViewBack);
-              },
-              child: Icon(
-                Icons.arrow_back_ios,
-                size: 5.w,
-                color: Colors.black,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              margin: EdgeInsets.only(bottom: 5.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      text: "SP764\n",
+                      style: PrimaryFont.bodyTextMedium()
+                          .copyWith(color: Colors.grey),
+                      children: [
+                        TextSpan(
+                          text: "Vận tải hàng hoá bằng đường bộ\n",
+                          style: PrimaryFont.bodyTextMedium()
+                              .copyWith(color: Colors.grey),
+                        ),
+                        TextSpan(
+                          text: "Quan Văn Mạnh",
+                          style: PrimaryFont.titleTextMedium()
+                              .copyWith(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5.w),
+                    width: 100.w,
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        Text(
+                          "*Lịch Thu Gom Hôm Nay*",
+                          style: PrimaryFont.headerTextBold(),
+                        ),
+                        Text(
+                          today,
+                          style: PrimaryFont.titleTextMedium()
+                              .copyWith(color: kPrimaryColor, height: 1.5),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 5.w),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    height: 5.h,
+                    color: const Color(0xFFEBF5FF),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: controller.itemScheduleCollectionDriver
+                          .map(
+                            (title) => _ItemListCollection(title: title),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      // Obx(
+                      //   () => controller.checkedItems.isNotEmpty
+                      //       ? Row(
+                      //           children: [
+                      //             GestureDetector(
+                      //               onTap: () => controller.toggleSelectAll(
+                      //                 controller.filteredItems
+                      //                     .map((e) => e.collectionId)
+                      //                     .toList(),
+                      //               ),
+                      //               child: Container(
+                      //                 width: 5.w,
+                      //                 height: 5.w,
+                      //                 decoration: BoxDecoration(
+                      //                   border: Border.all(
+                      //                       color: Colors.black, width: 0.5),
+                      //                   borderRadius: BorderRadius.circular(1.w),
+                      //                   color: controller.isAllSelected(
+                      //                     controller.filteredItems
+                      //                         .map((e) => e.collectionId)
+                      //                         .toList(),
+                      //                   )
+                      //                       ? Colors.red
+                      //                       : Colors.white,
+                      //                 ),
+                      //                 child: controller.isAllSelected(
+                      //                   controller.filteredItems
+                      //                       .map((e) => e.collectionId)
+                      //                       .toList(),
+                      //                 )
+                      //                     ? Icon(Icons.check,
+                      //                         color: Colors.white, size: 3.w)
+                      //                     : null,
+                      //               ),
+                      //             ),
+                      //             SizedBox(width: 1.w),
+                      //             Text("Chọn tất cả",
+                      //                 style: PrimaryFont.bodyTextMedium()),
+                      //           ],
+                      //         )
+                      //       : const SizedBox(),
+                      // ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          if (controller.checkedItems.isNotEmpty) {
+                            controller.deleteSelectedItems();
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Icon(HugeIcons.strokeRoundedDelete01,
+                                color: Colors.red, size: 5.w),
+                            SizedBox(width: 1.w),
+                            Text(
+                              "Xoá",
+                              style: PrimaryFont.bodyTextMedium(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // : const SizedBox(),
+      
+                      SizedBox(width: 3.w),
+                      PopupMenuButton<String>(
+                        color: Colors.white,
+                        onSelected: (String value) {
+                          controller.updateFilter(value);
+                        },
+                        itemBuilder: (BuildContext context) => [
+                          const PopupMenuItem(
+                              value: "Khoáng", child: Text("Khoáng")),
+                          const PopupMenuItem(
+                              value: "Cân ký", child: Text("Cân ký")),
+                        ],
+                        child: Row(
+                          children: [
+                            Icon(HugeIcons.strokeRoundedFilter,
+                                color: Colors.black, size: 5.w),
+                            SizedBox(width: 1.w),
+                            Text("Lọc", style: PrimaryFont.bodyTextMedium()),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 3.w,
+                  ),
+                  Expanded(
+                    child: PageView(
+                      controller: controller.pageControllerScheduleToday,
+                      onPageChanged: controller.onPageChangedScheduleToday,
+                      children:
+                          controller.itemScheduleCollectionDriver.map((title) {
+                        return _ScheduleTabView(
+                            title: title);
+                      }).toList(),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const Spacer(),
-            GestureDetector(
-              onTap: () {
-                toggleMenu();
-                print("hello ${controller.isMenuOpen.value}");
-              },
-              child: Container(
-                width: 10.w,
-                height: 10.w,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.w),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(2, 2),
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  Icons.menu,
-                  color: Colors.black,
-                  size: 5.w,
-                ),
-              ),
+            // Menu glide from right
+            MenuRemoteMainWidget(
+              isMenuOpen: showMenu,
+              onClose: toggleMenu,
             ),
           ],
         ),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            margin: EdgeInsets.only(bottom: 5.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text.rich(
-                  TextSpan(
-                    text: "SP764\n",
-                    style: PrimaryFont.bodyTextMedium()
-                        .copyWith(color: Colors.grey),
-                    children: [
-                      TextSpan(
-                        text: "Vận tải hàng hoá bằng đường bộ\n",
-                        style: PrimaryFont.bodyTextMedium()
-                            .copyWith(color: Colors.grey),
-                      ),
-                      TextSpan(
-                        text: "Quan Văn Mạnh",
-                        style: PrimaryFont.titleTextMedium()
-                            .copyWith(color: Colors.black),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 5.w),
-                  width: 100.w,
-                  alignment: Alignment.center,
-                  child: Column(
-                    children: [
-                      Text(
-                        "*Lịch Thu Gom Hôm Nay*",
-                        style: PrimaryFont.headerTextBold(),
-                      ),
-                      Text(
-                        today,
-                        style: PrimaryFont.titleTextMedium()
-                            .copyWith(color: kPrimaryColor, height: 1.5),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 5.w),
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  height: 5.h,
-                  color: const Color(0xFFEBF5FF),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: controller.itemScheduleCollectionDriver
-                        .map(
-                          (title) => _ItemListCollection(title: title),
-                        )
-                        .toList(),
-                  ),
-                ),
-                Row(
-                  children: [
-                    // Obx(
-                    //   () => controller.checkedItems.isNotEmpty
-                    //       ? Row(
-                    //           children: [
-                    //             GestureDetector(
-                    //               onTap: () => controller.toggleSelectAll(
-                    //                 controller.filteredItems
-                    //                     .map((e) => e.collectionId)
-                    //                     .toList(),
-                    //               ),
-                    //               child: Container(
-                    //                 width: 5.w,
-                    //                 height: 5.w,
-                    //                 decoration: BoxDecoration(
-                    //                   border: Border.all(
-                    //                       color: Colors.black, width: 0.5),
-                    //                   borderRadius: BorderRadius.circular(1.w),
-                    //                   color: controller.isAllSelected(
-                    //                     controller.filteredItems
-                    //                         .map((e) => e.collectionId)
-                    //                         .toList(),
-                    //                   )
-                    //                       ? Colors.red
-                    //                       : Colors.white,
-                    //                 ),
-                    //                 child: controller.isAllSelected(
-                    //                   controller.filteredItems
-                    //                       .map((e) => e.collectionId)
-                    //                       .toList(),
-                    //                 )
-                    //                     ? Icon(Icons.check,
-                    //                         color: Colors.white, size: 3.w)
-                    //                     : null,
-                    //               ),
-                    //             ),
-                    //             SizedBox(width: 1.w),
-                    //             Text("Chọn tất cả",
-                    //                 style: PrimaryFont.bodyTextMedium()),
-                    //           ],
-                    //         )
-                    //       : const SizedBox(),
-                    // ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        if (controller.checkedItems.isNotEmpty) {
-                          controller.deleteSelectedItems();
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          Icon(HugeIcons.strokeRoundedDelete01,
-                              color: Colors.red, size: 5.w),
-                          SizedBox(width: 1.w),
-                          Text(
-                            "Xoá",
-                            style: PrimaryFont.bodyTextMedium(),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // : const SizedBox(),
-
-                    SizedBox(width: 3.w),
-                    PopupMenuButton<String>(
-                      color: Colors.white,
-                      onSelected: (String value) {
-                        controller.updateFilter(value);
-                      },
-                      itemBuilder: (BuildContext context) => [
-                        const PopupMenuItem(
-                            value: "Khoáng", child: Text("Khoáng")),
-                        const PopupMenuItem(
-                            value: "Cân ký", child: Text("Cân ký")),
-                      ],
-                      child: Row(
-                        children: [
-                          Icon(HugeIcons.strokeRoundedFilter,
-                              color: Colors.black, size: 5.w),
-                          SizedBox(width: 1.w),
-                          Text("Lọc", style: PrimaryFont.bodyTextMedium()),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 3.w,
-                ),
-                Expanded(
-                  child: PageView(
-                    controller: controller.pageControllerScheduleToday,
-                    onPageChanged: controller.onPageChangedScheduleToday,
-                    children:
-                        controller.itemScheduleCollectionDriver.map((title) {
-                      return _ScheduleTabView(
-                          title: title);
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Menu glide from right
-          MenuRemoteMain(
-            isMenuOpen: showMenu,
-            onClose: toggleMenu,
-          ),
-        ],
       ),
     );
   }
@@ -341,7 +344,7 @@ class _ScheduleCollectionTodayScreenState
                           children: [
                             CustomPaint(
                               size: const Size(30, 0),
-                              painter: CurvedLinePainter(),
+                              painter: CurvedLineWidget(),
                             ),
                             Container(
                               width: 40.w,
@@ -390,7 +393,7 @@ class _ScheduleCollectionTodayScreenState
                           children: [
                             CustomPaint(
                               size: const Size(30, 0),
-                              painter: CurvedLinePainter(),
+                              painter: CurvedLineWidget(),
                             ),
                             Text(
                               'Lịch gom đã sắp',
@@ -406,7 +409,7 @@ class _ScheduleCollectionTodayScreenState
                           children: [
                             CustomPaint(
                               size: const Size(30, 0),
-                              painter: CurvedLinePainter(),
+                              painter: CurvedLineWidget(),
                             ),
                             Text(
                               'Lịch gom chưa sắp',

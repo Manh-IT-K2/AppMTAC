@@ -5,7 +5,7 @@ import 'package:mtac/data/schedule_screen/item_cost_collection.dart';
 import 'package:mtac/data/schedule_screen/item_merchandise_collection.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
-import 'package:mtac/widgets/schedule_widget/sync_horizontal_table.dart';
+import 'package:mtac/widgets/schedule_widget/sync_horizontal_table_widget.dart';
 import 'package:sizer/sizer.dart';
 
 class DetailScheduleCollectionScreen extends StatelessWidget {
@@ -241,7 +241,7 @@ class DetailScheduleCollectionScreen extends StatelessWidget {
                     SizedBox(
                       width: 100.w,
                       height: 41.h,
-                      child: SyncHorizontalTable(
+                      child: SyncHorizontalTableWidget(
                         headers: [
                           _HeaderItem(title: "ID", width: 15.w),
                           _HeaderItem(title: "HẠNG MỤC", width: 25.w),
@@ -278,7 +278,7 @@ class DetailScheduleCollectionScreen extends StatelessWidget {
               SizedBox(
                 width: 100.w,
                 height: 41.h,
-                child: SyncHorizontalTable(
+                child: SyncHorizontalTableWidget(
                   headers: [
                     _HeaderItem(title: "ID", width: 15.w),
                     _HeaderItem(title: "TÊN HÀNG HOÁ", width: 25.w),

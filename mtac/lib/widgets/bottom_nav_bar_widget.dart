@@ -3,11 +3,11 @@ import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:sizer/sizer.dart';
 
-class BottomNavBar extends StatelessWidget {
+class BottomNavBarWidget extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemTapped;
 
-  const BottomNavBar({
+  const BottomNavBarWidget({
     super.key,
     required this.selectedIndex,
     required this.onItemTapped,

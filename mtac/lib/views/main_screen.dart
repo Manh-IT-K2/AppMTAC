@@ -3,7 +3,7 @@ import 'package:mtac/views/account_screen.dart';
 import 'package:mtac/views/home_screen.dart';
 import 'package:mtac/views/mailbox_screen.dart';
 import 'package:mtac/views/payment_screen.dart';
-import 'package:mtac/widgets/bottom_nav_bar.dart';
+import 'package:mtac/widgets/bottom_nav_bar_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -45,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
           AccountScreen(),
         ],
       ),
-      bottomNavigationBar: BottomNavBar(
+      bottomNavigationBar: BottomNavBarWidget(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
       ),

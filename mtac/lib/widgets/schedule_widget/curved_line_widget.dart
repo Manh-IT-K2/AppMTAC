@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CurvedLinePainter extends CustomPainter {
+class CurvedLineWidget extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()

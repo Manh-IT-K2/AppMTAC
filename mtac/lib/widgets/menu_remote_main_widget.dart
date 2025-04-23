@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:mtac/controllers/menu_main_controller.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
-import 'package:mtac/widgets/schedule_widget/curved_line.dart';
+import 'package:mtac/widgets/schedule_widget/curved_line_widget.dart';
 import 'package:sizer/sizer.dart';
 
-class MenuRemoteMain extends StatefulWidget {
+class MenuRemoteMainWidget extends StatefulWidget {
   final VoidCallback onClose;
   final bool isMenuOpen;
-  const MenuRemoteMain(
+  const MenuRemoteMainWidget(
       {super.key, required this.onClose, required this.isMenuOpen});
 
   @override
-  State<MenuRemoteMain> createState() => _MenuRemoteMainState();
+  State<MenuRemoteMainWidget> createState() => _MenuRemoteMainWidgetState();
 }
 late int selectedIndex;
-class _MenuRemoteMainState extends State<MenuRemoteMain> {
+class _MenuRemoteMainWidgetState extends State<MenuRemoteMainWidget> {
   @override
   void initState() {
     super.initState();
@@ -50,6 +51,8 @@ class _MenuRemoteMainState extends State<MenuRemoteMain> {
       }
     });
   }
+
+  final menuController = Get.put(MenuMainController());
 
   @override
   Widget build(BuildContext context) {
@@ -92,33 +95,27 @@ class _MenuRemoteMainState extends State<MenuRemoteMain> {
                 title1: "Lịch gom hôm nay",
                 title2: "Lịch gom đã sắp",
                 title3: "Lịch gom chưa sắp",
-                isSelected1: selectedIndex == 0,
-                isSelected2: selectedIndex == 1,
-                isSelected3: selectedIndex == 2,
+                isSelected1: menuController.selectedIndex.value == 0,
+                isSelected2: menuController.selectedIndex.value == 1,
+                isSelected3: menuController.selectedIndex.value == 2,
                 numberNoti1: "3",
                 numberNoti2: "0",
                 numberNoti3: "8",
                 item4: false,
                 onTap1: () {
-                  setState(() {
-                    selectedIndex = 0;
-                  });
+                  menuController.setIndex(0);
                   toggleMenu();
-                  Get.toNamed(AppRoutes.scheduleCollectionToday, arguments: 0);
+                  Get.toNamed(AppRoutes.scheduleCollectionToday);
                 },
                 onTap2: () {
-                  setState(() {
-                    selectedIndex = 1;
-                  });
-                   toggleMenu();
-                  Get.toNamed(AppRoutes.scheduleCollectionArranged, arguments: 1);
+                  menuController.setIndex(1);
+                  toggleMenu();
+                  Get.toNamed(AppRoutes.scheduleCollectionArranged);
                 },
                 onTap3: () {
-                  setState(() {
-                    selectedIndex = 2;
-                  });
-                   toggleMenu();
-                  Get.toNamed(AppRoutes.scheduleCollectionNotYet, arguments: 2);
+                  menuController.setIndex(2);
+                  toggleMenu();
+                  Get.toNamed(AppRoutes.scheduleCollectionNotYet);
                 },
               ),
               SizedBox(
@@ -134,27 +131,21 @@ class _MenuRemoteMainState extends State<MenuRemoteMain> {
                 title1: "Gửi bảng kê",
                 title2: "Bảng kê đã gửi",
                 title3: "Bảng kê trả lại",
-                isSelected1: selectedIndex == 3,
-                isSelected2: selectedIndex == 4,
-                isSelected3: selectedIndex == 5,
+                isSelected1: menuController.selectedIndex.value == 3,
+                isSelected2: menuController.selectedIndex.value == 4,
+                isSelected3: menuController.selectedIndex.value == 5,
                 numberNoti1: "3",
                 numberNoti2: "0",
                 numberNoti3: "8",
                 item4: false,
                 onTap1: () {
-                  setState(() {
-                    selectedIndex = 3;
-                  });
+                 
                 },
                 onTap2: () {
-                  setState(() {
-                    selectedIndex = 4;
-                  });
+                 
                 },
                 onTap3: () {
-                  setState(() {
-                    selectedIndex = 5;
-                  });
+                  
                 },
               ),
               SizedBox(
@@ -171,34 +162,26 @@ class _MenuRemoteMainState extends State<MenuRemoteMain> {
                 title2: "Hợp đồng hết hạn",
                 title3: "Xác nhận hợp đồng",
                 title4: "Bổ sung phụ lục",
-                isSelected1: selectedIndex == 6,
-                isSelected2: selectedIndex == 7,
-                isSelected3: selectedIndex == 8,
-                isSelected4: selectedIndex == 9,
+                isSelected1: menuController.selectedIndex.value == 6,
+                isSelected2: menuController.selectedIndex.value == 7,
+                isSelected3: menuController.selectedIndex.value == 8,
+                isSelected4: menuController.selectedIndex.value == 9,
                 numberNoti1: "3",
                 numberNoti2: "0",
                 numberNoti3: "8",
                 numberNoti4: "0",
                 item4: true,
                 onTap1: () {
-                  setState(() {
-                    selectedIndex = 6;
-                  });
+                  
                 },
                 onTap2: () {
-                  setState(() {
-                    selectedIndex = 7;
-                  });
+                 
                 },
                 onTap3: () {
-                  setState(() {
-                    selectedIndex = 8;
-                  });
+                  
                 },
                 onTap4: () {
-                  setState(() {
-                    selectedIndex = 9;
-                  });
+                  
                 },
               ),
 
@@ -335,7 +318,7 @@ class ItemMenuBody extends StatelessWidget {
               children: [
                 CustomPaint(
                   size: const Size(30, 0),
-                  painter: CurvedLinePainter(),
+                  painter: CurvedLineWidget(),
                 ),
                 ItemMenu(
                   title: title1,
@@ -352,7 +335,7 @@ class ItemMenuBody extends StatelessWidget {
               children: [
                 CustomPaint(
                   size: const Size(30, 0),
-                  painter: CurvedLinePainter(),
+                  painter: CurvedLineWidget(),
                 ),
                 ItemMenu(
                   title: title2,
@@ -369,7 +352,7 @@ class ItemMenuBody extends StatelessWidget {
               children: [
                 CustomPaint(
                   size: const Size(30, 0),
-                  painter: CurvedLinePainter(),
+                  painter: CurvedLineWidget(),
                 ),
                 ItemMenu(
                   title: title3,
@@ -387,7 +370,7 @@ class ItemMenuBody extends StatelessWidget {
                     children: [
                       CustomPaint(
                         size: const Size(30, 0),
-                        painter: CurvedLinePainter(),
+                        painter: CurvedLineWidget(),
                       ),
                       ItemMenu(
                         title: title4!,

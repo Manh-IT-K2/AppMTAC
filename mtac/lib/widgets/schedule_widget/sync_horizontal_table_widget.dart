@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
-class SyncHorizontalTable extends StatefulWidget {
+class SyncHorizontalTableWidget extends StatefulWidget {
   final List<Widget> headers;
   final List<List<Widget>> rows;
   final double rowHeight;
 
-  const SyncHorizontalTable({
+  const SyncHorizontalTableWidget({
     super.key,
     required this.headers,
     required this.rows,
@@ -14,10 +14,10 @@ class SyncHorizontalTable extends StatefulWidget {
   });
 
   @override
-  State<SyncHorizontalTable> createState() => _SyncHorizontalTableState();
+  State<SyncHorizontalTableWidget> createState() => _SyncHorizontalTableWidgetState();
 }
 
-class _SyncHorizontalTableState extends State<SyncHorizontalTable> {
+class _SyncHorizontalTableWidgetState extends State<SyncHorizontalTableWidget> {
   late LinkedScrollControllerGroup _controllerGroup;
   late ScrollController _headerScrollController;
   late ScrollController _bodyScrollController;

@@ -5,7 +5,8 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:mtac/controllers/schedule/schedule_controller.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
-import 'package:mtac/widgets/menu_remote_main.dart';
+import 'package:mtac/widgets/base_will_pop_widget.dart';
+import 'package:mtac/widgets/menu_remote_main_widget.dart';
 import 'package:sizer/sizer.dart';
 
 class ScheduleCollectionArrangedScreen extends StatefulWidget {
@@ -21,7 +22,6 @@ class _ScheduleCollectionArrangedScreenState
   //
   final ScheduleController controller = Get.put(ScheduleController());
   bool showMenu = false;
-  final indexPageViewBack = Get.arguments ?? 0;
   void toggleMenu() {
     setState(() {
       showMenu = !showMenu;
@@ -30,301 +30,303 @@ class _ScheduleCollectionArrangedScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            GestureDetector(
-               onTap: () {
-                 Get.back(result: indexPageViewBack);
-              },
-              child: Icon(
-                Icons.arrow_back_ios,
-                size: 5.w,
-                color: Colors.black,
-              ),
-            ),
-            const Spacer(),
-            GestureDetector(
-              onTap: () {
-                toggleMenu();
-               // print("hello ${controller.isMenuOpen.value}");
-              },
-              child: Container(
-                width: 10.w,
-                height: 10.w,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.w),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(2, 2),
-                    ),
-                  ],
-                ),
-                child: Icon(
-                  Icons.menu,
-                  color: Colors.black,
-                  size: 5.w,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: Stack(children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          margin: const EdgeInsets.only(bottom: 26.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return BaseWillPopWidget(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Row(
             children: [
-              Text.rich(
-                TextSpan(
-                    text: "SP764\n",
-                    style: PrimaryFont.bodyTextMedium()
-                        .copyWith(color: Colors.grey),
-                    children: [
-                      TextSpan(
-                        text: "Quan Văn Mạnh",
-                        style: PrimaryFont.titleTextMedium()
-                            .copyWith(color: Colors.black),
-                      ),
-                    ]),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 5.w),
-                width: 100.w,
-                alignment: Alignment.center,
-                child: Text(
-                  "*Lịch Gom Đã Xếp*",
-                  style: PrimaryFont.headerTextBold(),
+              GestureDetector(
+                 onTap: () {
+                   Get.back();
+                },
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  size: 5.w,
+                  color: Colors.black,
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(bottom: 5.w),
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                height: 5.h,
-                color: const Color(0xFFEBF5FF),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: controller.itemScheduleCollectionArranged
-                      .map(
-                        (title) => _ItemListCollection(title: title),
-                      )
-                      .toList(),
-                ),
-              ),
-              Row(
-                children: [
-                  // Obx(
-                  //   () => controller.checkedItems.isNotEmpty
-                  //       ? Row(
-                  //           children: [
-                  //             GestureDetector(
-                  //               onTap: () => controller.toggleSelectAll(
-                  //                 controller.filteredItemsScheduleArranged
-                  //                     .map((e) => e.collectionId)
-                  //                     .toList(),
-                  //               ),
-                  //               child: Container(
-                  //                 width: 5.w,
-                  //                 height: 5.w,
-                  //                 decoration: BoxDecoration(
-                  //                   border: Border.all(
-                  //                       color: Colors.black, width: 0.5),
-                  //                   borderRadius: BorderRadius.circular(1.w),
-                  //                   color: controller.isAllSelected(
-                  //                     controller.filteredItemsScheduleArranged
-                  //                         .map((e) => e.collectionId)
-                  //                         .toList(),
-                  //                   )
-                  //                       ? Colors.red
-                  //                       : Colors.white,
-                  //                 ),
-                  //                 child: controller.isAllSelected(
-                  //                   controller.filteredItemsScheduleArranged
-                  //                       .map((e) => e.collectionId)
-                  //                       .toList(),
-                  //                 )
-                  //                     ? Icon(Icons.check,
-                  //                         color: Colors.white, size: 3.w)
-                  //                     : null,
-                  //               ),
-                  //             ),
-                  //             SizedBox(width: 1.w),
-                  //             Text("Chọn tất cả",
-                  //                 style: PrimaryFont.bodyTextMedium()),
-                  //           ],
-                  //         )
-                  //       : const SizedBox(),
-                  // ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      if (controller.checkedItemsScheduleArranged.isNotEmpty) {
-                        controller.deleteSelectedItemsScheduleArranged();
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Icon(HugeIcons.strokeRoundedDelete01,
-                            color: Colors.red, size: 5.w),
-                        SizedBox(width: 1.w),
-                        Text(
-                          "Xoá",
-                          style: PrimaryFont.bodyTextMedium(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  //: const SizedBox(),
-
-                  SizedBox(width: 3.w),
-                  PopupMenuButton<String>(
+              const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  toggleMenu();
+                 // print("hello ${controller.isMenuOpen.value}");
+                },
+                child: Container(
+                  width: 10.w,
+                  height: 10.w,
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    onSelected: (String value) {
-                      controller.updateFilterScheduleArranged(value);
-                    },
-                    itemBuilder: (BuildContext context) => [
-                      const PopupMenuItem(
-                          value: "Khoáng", child: Text("Khoáng")),
-                      const PopupMenuItem(
-                          value: "Cân ký", child: Text("Cân ký")),
-                    ],
-                    child: Row(
-                      children: [
-                        Icon(HugeIcons.strokeRoundedFilter,
-                            color: Colors.black, size: 5.w),
-                        SizedBox(width: 1.w),
-                        Text(
-                          "Lọc",
-                          style: PrimaryFont.bodyTextMedium(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 3.w,
-                  ),
-                  Container(
-                    width: 35.w,
-                    height: 10.w,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: kPrimaryColor.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(10.w),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(2, 2),
                       ),
-                      borderRadius: BorderRadius.circular(10.w),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "March, 2025",
-                          style: PrimaryFont.bodyTextMedium(),
-                        ),
-                        SizedBox(
-                          width: 4.w,
-                        ),
-                        Icon(
-                          Icons.arrow_back_ios,
-                          size: 4.w,
-                          color: Colors.black,
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 4.w,
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 3.w,
-              ),
-              Expanded(
-                child: PageView(
-                  controller: controller.pageControllerScheduleArranged,
-                  onPageChanged: controller.onPageChangedScheduleArranged,
-                  children: controller.itemScheduleCollectionArranged.map(
-                    (title) {
-                      return Obx(() {
-                        if (controller.isLoadingScheduleArranged.value) {
-                          return Center(
-                            child: Image.asset(
-                              "assets/images/loadingDot.gif",
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.fill,
-                            ),
-                          );
-                        }
-                        return CustomScrollView(
-                          slivers: [
-                            SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  final data = controller
-                                      .filteredItemsScheduleArranged[index];
-                                  return _ItemMainScheduleCollection(
-                                    controller: controller,
-                                    collectionId: data.collectionId,
-                                    nameBusiness: data.nameBusiness,
-                                    areaTransit: data.areaTransit,
-                                    typeWaste: data.typeWaste,
-                                    contactPerson: data.contactPerson,
-                                    timeCollection: data.timeCollection,
-                                    status: data.status,
-                                    onTap: () {
-                                      // Get.toNamed(
-                                      //   AppRoutes.DETAILSCHEDULECOLLECTIONDRIVER,
-                                      //   arguments: {
-                                      //     "costTransit": data.costTransit,
-                                      //     "nameBusiness": data.nameBusiness,
-                                      //     "areaTransit": data.areaTransit,
-                                      //     "typeWaste": data.typeWaste,
-                                      //     "contactPerson": data.contactPerson,
-                                      //     "timeCollection": data.timeCollection,
-                                      //     "numberPlate": data.numberPlate,
-                                      //     "addressCollection": data.addressCollection,
-                                      //     "debtStatus": data.debtStatus,
-                                      //     "dayCollection": data.dayCollection,
-                                      //     "daySendCollection": data.daySendCollection,
-                                      //     "image": data.image,
-                                      //   },
-                                      // );
-                                    },
-                                  );
-                                },
-                                childCount: controller
-                                    .filteredItemsScheduleArranged.length,
-                              ),
-                            ),
-                          ],
-                        );
-                      });
-                    },
-                  ).toList(),
+                  child: Icon(
+                    Icons.menu,
+                    color: Colors.black,
+                    size: 5.w,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        // Menu glide from right
-        MenuRemoteMain(
-          isMenuOpen: showMenu,
-          onClose: toggleMenu,
-        ),
-      ]),
+        body: Stack(children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            margin: const EdgeInsets.only(bottom: 26.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text.rich(
+                  TextSpan(
+                      text: "SP764\n",
+                      style: PrimaryFont.bodyTextMedium()
+                          .copyWith(color: Colors.grey),
+                      children: [
+                        TextSpan(
+                          text: "Quan Văn Mạnh",
+                          style: PrimaryFont.titleTextMedium()
+                              .copyWith(color: Colors.black),
+                        ),
+                      ]),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 5.w),
+                  width: 100.w,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "*Lịch Gom Đã Xếp*",
+                    style: PrimaryFont.headerTextBold(),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 5.w),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  height: 5.h,
+                  color: const Color(0xFFEBF5FF),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: controller.itemScheduleCollectionArranged
+                        .map(
+                          (title) => _ItemListCollection(title: title),
+                        )
+                        .toList(),
+                  ),
+                ),
+                Row(
+                  children: [
+                    // Obx(
+                    //   () => controller.checkedItems.isNotEmpty
+                    //       ? Row(
+                    //           children: [
+                    //             GestureDetector(
+                    //               onTap: () => controller.toggleSelectAll(
+                    //                 controller.filteredItemsScheduleArranged
+                    //                     .map((e) => e.collectionId)
+                    //                     .toList(),
+                    //               ),
+                    //               child: Container(
+                    //                 width: 5.w,
+                    //                 height: 5.w,
+                    //                 decoration: BoxDecoration(
+                    //                   border: Border.all(
+                    //                       color: Colors.black, width: 0.5),
+                    //                   borderRadius: BorderRadius.circular(1.w),
+                    //                   color: controller.isAllSelected(
+                    //                     controller.filteredItemsScheduleArranged
+                    //                         .map((e) => e.collectionId)
+                    //                         .toList(),
+                    //                   )
+                    //                       ? Colors.red
+                    //                       : Colors.white,
+                    //                 ),
+                    //                 child: controller.isAllSelected(
+                    //                   controller.filteredItemsScheduleArranged
+                    //                       .map((e) => e.collectionId)
+                    //                       .toList(),
+                    //                 )
+                    //                     ? Icon(Icons.check,
+                    //                         color: Colors.white, size: 3.w)
+                    //                     : null,
+                    //               ),
+                    //             ),
+                    //             SizedBox(width: 1.w),
+                    //             Text("Chọn tất cả",
+                    //                 style: PrimaryFont.bodyTextMedium()),
+                    //           ],
+                    //         )
+                    //       : const SizedBox(),
+                    // ),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        if (controller.checkedItemsScheduleArranged.isNotEmpty) {
+                          controller.deleteSelectedItemsScheduleArranged();
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Icon(HugeIcons.strokeRoundedDelete01,
+                              color: Colors.red, size: 5.w),
+                          SizedBox(width: 1.w),
+                          Text(
+                            "Xoá",
+                            style: PrimaryFont.bodyTextMedium(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    //: const SizedBox(),
+      
+                    SizedBox(width: 3.w),
+                    PopupMenuButton<String>(
+                      color: Colors.white,
+                      onSelected: (String value) {
+                        controller.updateFilterScheduleArranged(value);
+                      },
+                      itemBuilder: (BuildContext context) => [
+                        const PopupMenuItem(
+                            value: "Khoáng", child: Text("Khoáng")),
+                        const PopupMenuItem(
+                            value: "Cân ký", child: Text("Cân ký")),
+                      ],
+                      child: Row(
+                        children: [
+                          Icon(HugeIcons.strokeRoundedFilter,
+                              color: Colors.black, size: 5.w),
+                          SizedBox(width: 1.w),
+                          Text(
+                            "Lọc",
+                            style: PrimaryFont.bodyTextMedium(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Container(
+                      width: 35.w,
+                      height: 10.w,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: kPrimaryColor.withOpacity(0.4),
+                        ),
+                        borderRadius: BorderRadius.circular(10.w),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "March, 2025",
+                            style: PrimaryFont.bodyTextMedium(),
+                          ),
+                          SizedBox(
+                            width: 4.w,
+                          ),
+                          Icon(
+                            Icons.arrow_back_ios,
+                            size: 4.w,
+                            color: Colors.black,
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 4.w,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 3.w,
+                ),
+                Expanded(
+                  child: PageView(
+                    controller: controller.pageControllerScheduleArranged,
+                    onPageChanged: controller.onPageChangedScheduleArranged,
+                    children: controller.itemScheduleCollectionArranged.map(
+                      (title) {
+                        return Obx(() {
+                          if (controller.isLoadingScheduleArranged.value) {
+                            return Center(
+                              child: Image.asset(
+                                "assets/images/loadingDot.gif",
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit.fill,
+                              ),
+                            );
+                          }
+                          return CustomScrollView(
+                            slivers: [
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    final data = controller
+                                        .filteredItemsScheduleArranged[index];
+                                    return _ItemMainScheduleCollection(
+                                      controller: controller,
+                                      collectionId: data.collectionId,
+                                      nameBusiness: data.nameBusiness,
+                                      areaTransit: data.areaTransit,
+                                      typeWaste: data.typeWaste,
+                                      contactPerson: data.contactPerson,
+                                      timeCollection: data.timeCollection,
+                                      status: data.status,
+                                      onTap: () {
+                                        // Get.toNamed(
+                                        //   AppRoutes.DETAILSCHEDULECOLLECTIONDRIVER,
+                                        //   arguments: {
+                                        //     "costTransit": data.costTransit,
+                                        //     "nameBusiness": data.nameBusiness,
+                                        //     "areaTransit": data.areaTransit,
+                                        //     "typeWaste": data.typeWaste,
+                                        //     "contactPerson": data.contactPerson,
+                                        //     "timeCollection": data.timeCollection,
+                                        //     "numberPlate": data.numberPlate,
+                                        //     "addressCollection": data.addressCollection,
+                                        //     "debtStatus": data.debtStatus,
+                                        //     "dayCollection": data.dayCollection,
+                                        //     "daySendCollection": data.daySendCollection,
+                                        //     "image": data.image,
+                                        //   },
+                                        // );
+                                      },
+                                    );
+                                  },
+                                  childCount: controller
+                                      .filteredItemsScheduleArranged.length,
+                                ),
+                              ),
+                            ],
+                          );
+                        });
+                      },
+                    ).toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Menu glide from right
+          MenuRemoteMainWidget(
+            isMenuOpen: showMenu,
+            onClose: toggleMenu,
+          ),
+        ]),
+      ),
     );
   }
 }
