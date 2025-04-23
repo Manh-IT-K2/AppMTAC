@@ -15,7 +15,7 @@ use Laravel\Passport\Http\Controllers\AccessTokenController;
 
 class UserController extends Controller
 {
-    // function register
+    // API function register
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -40,7 +40,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    // function login
+    // API function login
     public function login(Request $request)
     {
         try {
@@ -84,7 +84,7 @@ class UserController extends Controller
         }
     }
 
-    // refresh token
+    // API refresh token
     public function refreshToken(Request $request)
     {
         $refreshToken = $request->input('refresh_token');
@@ -120,7 +120,7 @@ class UserController extends Controller
         return response()->json($request->user());
     }
 
-    // function logout
+    // API function logout
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();

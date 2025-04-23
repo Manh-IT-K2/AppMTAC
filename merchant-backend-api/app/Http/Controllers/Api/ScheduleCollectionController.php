@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 class ScheduleCollectionController extends Controller
 {
 
-    // get list scheduleCollectionToday
+    // API get list ScheduleCollectionToday
     public function getScheduleCollectionToday(): JsonResponse
     {
         try {
@@ -57,8 +57,8 @@ class ScheduleCollectionController extends Controller
 
             return response()->json([
                 'status' => true,
+                'message' => "Schedule collection today:  $today",
                 'data' => $data,
-                'date' => $today
             ]);
         } catch (\Throwable $th) {
             Log::error('ScheduleCollectionToday: Error while retrieving data.', [
@@ -73,7 +73,7 @@ class ScheduleCollectionController extends Controller
         }
     }
 
-    // get list getScheduleCollectionArranged
+    // API get list ScheduleCollectionArranged
     public function getScheduleCollectionArranged(): JsonResponse
     {
         try {
@@ -103,8 +103,32 @@ class ScheduleCollectionController extends Controller
         }
     }
 
+    // API get list ScheduleCollectionNotYet
+    public function getScheduleCollectionNotYet(): JsonResponse
+    {
+        try {
+            $schedules = ScheduleCollection::with('images')
+                ->whereNull('day_collection')
+                ->get();
 
-    // delete schedule collection by Id
+            Log::debug('Fetched ' . $schedules->count() . ' schedule collections with null day_collection');
+
+            return response()->json([
+                'status' => true,
+                'message' => "List Schedule Collection Not Yet",
+                'data' => $schedules,
+            ]);
+        } catch (\Throwable $th) {
+            Log::error('Error fetching schedule collections with null day_collection: ' . $th->getMessage());
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Error fetching data.',
+            ], 500);
+        }
+    }
+
+    // API delete schedule collection by Id
     public function deleteScheduleCollection($id)
     {
         $ScheduleCollection = ScheduleCollection::find($id);

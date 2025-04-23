@@ -20,6 +20,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
     Route::get('/schedule-today', [ScheduleCollectionController::class, 'getScheduleCollectionToday']);
     Route::get('/schedule-arranged', [ScheduleCollectionController::class, 'getScheduleCollectionArranged']);
+    Route::get('/schedule-notyet', [ScheduleCollectionController::class, 'getScheduleCollectionNotYet']);
     Route::delete('/schedule/{id}', [ScheduleCollectionController::class, 'deleteScheduleCollection']);
 
 });
