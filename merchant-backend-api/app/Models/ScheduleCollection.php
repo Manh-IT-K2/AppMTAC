@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ScheduleCollection extends Model
 {
@@ -25,8 +26,13 @@ class ScheduleCollection extends Model
         'cost_transit',
     ];
 
-    public function images()
+    public function images(): HasMany
     {
         return $this->hasMany(ImageScheduleCollection::class, 'schedule_collection_id');
+    }
+
+    public function merchandises(): HasMany
+    {
+        return $this->hasMany(Merchandise::class, 'schedule_collection_id');
     }
 }
