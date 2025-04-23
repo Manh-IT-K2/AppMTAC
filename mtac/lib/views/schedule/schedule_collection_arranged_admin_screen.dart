@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:mtac/controllers/schedule/schedule_controller.dart';
+import 'package:mtac/controllers/schedule/schedule_arranged_controller.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 import 'package:mtac/widgets/base_will_pop_widget.dart';
@@ -20,7 +20,8 @@ class ScheduleCollectionArrangedScreen extends StatefulWidget {
 class _ScheduleCollectionArrangedScreenState
     extends State<ScheduleCollectionArrangedScreen> {
   //
-  final ScheduleController controller = Get.put(ScheduleController());
+  final ScheduleArrangedController controller =
+      Get.put(ScheduleArrangedController());
   bool showMenu = false;
   void toggleMenu() {
     setState(() {
@@ -38,8 +39,8 @@ class _ScheduleCollectionArrangedScreenState
           title: Row(
             children: [
               GestureDetector(
-                 onTap: () {
-                   Get.back();
+                onTap: () {
+                  Get.back();
                 },
                 child: Icon(
                   Icons.arrow_back_ios,
@@ -51,7 +52,7 @@ class _ScheduleCollectionArrangedScreenState
               GestureDetector(
                 onTap: () {
                   toggleMenu();
-                 // print("hello ${controller.isMenuOpen.value}");
+                  // print("hello ${controller.isMenuOpen.value}");
                 },
                 child: Container(
                   width: 10.w,
@@ -169,7 +170,8 @@ class _ScheduleCollectionArrangedScreenState
                     const Spacer(),
                     GestureDetector(
                       onTap: () {
-                        if (controller.checkedItemsScheduleArranged.isNotEmpty) {
+                        if (controller
+                            .checkedItemsScheduleArranged.isNotEmpty) {
                           controller.deleteSelectedItemsScheduleArranged();
                         }
                       },
@@ -186,7 +188,7 @@ class _ScheduleCollectionArrangedScreenState
                       ),
                     ),
                     //: const SizedBox(),
-      
+
                     SizedBox(width: 3.w),
                     PopupMenuButton<String>(
                       color: Colors.white,
@@ -271,45 +273,44 @@ class _ScheduleCollectionArrangedScreenState
                           }
                           return CustomScrollView(
                             slivers: [
-                              SliverList(
-                                delegate: SliverChildBuilderDelegate(
-                                  (context, index) {
-                                    final data = controller
-                                        .filteredItemsScheduleArranged[index];
-                                    return _ItemMainScheduleCollection(
-                                      controller: controller,
-                                      collectionId: data.collectionId,
-                                      nameBusiness: data.nameBusiness,
-                                      areaTransit: data.areaTransit,
-                                      typeWaste: data.typeWaste,
-                                      contactPerson: data.contactPerson,
-                                      timeCollection: data.timeCollection,
-                                      status: data.status,
-                                      onTap: () {
-                                        // Get.toNamed(
-                                        //   AppRoutes.DETAILSCHEDULECOLLECTIONDRIVER,
-                                        //   arguments: {
-                                        //     "costTransit": data.costTransit,
-                                        //     "nameBusiness": data.nameBusiness,
-                                        //     "areaTransit": data.areaTransit,
-                                        //     "typeWaste": data.typeWaste,
-                                        //     "contactPerson": data.contactPerson,
-                                        //     "timeCollection": data.timeCollection,
-                                        //     "numberPlate": data.numberPlate,
-                                        //     "addressCollection": data.addressCollection,
-                                        //     "debtStatus": data.debtStatus,
-                                        //     "dayCollection": data.dayCollection,
-                                        //     "daySendCollection": data.daySendCollection,
-                                        //     "image": data.image,
-                                        //   },
-                                        // );
-                                      },
-                                    );
-                                  },
-                                  childCount: controller
-                                      .filteredItemsScheduleArranged.length,
-                                ),
-                              ),
+                              controller.filteredItemsScheduleArranged.isEmpty
+                                  ? SliverToBoxAdapter(
+                                      child: Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(top: 25.h),
+                                          child: Text(
+                                            'Không có dữ liệu phù hợp!',
+                                            style: PrimaryFont.bodyTextMedium(),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : SliverList(
+                                      delegate: SliverChildBuilderDelegate(
+                                        (context, index) {
+                                          final data = controller
+                                                  .filteredItemsScheduleArranged[
+                                              index];
+                                          return _ItemMainScheduleCollection(
+                                            id: data.id,
+                                            controller: controller,
+                                            collectionId: data.collectionId,
+                                            nameBusiness: data.nameBusiness,
+                                            areaTransit: data.areaTransit,
+                                            typeWaste: data.typeWaste,
+                                            contactPerson: data.contactPerson,
+                                            timeCollection: data.timeCollection,
+                                            status: data.status,
+                                            onTap: () {
+                                              // navigation
+                                            },
+                                          );
+                                        },
+                                        childCount: controller
+                                            .filteredItemsScheduleArranged
+                                            .length,
+                                      ),
+                                    ),
                             ],
                           );
                         });
@@ -341,17 +342,19 @@ class _ItemMainScheduleCollection extends StatelessWidget {
     required this.contactPerson,
     required this.timeCollection,
     required this.status,
+    required this.id,
     this.onTap,
   });
 
   final bool status;
+  final int id;
   final String collectionId,
       nameBusiness,
       areaTransit,
       typeWaste,
       contactPerson,
       timeCollection;
-  final ScheduleController controller;
+  final ScheduleArrangedController controller;
   final Function()? onTap;
 
   @override
@@ -407,8 +410,7 @@ class _ItemMainScheduleCollection extends StatelessWidget {
                 ),
                 const Spacer(),
                 GestureDetector(
-                  onTap: () =>
-                      controller.toggleCheckScheduleArranged(collectionId),
+                  onTap: () => controller.toggleCheckScheduleArranged(id),
                   child: Obx(
                     () => Container(
                       width: 5.w,
@@ -416,12 +418,11 @@ class _ItemMainScheduleCollection extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 1),
                         borderRadius: BorderRadius.circular(1.w),
-                        color:
-                            controller.isCheckedScheduleArranged(collectionId)
-                                ? Colors.red
-                                : Colors.white,
+                        color: controller.isCheckedScheduleArranged(id)
+                            ? Colors.red
+                            : Colors.white,
                       ),
-                      child: controller.isCheckedScheduleArranged(collectionId)
+                      child: controller.isCheckedScheduleArranged(id)
                           ? Icon(Icons.check, color: Colors.white, size: 3.w)
                           : null,
                     ),
@@ -526,7 +527,8 @@ class _ItemInfoScheduleCollection extends StatelessWidget {
 
 class _ItemListCollection extends StatelessWidget {
   final String title;
-  final ScheduleController controller = Get.find<ScheduleController>();
+  final ScheduleArrangedController controller =
+      Get.find<ScheduleArrangedController>();
 
   _ItemListCollection({required this.title});
 

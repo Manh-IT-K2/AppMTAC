@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:mtac/controllers/schedule/schedule_controller.dart';
+import 'package:mtac/controllers/schedule/schedule_today_controller.dart';
 import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
@@ -50,7 +50,7 @@ class _ScheduleCollectionTodayScreenState
             children: [
               GestureDetector(
                 onTap: () {
-                   Get.back();
+                  Get.back();
                 },
                 child: Icon(
                   Icons.arrow_back_ios,
@@ -213,7 +213,7 @@ class _ScheduleCollectionTodayScreenState
                         ),
                       ),
                       // : const SizedBox(),
-      
+
                       SizedBox(width: 3.w),
                       PopupMenuButton<String>(
                         color: Colors.white,
@@ -246,8 +246,7 @@ class _ScheduleCollectionTodayScreenState
                       onPageChanged: controller.onPageChangedScheduleToday,
                       children:
                           controller.itemScheduleCollectionDriver.map((title) {
-                        return _ScheduleTabView(
-                            title: title);
+                        return _ScheduleTabView(title: title);
                       }).toList(),
                     ),
                   ),
@@ -550,45 +549,57 @@ class _ScheduleTabView extends StatelessWidget {
         return CustomScrollView(
           key: PageStorageKey(title),
           slivers: [
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final data = controller.filteredItems[index];
-                  return _ItemMainScheduleCollection(
-                    id: data.id,
-                    controller: controller,
-                    collectionId: data.collectionId,
-                    nameBusiness: data.nameBusiness,
-                    areaTransit: data.areaTransit,
-                    typeWaste: data.typeWaste,
-                    contactPerson: data.contactPerson,
-                    timeCollection: data.timeCollection,
-                    status: data.status,
-                    onTap: () {
-                      Get.toNamed(
-                        AppRoutes.detailScheduleCollection,
-                        arguments: {
-                          "id": data.id,
-                          "costTransit": data.costTransit,
-                          "nameBusiness": data.nameBusiness,
-                          "areaTransit": data.areaTransit,
-                          "typeWaste": data.typeWaste,
-                          "contactPerson": data.contactPerson,
-                          "timeCollection": data.timeCollection,
-                          "numberPlate": data.numberPlate,
-                          "addressCollection": data.addressCollection,
-                          "debtStatus": data.debtStatus,
-                          "dayCollection": data.dayCollection,
-                          "daySendCollection": data.daySendCollection,
-                          "image": data.image,
-                        },
-                      );
-                    },
-                  );
-                },
-                childCount: controller.filteredItems.length,
-              ),
-            ),
+            controller.filteredItems.isEmpty
+                ? SliverToBoxAdapter(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 25.h),
+                        child: Text(
+                          'Không có dữ liệu phù hợp!',
+                          style: PrimaryFont.bodyTextMedium(),
+                        ),
+                      ),
+                    ),
+                  )
+                : SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final data = controller.filteredItems[index];
+                        return _ItemMainScheduleCollection(
+                          id: data.id,
+                          controller: controller,
+                          collectionId: data.collectionId,
+                          nameBusiness: data.nameBusiness,
+                          areaTransit: data.areaTransit,
+                          typeWaste: data.typeWaste,
+                          contactPerson: data.contactPerson,
+                          timeCollection: data.timeCollection,
+                          status: data.status,
+                          onTap: () {
+                            Get.toNamed(
+                              AppRoutes.detailScheduleCollection,
+                              arguments: {
+                                "id": data.id,
+                                "costTransit": data.costTransit,
+                                "nameBusiness": data.nameBusiness,
+                                "areaTransit": data.areaTransit,
+                                "typeWaste": data.typeWaste,
+                                "contactPerson": data.contactPerson,
+                                "timeCollection": data.timeCollection,
+                                "numberPlate": data.numberPlate,
+                                "addressCollection": data.addressCollection,
+                                "debtStatus": data.debtStatus,
+                                "dayCollection": data.dayCollection.toString(),
+                                "daySendCollection": data.daySendCollection,
+                                "image": data.image,
+                              },
+                            );
+                          },
+                        );
+                      },
+                      childCount: controller.filteredItems.length,
+                    ),
+                  ),
           ],
         );
       },

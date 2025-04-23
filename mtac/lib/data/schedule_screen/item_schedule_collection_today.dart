@@ -1,7 +1,7 @@
-import 'package:mtac/models/schedule_collection_today_model.dart';
+import 'package:mtac/models/schedule_collection_model.dart';
 
-final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
-  ScheduleCollectionTodayModel(
+final List<ScheduleCollectionModel> itemCollectionTodayDatas = [
+  ScheduleCollectionModel(
     id: 1,
     status: true, 
     collectionId: 'CTG-75161', 
@@ -25,7 +25,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
       'https://moitruongachau.com/vnt_upload/field/07_2022/tai_che_recycle_5.png',
     ],
   ),
-  ScheduleCollectionTodayModel(
+  ScheduleCollectionModel(
     id: 2,
     status: false, 
     collectionId: 'CTG-75352', 
@@ -43,7 +43,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     costTransit: '1,800,000 VND',
     image: null,
   ),
-  ScheduleCollectionTodayModel(
+  ScheduleCollectionModel(
     id: 3,
     status: true, 
     collectionId: 'CTG-75415', 
@@ -61,7 +61,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     costTransit: '3,200,000 VND',
     image: null,
   ),
-  ScheduleCollectionTodayModel(
+  ScheduleCollectionModel(
     id: 4,
     status: false, 
     collectionId: 'CTG-75171', 
@@ -79,7 +79,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     costTransit: '2,100,000 VND',
     image: null,
   ),
-  ScheduleCollectionTodayModel(
+  ScheduleCollectionModel(
     id: 5,
     status: true, 
     collectionId: 'CTG-75158', 
@@ -97,7 +97,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     costTransit: '1,500,000 VND',
     image: null,
   ),
-  ScheduleCollectionTodayModel(
+  ScheduleCollectionModel(
     id: 6,
     status: true, 
     collectionId: 'CTG-75165', 
@@ -121,7 +121,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
       'https://moitruongachau.com/vnt_upload/field/09_2021/xu_ly_nuoc_1.png',
     ],
   ),
-  ScheduleCollectionTodayModel(
+  ScheduleCollectionModel(
     id: 7,
     status: false, 
     collectionId: 'CTG-75169', 
@@ -143,7 +143,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
       'https://moitruongachau.com/vnt_upload/field/10_2021/tieu_huy_hang_hoa_11.png'
     ],
   ),
-  ScheduleCollectionTodayModel(
+  ScheduleCollectionModel(
     id: 8,
     status: true, 
     collectionId: 'CTG-75172', 
@@ -164,7 +164,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
       'https://moitruongachau.com/vnt_upload/field/09_2021/xu_ly_chat_thai_3.png',
     ],
   ),
-  ScheduleCollectionTodayModel(
+  ScheduleCollectionModel(
     id: 9,
     status: false, 
     collectionId: 'CTG-75173', 
@@ -182,7 +182,7 @@ final List<ScheduleCollectionTodayModel> itemCollectionTodayDatas = [
     costTransit: '4,200,000 VND',
     image: null,
   ),
-  ScheduleCollectionTodayModel(
+  ScheduleCollectionModel(
     id: 10,
     status: true, 
     collectionId: 'CTG-75174', 

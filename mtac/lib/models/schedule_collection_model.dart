@@ -1,4 +1,4 @@
-class ScheduleCollectionTodayModel {
+class ScheduleCollectionModel {
   final int id;
   final bool status;
   final String collectionId;
@@ -16,7 +16,7 @@ class ScheduleCollectionTodayModel {
   final String costTransit;
   final List<String>? image;
 
-  ScheduleCollectionTodayModel({
+  ScheduleCollectionModel({
     required this.id,
     required this.status,
     required this.collectionId,
@@ -35,29 +35,29 @@ class ScheduleCollectionTodayModel {
     this.image,
   });
 
-  // Convert Map to scheduleCollectionTodayModel
-  factory ScheduleCollectionTodayModel.fromMap(Map<String, dynamic> map) {
-    return ScheduleCollectionTodayModel(
+  // Convert Map to scheduleCollectionModel
+  factory ScheduleCollectionModel.fromMap(Map<String, dynamic> map) {
+    return ScheduleCollectionModel(
       id: map['id'],
-      status: map['status'],
-      collectionId: map['collectionId'],
-      nameBusiness: map['nameBusiness'],
-      addressCollection: map['addressCollection'],
-      typeWaste: map['typeWaste'],
-      areaTransit: map['areaTransit'],
-      numberPlate: map['numberPlate'],
-      numberWorker: map['numberWorker'],
-      timeCollection: map['timeCollection'],
-      contactPerson: map['contactPerson'],
-      dayCollection: map['dayCollection'],
-      daySendCollection: map['daySendCollection'],
-      debtStatus: map['debtStatus'],
-      costTransit: map['costTransit'],
+      status: map['status'] ?? 0,
+      collectionId: map['collectionId'] ?? "",
+      nameBusiness: map['nameBusiness'] ?? "",
+      addressCollection: map['addressCollection'] ?? "",
+      typeWaste: map['typeWaste'] ?? "",
+      areaTransit: map['areaTransit'] ?? "",
+      numberPlate: map['numberPlate'] ?? "",
+      numberWorker: map['numberWorker'] ?? "",
+      timeCollection: map['timeCollection'] ?? "",
+      contactPerson: map['contactPerson'] ?? "",
+      dayCollection: map['dayCollection'] ?? "",
+      daySendCollection: map['daySendCollection'] ?? "",
+      debtStatus: map['debtStatus'] ?? "",
+      costTransit: map['costTransit'] ?? "",
       image: map['image'] != null ? List<String>.from(map['image']) : [],
     );
   }
 
-  // Convert scheduleCollectionTodayModel to Map
+  // Convert scheduleCollectionModel to Map
   Map<String, dynamic> toMap() {
     return {
       'id': id,

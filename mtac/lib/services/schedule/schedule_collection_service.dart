@@ -2,54 +2,86 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:mtac/configs/api_config.dart';
-import 'package:mtac/models/schedule_collection_today_model.dart';
+import 'package:mtac/models/schedule_collection_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ScheduleCollectionService {
   // initial url
   final String baseUrl = ApiConfig.baseUrl;
 
-  // get list schedule today
-  Future<List<ScheduleCollectionTodayModel>> fetchTodaySchedule() async {
+  // Function get token
+  Future<String> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('access_token');
-
     if (token == null) throw Exception('Chưa có token, cần login lại');
+    return token;
+  }
 
-    final response = await http.get(
-      Uri.parse('$baseUrl/api/schedule-today'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/json',
-      },
-    );
+  // Functionhandle response
+  List<ScheduleCollectionModel> _handleResponse(http.Response response) {
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Lỗi HTTP: ${response.statusCode} - ${response.reasonPhrase}',
+      );
+    }
 
-    if (response.statusCode == 200) {
-      final body = json.decode(response.body);
+    final body = json.decode(response.body);
+    if (body['status'] != true) {
+      throw Exception('Lỗi từ server: ${body['message'] ?? 'Không rõ lý do'}');
+    }
 
-      if (body['status'] == true) {
-        List<dynamic> data = body['data'];
+    return (body['data'] as List)
+        .map((json) => ScheduleCollectionModel.fromMap(json))
+        .toList();
+  }
 
-        return data
-            .map((json) => ScheduleCollectionTodayModel.fromMap(json))
-            .toList();
-      } else {
-        throw Exception('Lỗi từ server: status = false');
-      }
-    } else if (response.statusCode == 403) {
-      throw Exception('Không có quyền (scope không đủ)');
-    } else if (response.statusCode == 401) {
-      throw Exception('Chưa đăng nhập hoặc token hết hạn');
-    } else {
-      throw Exception('Lỗi kết nối API: ${response.statusCode}');
+  // get list schedule today
+  Future<List<ScheduleCollectionModel>> fetchTodaySchedule() async {
+    try {
+      final token = await _getToken();
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/schedule-today'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      return _handleResponse(response);
+    } catch (e, stacktrace) {
+      debugPrint('Lỗi khi fetch schedule today: $e');
+      debugPrint('Stacktrace: $stacktrace');
+      rethrow;
     }
   }
 
+    // get list schedule arranged
+  Future<List<ScheduleCollectionModel>> fetchArrangedSchedule() async {
+    try {
+      final token = await _getToken();
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/schedule-arranged'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      return _handleResponse(response);
+    } catch (e, stacktrace) {
+      debugPrint('Lỗi khi fetch schedule arranged: $e');
+      debugPrint('Stacktrace: $stacktrace');
+      rethrow;
+    }
+  }
+
+
   // delete schedule collection
   Future<bool> deleteScheduleCollection(int id) async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('access_token');
-
+    final token = await _getToken();
+    
     final url = Uri.parse('$baseUrl/api/schedule/$id');
     final response = await http.delete(url, headers: {
       'Accept': 'application/json',
