@@ -61,19 +61,48 @@ class ScheduleCollectionController extends Controller
                 'date' => $today
             ]);
         } catch (\Throwable $th) {
-            Log::error('ScheduleCollectionToday: Lỗi khi lấy dữ liệu.', [
+            Log::error('ScheduleCollectionToday: Error while retrieving data.', [
                 'message' => $th->getMessage(),
                 'trace' => $th->getTraceAsString(),
             ]);
 
             return response()->json([
                 'status' => false,
-                'message' => 'Đã xảy ra lỗi khi lấy danh sách schedule collection.',
+                'message' => 'An error occured while retrieving the list schedule collection today.',
             ], 500);
         }
     }
 
-    
+    // get list getScheduleCollectionArranged
+    public function getScheduleCollectionArranged(): JsonResponse
+    {
+        try {
+            $schedules = ScheduleCollection::whereNotNull('day_collection')
+                ->orderBy('day_collection', 'asc')
+                ->get();
+
+            if ($schedules->isEmpty()) {
+                Log::warning('ScheduleCollectionArranged: No schedule collections found.');
+            }
+            Log::info("Returning " . count($schedules) . " schedule collections for today.");
+            return response()->json([
+                'status' => true,
+                'message' => 'Schedule collection list sorted by date',
+                'data' => $schedules,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('ScheduleCollectionArranged: Error while retrieving data.', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response()->json([
+                'status' => false,
+                'message' => 'An occured while retrieving the list schedule collection arranged.',
+            ], 500);
+        }
+    }
+
 
     // delete schedule collection by Id
     public function deleteScheduleCollection($id)
