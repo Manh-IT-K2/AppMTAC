@@ -8,6 +8,7 @@ class ScheduleCollection extends Model
     protected $table = 'schedule_collection';
 
     protected $fillable = [
+        'id',
         'status',
         'collection_id',
         'name_business',
