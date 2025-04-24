@@ -22,5 +22,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/schedule-arranged', [ScheduleCollectionController::class, 'getScheduleCollectionArranged']);
     Route::get('/schedule-notyet', [ScheduleCollectionController::class, 'getScheduleCollectionNotYet']);
     Route::delete('/schedule/{id}', [ScheduleCollectionController::class, 'deleteScheduleCollection']);
+    Route::post('/costs-add', [ScheduleCollectionController::class, 'addCostScheduleCollection']);
 
 });
