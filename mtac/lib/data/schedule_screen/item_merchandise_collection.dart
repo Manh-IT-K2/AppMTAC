@@ -3,7 +3,7 @@ import 'package:mtac/models/schedule/merchandise_model.dart';
 List<MerchandiseModel> listMerchandiseData = [
 
   MerchandiseModel(
-    id: "136685",
+    id: 136685,
     nameGoods: "Chất hấp thụ, vật liệu lọc (bao gồm cả vật liệu lọc đầu chưa nếu tại các mã khác), giẻ lau, vải bảo vệ thải bị nhiễm chất thành phần nguy hại",
     idGoods: "1602 01 10",
     totalWeight: "10",
@@ -11,7 +11,7 @@ List<MerchandiseModel> listMerchandiseData = [
     processingOwner: "Công Ty TNHH MTV Môi Trường Đô Thị Thành Phố Hồ Chí Minh",
   ),
   MerchandiseModel(
-    id: "120567",
+    id: 120567,
     nameGoods: "Dầu động cơ hộp số và bôi trơn tổng hợp thải",
     idGoods: "1702 03 30",
     totalWeight: "30",
@@ -20,7 +20,7 @@ List<MerchandiseModel> listMerchandiseData = [
   ),
 
   MerchandiseModel(
-    id: "987654",
+    id: 987654,
     nameGoods: "Pin và ắc quy thải loại",
     idGoods: "1804 05 20",
     totalWeight: "50.5",
@@ -28,7 +28,7 @@ List<MerchandiseModel> listMerchandiseData = [
     processingOwner: "Công Ty Xử Lý Chất Thải ABC",
   ),
   MerchandiseModel(
-    id: "123456",
+    id: 123456,
     nameGoods: "Bóng đèn huỳnh quang hỏng",
     idGoods: "2001 11 30",
     totalWeight: "12.3",
@@ -36,7 +36,7 @@ List<MerchandiseModel> listMerchandiseData = [
     processingOwner: "Công Ty Tái Chế Điện Tử XYZ",
   ),
   MerchandiseModel(
-    id: "456789",
+    id: 456789,
     nameGoods: "Giấy vụn và bìa carton",
     idGoods: "1501 02 15",
     totalWeight: "200.0",
@@ -44,7 +44,7 @@ List<MerchandiseModel> listMerchandiseData = [
     processingOwner: "Công Ty Giấy Tái Sinh",
   ),
   MerchandiseModel(
-    id: "321654",
+    id: 321654,
     nameGoods: "Nhựa phế liệu các loại",
     idGoods: "1703 07 25",
     totalWeight: "75.8",
@@ -52,7 +52,7 @@ List<MerchandiseModel> listMerchandiseData = [
     processingOwner: "Công Ty Nhựa Tái Chế",
   ),
   MerchandiseModel(
-    id: "654987",
+    id: 654987,
     nameGoods: "Kim loại vụn (sắt, thép, nhôm)",
     idGoods: "1605 10 40",
     totalWeight: "350.2",
@@ -60,7 +60,7 @@ List<MerchandiseModel> listMerchandiseData = [
     processingOwner: "Công Ty Kim Loại Phế Liệu",
   ),
   MerchandiseModel(
-    id: "789123",
+    id: 789123,
     nameGoods: "Lốp xe và cao su phế thải",
     idGoods: "1909 12 50",
     totalWeight: "80.0",
@@ -68,7 +68,7 @@ List<MerchandiseModel> listMerchandiseData = [
     processingOwner: "Công Ty Cao Su Tái Chế",
   ),
   MerchandiseModel(
-    id: "147258",
+    id: 147258,
     nameGoods: "Rác thải điện tử (linh kiện máy tính, điện thoại)",
     idGoods: "2002 14 60",
     totalWeight: "25.7",
@@ -76,7 +76,7 @@ List<MerchandiseModel> listMerchandiseData = [
     processingOwner: "Công Ty Điện Tử Xanh",
   ),
   MerchandiseModel(
-    id: "258369",
+    id: 258369,
     nameGoods: "Vải vụn và sợi thải loại",
     idGoods: "1510 08 35",
     totalWeight: "45.9",

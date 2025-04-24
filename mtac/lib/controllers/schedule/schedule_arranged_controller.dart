@@ -76,9 +76,12 @@ class ScheduleArrangedController extends GetxController {
           (item) => checkedItemsScheduleArranged.contains(item.id));
       filterDataScheduleArranged();
       checkedItemsScheduleArranged.clear();
-      Get.snackbar("Thành công", "Đã xoá các mục đã chọn");
+      Get.snackbar("Thành công", "Đã xoá các mục đã chọn",
+          backgroundColor: Colors.green.withOpacity(0.1),
+          colorText: Colors.green);
     } catch (e) {
-      Get.snackbar("Lỗi", "Không thể xoá: $e");
+      Get.snackbar("Lỗi", "Không thể xoá: $e",
+          backgroundColor: Colors.red.withOpacity(0.1), colorText: Colors.red);
     }
   }
 

@@ -592,6 +592,8 @@ class _ScheduleTabView extends StatelessWidget {
                                 "dayCollection": data.dayCollection.toString(),
                                 "daySendCollection": data.daySendCollection,
                                 "image": data.image,
+                                "costs":data.costs?.map((e) => e.toMap()).toList(),
+                                "merchandises": data.merchandises?.map((e) => e.toMap()).toList(),
                               },
                             );
                           },

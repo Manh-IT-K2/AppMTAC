@@ -1,5 +1,5 @@
 class CostModel {
-  final String id;
+  final int id;
   final String category;
   final String cost;
   final String quantity;
@@ -20,7 +20,7 @@ class CostModel {
   // convert Map to CostModel
   factory CostModel.fromMap(Map<String, dynamic> map) {
     return CostModel(
-        id: map['id'] ?? '',
+        id: map['id'] ?? 0,
         category: map['category'],
         cost: map['cost'] ?? '',
         quantity: map['quantity'] ?? '',

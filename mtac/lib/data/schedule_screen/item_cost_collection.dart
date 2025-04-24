@@ -2,7 +2,7 @@ import 'package:mtac/models/schedule/cost_model.dart';
 
 List<CostModel> listCostData = [
   CostModel(
-    id: "290632", 
+    id: 290632, 
     category: "Thuê nhân công", 
     cost: "280000.00", 
     quantity: "2.00", 
@@ -11,7 +11,7 @@ List<CostModel> listCostData = [
     status: "Chưa nghiệm thu",
   ),
   CostModel(
-    id: "290633", 
+    id: 290633, 
     category: "Vật liệu xây dựng", 
     cost: "150000.00", 
     quantity: "5.00", 
@@ -20,7 +20,7 @@ List<CostModel> listCostData = [
     status: "Đã nghiệm thu",
   ),
   CostModel(
-    id: "290634", 
+    id: 290634, 
     category: "Thuê thiết bị", 
     cost: "500000.00", 
     quantity: "1.00", 
@@ -29,7 +29,7 @@ List<CostModel> listCostData = [
     status: "Chưa nghiệm thu",
   ),
   CostModel(
-    id: "290635", 
+    id: 290635, 
     category: "Nhân công vận chuyển", 
     cost: "200000.00", 
     quantity: "3.00", 
@@ -38,7 +38,7 @@ List<CostModel> listCostData = [
     status: "Đã nghiệm thu",
   ),
   CostModel(
-    id: "290636", 
+    id: 290636, 
     category: "Bảo trì thiết bị", 
     cost: "100000.00", 
     quantity: "2.00", 
@@ -47,7 +47,7 @@ List<CostModel> listCostData = [
     status: "Chưa nghiệm thu",
   ),
   CostModel(
-    id: "290637", 
+    id: 29063, 
     category: "Thuê xe vận chuyển", 
     cost: "350000.00", 
     quantity: "2.00", 
@@ -56,7 +56,7 @@ List<CostModel> listCostData = [
     status: "Đã nghiệm thu",
   ),
   CostModel(
-    id: "290638", 
+    id: 290638, 
     category: "Thiết bị bảo hộ", 
     cost: "50000.00", 
     quantity: "10.00", 
@@ -65,7 +65,7 @@ List<CostModel> listCostData = [
     status: "Đã nghiệm thu",
   ),
   CostModel(
-    id: "290639", 
+    id: 290639, 
     category: "Sơn tường", 
     cost: "120000.00", 
     quantity: "4.00", 
@@ -74,7 +74,7 @@ List<CostModel> listCostData = [
     status: "Chưa nghiệm thu",
   ),
   CostModel(
-    id: "290640", 
+    id: 290640, 
     category: "Điện nước", 
     cost: "250000.00", 
     quantity: "2.00", 
@@ -83,7 +83,7 @@ List<CostModel> listCostData = [
     status: "Đã nghiệm thu",
   ),
   CostModel(
-    id: "290641", 
+    id: 290641, 
     category: "Dịch vụ vệ sinh", 
     cost: "180000.00", 
     quantity: "3.00", 

@@ -1,5 +1,5 @@
 class MerchandiseModel {
-  final String id;
+  final int id;
   final String nameGoods;
   final String idGoods;
   final String totalWeight;
@@ -18,7 +18,7 @@ class MerchandiseModel {
   // convert Map to MerchandiseModel
   factory MerchandiseModel.fromMap(Map<String, dynamic> map) {
     return MerchandiseModel(
-      id: map['id'] ?? '',
+      id: map['id'] ?? 0,
       nameGoods: map['nameGoods'],
       idGoods: map['idGoods'] ?? '',
       totalWeight: map['totalWeight'] ?? '',

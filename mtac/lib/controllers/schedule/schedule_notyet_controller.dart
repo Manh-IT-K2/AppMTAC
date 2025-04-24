@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtac/models/schedule/schedule_collection_model.dart';
 import 'package:mtac/services/schedule/schedule_collection_service.dart';
 
 class ScheduleNotyetController extends GetxController {
-  
   // function initial
   @override
   void onInit() {
@@ -11,17 +11,17 @@ class ScheduleNotyetController extends GetxController {
     fetchNotYetSchedule();
   }
 
-   // list original
+  // list original
   final allItemsScheduleNotYet = <ScheduleCollectionModel>[].obs;
-  
-   // Call Api fetchArrangedSchedule
+
+  // Call Api fetchArrangedSchedule
   Future<void> fetchNotYetSchedule() async {
     try {
       final result = await ScheduleCollectionService().fetchNotYetSchedule();
       allItemsScheduleNotYet.assignAll(result);
     } catch (e) {
-      Get.snackbar('Lỗi', 'Không thể tải dữ liệu: $e');
+      Get.snackbar('Lỗi', 'Không thể tải dữ liệu: $e',
+          backgroundColor: Colors.red.withOpacity(0.1), colorText: Colors.red);
     }
   }
-
 }
