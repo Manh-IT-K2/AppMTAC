@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -34,5 +35,10 @@ class ScheduleCollection extends Model
     public function merchandises(): HasMany
     {
         return $this->hasMany(Merchandise::class, 'schedule_collection_id');
+    }
+
+    public function costs(): HasMany
+    {
+        return $this->hasMany(Cost::class, 'schedule_collection_id');
     }
 }

@@ -2,8 +2,8 @@
 
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\ScheduleCollectionController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ScheduleCollectionController;
 
 // register
 Route::post('/register', [UserController::class, 'register']);

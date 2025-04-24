@@ -1,20 +1,23 @@
 <?php
+
 namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Merchandise extends Model
+class Cost extends Model
 {
-    protected $table = 'merchandises';
+    protected $table = 'costs';
 
     protected $fillable = [
         'schedule_collection_id',
-        'name_goods',
-        'id_goods', 
-        'total_weight',
-        'warehouse',
-        'processing_owner',
+        'category',
+        'cost',
+        'quantity',
+        'total_money',
+        'note',
+        'status',
     ];
 
     public function scheduleCollection(): BelongsTo

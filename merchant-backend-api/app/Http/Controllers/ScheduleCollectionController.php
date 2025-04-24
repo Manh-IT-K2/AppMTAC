@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ScheduleCollection;
@@ -19,7 +19,7 @@ class ScheduleCollectionController extends Controller
     {
         try {
             $today = Carbon::today()->toDateString();
-            $schedules = ScheduleCollection::with(['images', 'merchandises'])
+            $schedules = ScheduleCollection::with(['images', 'merchandises','costs'])
                 ->whereDate('day_collection', $today)
                 ->get();
 
@@ -50,7 +50,7 @@ class ScheduleCollectionController extends Controller
     public function getScheduleCollectionArranged(): JsonResponse
     {
         try {
-            $schedules = ScheduleCollection::with(['images', 'merchandises'])
+            $schedules = ScheduleCollection::with(['images', 'merchandises', 'costs'])
                 ->whereNotNull('day_collection')
                 ->orderBy('day_collection', 'asc')
                 ->get();
@@ -74,7 +74,7 @@ class ScheduleCollectionController extends Controller
     public function getScheduleCollectionNotYet(): JsonResponse
     {
         try {
-            $schedules = ScheduleCollection::with(['images', 'merchandises'])
+            $schedules = ScheduleCollection::with(['images', 'merchandises', 'costs'])
                 ->whereNull('day_collection')
                 ->get();
 

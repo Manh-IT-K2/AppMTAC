@@ -24,7 +24,7 @@ class ScheduleCollectionResource extends JsonResource
             'daySendCollection' => $this->day_send_collection,
             'debtStatus' => $this->debt_status,
             'costTransit' => $this->cost_transit,
-            'image' => $this->whenLoaded('images', fn () => $this->images->pluck('image_url')->toArray()),
+            'image' => $this->whenLoaded('images', fn() => $this->images->pluck('image_url')->toArray()),
             'merchandises' => $this->whenLoaded('merchandises', function () {
                 return $this->merchandises->map(function ($m) {
                     return [
@@ -34,6 +34,19 @@ class ScheduleCollectionResource extends JsonResource
                         'totalWeight' => $m->total_weight,
                         'warehouse' => $m->warehouse,
                         'processingOwner' => $m->processing_owner,
+                    ];
+                });
+            }),
+            'costs' => $this->whenLoaded('costs', function () {
+                return $this->costs->map(function ($c) {
+                    return [
+                        'id' => $c->id,
+                        'category' => $c->category,
+                        'cost' => $c->cost,
+                        'quantity' => $c->quantity,
+                        'total_money' => $c->total_money,
+                        'note' => $c->note,
+                        'status' => $c->status,
                     ];
                 });
             }),
