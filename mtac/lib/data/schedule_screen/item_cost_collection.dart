@@ -1,4 +1,4 @@
-import 'package:mtac/models/cost_model.dart';
+import 'package:mtac/models/schedule/cost_model.dart';
 
 List<CostModel> listCostData = [
   CostModel(
@@ -55,40 +55,40 @@ List<CostModel> listCostData = [
     note: "Thuê xe tải", 
     status: "Đã nghiệm thu",
   ),
-  // CostModel(
-  //   id: "290638", 
-  //   category: "Thiết bị bảo hộ", 
-  //   cost: "50000.00", 
-  //   quantity: "10.00", 
-  //   totalMoney: "500000.00", 
-  //   note: "Mua găng tay", 
-  //   status: "Đã nghiệm thu",
-  // ),
-  // CostModel(
-  //   id: "290639", 
-  //   category: "Sơn tường", 
-  //   cost: "120000.00", 
-  //   quantity: "4.00", 
-  //   totalMoney: "480000.00", 
-  //   note: "Mua sơn Dulux", 
-  //   status: "Chưa nghiệm thu",
-  // ),
-  // CostModel(
-  //   id: "290640", 
-  //   category: "Điện nước", 
-  //   cost: "250000.00", 
-  //   quantity: "2.00", 
-  //   totalMoney: "500000.00", 
-  //   note: "Lắp đặt hệ thống nước", 
-  //   status: "Đã nghiệm thu",
-  // ),
-  // CostModel(
-  //   id: "290641", 
-  //   category: "Dịch vụ vệ sinh", 
-  //   cost: "180000.00", 
-  //   quantity: "3.00", 
-  //   totalMoney: "540000.00", 
-  //   note: "Dọn dẹp công trình", 
-  //   status: "Chưa nghiệm thu",
-  // ),
+  CostModel(
+    id: "290638", 
+    category: "Thiết bị bảo hộ", 
+    cost: "50000.00", 
+    quantity: "10.00", 
+    totalMoney: "500000.00", 
+    note: "Mua găng tay", 
+    status: "Đã nghiệm thu",
+  ),
+  CostModel(
+    id: "290639", 
+    category: "Sơn tường", 
+    cost: "120000.00", 
+    quantity: "4.00", 
+    totalMoney: "480000.00", 
+    note: "Mua sơn Dulux", 
+    status: "Chưa nghiệm thu",
+  ),
+  CostModel(
+    id: "290640", 
+    category: "Điện nước", 
+    cost: "250000.00", 
+    quantity: "2.00", 
+    totalMoney: "500000.00", 
+    note: "Lắp đặt hệ thống nước", 
+    status: "Đã nghiệm thu",
+  ),
+  CostModel(
+    id: "290641", 
+    category: "Dịch vụ vệ sinh", 
+    cost: "180000.00", 
+    quantity: "3.00", 
+    totalMoney: "540000.00", 
+    note: "Dọn dẹp công trình", 
+    status: "Chưa nghiệm thu",
+  ),
 ];

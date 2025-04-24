@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:mtac/models/schedule_collection_model.dart';
+import 'package:mtac/models/schedule/schedule_collection_model.dart';
 import 'package:mtac/services/schedule/schedule_collection_service.dart';
 
 class ScheduleNotyetController extends GetxController {

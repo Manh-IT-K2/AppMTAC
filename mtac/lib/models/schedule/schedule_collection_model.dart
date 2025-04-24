@@ -1,3 +1,6 @@
+import 'package:mtac/models/schedule/cost_model.dart';
+import 'package:mtac/models/schedule/merchandise_model.dart';
+
 class ScheduleCollectionModel {
   final int id;
   final bool status;
@@ -15,25 +18,28 @@ class ScheduleCollectionModel {
   final String debtStatus;
   final String costTransit;
   final List<String>? image;
+  final List<CostModel>? costs;
+  final List<MerchandiseModel>? merchandises;
 
-  ScheduleCollectionModel({
-    required this.id,
-    required this.status,
-    required this.collectionId,
-    required this.nameBusiness,
-    required this.addressCollection,
-    required this.typeWaste,
-    required this.areaTransit,
-    required this.numberPlate,
-    required this.numberWorker,
-    required this.timeCollection,
-    required this.contactPerson,
-    required this.dayCollection,
-    required this.daySendCollection,
-    required this.debtStatus,
-    required this.costTransit,
-    this.image,
-  });
+  ScheduleCollectionModel(
+      {required this.id,
+      required this.status,
+      required this.collectionId,
+      required this.nameBusiness,
+      required this.addressCollection,
+      required this.typeWaste,
+      required this.areaTransit,
+      required this.numberPlate,
+      required this.numberWorker,
+      required this.timeCollection,
+      required this.contactPerson,
+      required this.dayCollection,
+      required this.daySendCollection,
+      required this.debtStatus,
+      required this.costTransit,
+      this.image,
+      this.costs,
+      this.merchandises});
 
   // Convert Map to scheduleCollectionModel
   factory ScheduleCollectionModel.fromMap(Map<String, dynamic> map) {
@@ -54,6 +60,13 @@ class ScheduleCollectionModel {
       debtStatus: map['debtStatus'] ?? "",
       costTransit: map['costTransit'] ?? "",
       image: map['image'] != null ? List<String>.from(map['image']) : [],
+      costs: map['costs'] != null
+          ? List<CostModel>.from(map['costs'].map((x) => CostModel.fromMap(x)))
+          : [],
+      merchandises: map['merchandises'] != null
+          ? List<MerchandiseModel>.from(
+              map['merchandises'].map((x) => MerchandiseModel.fromMap(x)))
+          : [],
     );
   }
 
@@ -76,6 +89,8 @@ class ScheduleCollectionModel {
       'debtStatus': debtStatus,
       'costTransit': costTransit,
       'image': image ?? [],
+      'costs': costs?.map((e) => e.toMap()).toList() ?? [],
+      'merchandises': merchandises?.map((e) => e.toMap()).toList() ?? [],
     };
   }
 }

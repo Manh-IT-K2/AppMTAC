@@ -1,4 +1,4 @@
-import 'package:mtac/models/schedule_collection_model.dart';
+import 'package:mtac/models/schedule/schedule_collection_model.dart';
 
 final List<ScheduleCollectionModel> itemCollectionTodayDatas = [
   ScheduleCollectionModel(

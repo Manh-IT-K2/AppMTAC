@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:mtac/configs/api_config.dart';
-import 'package:mtac/models/schedule_collection_model.dart';
+import 'package:mtac/models/schedule/schedule_collection_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ScheduleCollectionService {
