@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mtac/themes/color.dart';
 
 // ignore: must_be_immutable
 class InputFormWidget extends StatelessWidget {
@@ -24,6 +25,7 @@ class InputFormWidget extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       validator: validator,
+      cursorColor: kPrimaryColor.withOpacity(0.5),
       decoration: InputDecoration(
         labelText: title,
         labelStyle: const TextStyle(color: Colors.blueAccent),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:mtac/common/input_cost_dialog.dart';
 import 'package:mtac/models/schedule/cost_model.dart';
 import 'package:mtac/models/schedule/merchandise_model.dart';
 import 'package:mtac/themes/color.dart';
@@ -29,11 +30,11 @@ class DetailScheduleCollectionScreen extends StatelessWidget {
     //
     final List<String> imageList = arguments["image"] as List<String>? ?? [];
     //
-    final List<dynamic> costListMap = arguments['costs'];
+    final List<dynamic> costListMap = arguments['costs'] ?? [];
     final List<CostModel> costList =
         costListMap.map((e) => CostModel.fromMap(e)).toList();
     //
-    final List<dynamic> merchandiseListMap = arguments['merchandises'];
+    final List<dynamic> merchandiseListMap = arguments['merchandises'] ?? [];
     final List<MerchandiseModel> merchandiseList =
         merchandiseListMap.map((e) => MerchandiseModel.fromMap(e)).toList();
     return Scaffold(
@@ -206,33 +207,38 @@ class DetailScheduleCollectionScreen extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.centerRight,
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 3.w),
-                  width: 30.w,
-                  height: 10.w,
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor,
-                      borderRadius: BorderRadius.circular(3.w),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          offset: const Offset(2, 2),
+                child: GestureDetector(
+                  onTap: () {
+                    InputCostDialog().showCostDialog(context);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 3.w),
+                    width: 30.w,
+                    height: 10.w,
+                    decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(3.w),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            offset: const Offset(2, 2),
+                          ),
+                        ]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 5.w,
                         ),
-                      ]),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 5.w,
-                      ),
-                      Text(
-                        "Thêm chi phí",
-                        style: PrimaryFont.bodyTextBold()
-                            .copyWith(color: Colors.white),
-                      ),
-                    ],
+                        Text(
+                          "Thêm chi phí",
+                          style: PrimaryFont.bodyTextBold()
+                              .copyWith(color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
