@@ -1,5 +1,6 @@
 class MerchandiseModel {
   final int id;
+  final int scheduleCollectionId;
   final String nameGoods;
   final String idGoods;
   final String totalWeight;
@@ -7,6 +8,7 @@ class MerchandiseModel {
   final String processingOwner;
 
   MerchandiseModel({
+    required this.scheduleCollectionId,
     required this.id,
     required this.nameGoods,
     required this.idGoods,
@@ -19,6 +21,7 @@ class MerchandiseModel {
   factory MerchandiseModel.fromMap(Map<String, dynamic> map) {
     return MerchandiseModel(
       id: map['id'] ?? 0,
+      scheduleCollectionId: map['scheduleCollectionId'] ?? 0,
       nameGoods: map['nameGoods'],
       idGoods: map['idGoods'] ?? '',
       totalWeight: map['totalWeight'] ?? '',
@@ -31,6 +34,7 @@ class MerchandiseModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'scheduleCollectionId': scheduleCollectionId,
       'nameGoods': nameGoods,
       'idGoods': idGoods,
       'totalWeight': totalWeight,

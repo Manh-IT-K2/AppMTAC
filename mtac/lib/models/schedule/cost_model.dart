@@ -1,5 +1,6 @@
 class CostModel {
-  final int id;
+  final int? id;
+  final int scheduleCollectionId;
   final String category;
   final String cost;
   final String quantity;
@@ -8,7 +9,8 @@ class CostModel {
   final String status;
 
   CostModel({
-    required this.id,
+    this.id,
+    required this.scheduleCollectionId,
     required this.category,
     required this.cost,
     required this.quantity,
@@ -21,10 +23,11 @@ class CostModel {
   factory CostModel.fromMap(Map<String, dynamic> map) {
     return CostModel(
         id: map['id'] ?? 0,
+        scheduleCollectionId: map['schedule_collection_id'] ?? 0,
         category: map['category'],
         cost: map['cost'] ?? '',
         quantity: map['quantity'] ?? '',
-        totalMoney: map['totalMoney'] ?? '',
+        totalMoney: map['total_money'] ?? '',
         note: map['note'],
         status: map['status'] ?? ' ');
   }
@@ -33,10 +36,11 @@ class CostModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'schedule_collection_id': scheduleCollectionId,
       'category': category,
       'cost': cost,
       'quantity': quantity,
-      'totalMoney': totalMoney,
+      'total_money': totalMoney,
       'note': note,
       'status': status,
     };

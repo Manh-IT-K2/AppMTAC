@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:mtac/configs/api_config.dart';
+import 'package:mtac/models/schedule/cost_model.dart';
 import 'package:mtac/models/schedule/schedule_collection_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -77,7 +78,7 @@ class ScheduleCollectionService {
     }
   }
 
-   // get list schedule notyet
+  // get list schedule notyet
   Future<List<ScheduleCollectionModel>> fetchNotYetSchedule() async {
     try {
       final token = await _getToken();
@@ -98,6 +99,45 @@ class ScheduleCollectionService {
     }
   }
 
+  // Call API from backend function addCostScheduleCollection
+  Future<void> addCostScheduleCollection(CostModel model) async {
+    try {
+      final token = await _getToken();
+      final body = jsonEncode(model.toMap());
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/costs-add'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        if (kDebugMode) {
+          print("✅ Success: ${response.body}");
+        }
+      } else if (response.statusCode == 422) {
+        final errors = jsonDecode(response.body)['errors'];
+        if (kDebugMode) {
+          print("❌ Validation failed: $errors");
+          throw Exception("Validation failed: $errors");
+        }
+      } else {
+        if (kDebugMode) {
+          print("❌ Error: ${response.statusCode} - ${response.body}");
+          throw Exception(
+              'Failed to add cost: ${response.statusCode} - ${response.body}');
+        }
+      }
+    } catch (e, stacktrace) {
+      debugPrint('Lỗi khi add cost: $e');
+      debugPrint('Stacktrace: $stacktrace');
+      rethrow;
+    }
+  }
 
   // delete schedule collection
   Future<bool> deleteScheduleCollection(int id) async {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:mtac/common/input_cost_dialog.dart';
+import 'package:mtac/controllers/schedule/schedule_today_controller.dart';
 import 'package:mtac/models/schedule/cost_model.dart';
 import 'package:mtac/models/schedule/merchandise_model.dart';
 import 'package:mtac/themes/color.dart';
@@ -11,11 +12,11 @@ import 'package:sizer/sizer.dart';
 
 class DetailScheduleCollectionScreen extends StatelessWidget {
   const DetailScheduleCollectionScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     // get data from other screen back
     final Map<String, dynamic> arguments = Get.arguments ?? {};
+    final int scheduleCollectionId = arguments["id"] ?? 0;
     final String daySendCollection = arguments["daySendCollection"] ?? "";
     final String nameBusiness = arguments["nameBusiness"] ?? "";
     final String areaTransit = arguments["areaTransit"] ?? "";
@@ -30,13 +31,23 @@ class DetailScheduleCollectionScreen extends StatelessWidget {
     //
     final List<String> imageList = arguments["image"] as List<String>? ?? [];
     //
-    final List<dynamic> costListMap = arguments['costs'] ?? [];
-    final List<CostModel> costList =
-        costListMap.map((e) => CostModel.fromMap(e)).toList();
+    // final List<dynamic> costListMap = arguments['costs'] ?? [];
+    // final List<CostModel> costList =
+    //     costListMap.map((e) => CostModel.fromMap(e)).toList();
     //
     final List<dynamic> merchandiseListMap = arguments['merchandises'] ?? [];
     final List<MerchandiseModel> merchandiseList =
         merchandiseListMap.map((e) => MerchandiseModel.fromMap(e)).toList();
+
+    final ScheduleController controller = Get.find<ScheduleController>();
+
+    if (controller.costList.isEmpty) {
+      final List<dynamic> costListMap = arguments['costs'] ?? [];
+      controller.costList.assignAll(
+        costListMap.map((e) => CostModel.fromMap(e)).toList(),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -209,7 +220,8 @@ class DetailScheduleCollectionScreen extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: GestureDetector(
                   onTap: () {
-                    InputCostDialog().showCostDialog(context);
+                    InputCostDialog()
+                        .showCostDialog(context, scheduleCollectionId);
                   },
                   child: Container(
                     margin: EdgeInsets.only(bottom: 3.w),
@@ -251,39 +263,43 @@ class DetailScheduleCollectionScreen extends StatelessWidget {
                   constraints: BoxConstraints(
                     maxHeight: 41.h,
                   ),
-                  child: costList.isNotEmpty
-                      ? SyncHorizontalTableWidget(
-                          headers: [
-                            _HeaderItem(title: "ID", width: 15.w),
-                            _HeaderItem(title: "HẠNG MỤC", width: 25.w),
-                            _HeaderItem(title: "ĐƠN GIÁ", width: 20.w),
-                            _HeaderItem(title: "THÀNH TIỀN", width: 20.w),
-                            _HeaderItem(title: "SỐ LƯỢNG", width: 20.w),
-                            _HeaderItem(title: "GHI CHÚ", width: 30.w),
-                            _HeaderItem(title: "TRẠNG THÁI", width: 25.w),
-                          ],
-                          rows: costList.map((data) {
-                            return [
-                              _CellItem(text: '${data.id}', width: 15.w),
-                              _CellItem(text: data.category, width: 25.w),
-                              _CellItem(text: data.cost, width: 20.w),
-                              _CellItem(text: data.totalMoney, width: 20.w),
-                              _CellItem(text: data.quantity, width: 20.w),
-                              _CellItem(text: data.note, width: 30.w),
-                              _CellItem(text: data.status, width: 25.w),
-                            ];
-                          }).toList(),
-                        )
+                  child: controller.costList.isNotEmpty
+                      ? Obx(
+                        () => SyncHorizontalTableWidget(
+                            headers: [
+                              _HeaderItem(title: "ID", width: 15.w),
+                              _HeaderItem(title: "HẠNG MỤC", width: 25.w),
+                              _HeaderItem(title: "ĐƠN GIÁ", width: 20.w),
+                              _HeaderItem(title: "THÀNH TIỀN", width: 20.w),
+                              _HeaderItem(title: "SỐ LƯỢNG", width: 20.w),
+                              _HeaderItem(title: "GHI CHÚ", width: 30.w),
+                              _HeaderItem(title: "TRẠNG THÁI", width: 25.w),
+                            ],
+                            rows: controller.costList.map((data) {
+                              return [
+                                _CellItem(text: '${data.id}', width: 15.w),
+                                _CellItem(text: data.category, width: 25.w),
+                                _CellItem(text: data.cost, width: 20.w),
+                                _CellItem(text: data.totalMoney, width: 20.w),
+                                _CellItem(text: data.quantity, width: 20.w),
+                                _CellItem(text: data.note, width: 30.w),
+                                _CellItem(text: data.status, width: 25.w),
+                              ];
+                            }).toList(),
+                          ),
+                      )
                       : Center(
-                        child: Text(
+                          child: Text(
                             "Chưa có chi phí đi kèm nào !",
                             style: PrimaryFont.bodyTextMedium()
                                 .copyWith(color: Colors.red),
                           ),
-                      ),
+                        ),
                 ),
               ),
-              SizedBox(height: 5.w,),
+              SizedBox(
+                height: 5.w,
+              ),
               Text(
                 "Danh sách hành hoá",
                 style: PrimaryFont.titleTextBold(),
@@ -295,33 +311,35 @@ class DetailScheduleCollectionScreen extends StatelessWidget {
               IntrinsicHeight(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxHeight: 41.h),
-                  child: merchandiseList.isNotEmpty ? SyncHorizontalTableWidget(
-                    headers: [
-                      _HeaderItem(title: "ID", width: 15.w),
-                      _HeaderItem(title: "TÊN HÀNG HOÁ", width: 25.w),
-                      _HeaderItem(title: "KL GOM - KG", width: 20.w),
-                      _HeaderItem(title: "MÃ HÀNG HOÁ", width: 22.w),
-                      _HeaderItem(title: "KHO NHẬP", width: 20.w),
-                      _HeaderItem(title: "CHỦ XỬ LÝ", width: 30.w),
-                    ],
-                    rows: merchandiseList.map((data) {
-                      return [
-                        _CellItem(text: '${data.id}', width: 15.w),
-                        _CellItem(text: data.nameGoods, width: 25.w),
-                        _CellItem(text: data.totalWeight, width: 20.w),
-                        _CellItem(text: data.idGoods, width: 22.w),
-                        _CellItem(text: data.warehouse, width: 20.w),
-                        _CellItem(text: data.processingOwner, width: 30.w),
-                      ];
-                    }).toList(),
-                  ) : Center(
-                    child: Text(
+                  child: merchandiseList.isNotEmpty
+                      ? SyncHorizontalTableWidget(
+                          headers: [
+                            _HeaderItem(title: "ID", width: 15.w),
+                            _HeaderItem(title: "TÊN HÀNG HOÁ", width: 25.w),
+                            _HeaderItem(title: "KL GOM - KG", width: 20.w),
+                            _HeaderItem(title: "MÃ HÀNG HOÁ", width: 22.w),
+                            _HeaderItem(title: "KHO NHẬP", width: 20.w),
+                            _HeaderItem(title: "CHỦ XỬ LÝ", width: 30.w),
+                          ],
+                          rows: merchandiseList.map((data) {
+                            return [
+                              _CellItem(text: '${data.id}', width: 15.w),
+                              _CellItem(text: data.nameGoods, width: 25.w),
+                              _CellItem(text: data.totalWeight, width: 20.w),
+                              _CellItem(text: data.idGoods, width: 22.w),
+                              _CellItem(text: data.warehouse, width: 20.w),
+                              _CellItem(
+                                  text: data.processingOwner, width: 30.w),
+                            ];
+                          }).toList(),
+                        )
+                      : Center(
+                          child: Text(
                             "Chưa có hàng hoá nào được thêm !",
                             style: PrimaryFont.bodyTextMedium()
                                 .copyWith(color: Colors.red),
-                               
                           ),
-                  ),
+                        ),
                 ),
               ),
               SizedBox(

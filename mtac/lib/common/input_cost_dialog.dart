@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mtac/controllers/schedule/schedule_today_controller.dart';
 import 'package:mtac/models/schedule/cost_model.dart';
 import 'package:mtac/themes/color.dart';
 import 'package:mtac/utils/theme_text.dart';
 
 class InputCostDialog {
-  void showCostDialog(BuildContext context) {
+  void showCostDialog(BuildContext context, int idScheduleToday) {
     final _formKey = GlobalKey<FormState>();
     final TextEditingController categoryController = TextEditingController();
     final TextEditingController costController = TextEditingController();
@@ -13,6 +15,7 @@ class InputCostDialog {
     final TextEditingController noteController = TextEditingController();
     final TextEditingController statusController = TextEditingController();
 
+  final ScheduleController controller = Get.find();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -114,8 +117,8 @@ class InputCostDialog {
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
                   // Submit the form data
-                  final costModel = CostModel(
-                    id: DateTime.now().millisecondsSinceEpoch,
+                  final costModel = CostModel(                   
+                    scheduleCollectionId: idScheduleToday,
                     category: categoryController.text,
                     cost: costController.text,
                     quantity: quantityController.text,
@@ -123,7 +126,7 @@ class InputCostDialog {
                     note: noteController.text,
                     status: statusController.text,
                   );
-                  //onSubmit(costModel);
+                  controller.addCostScheduleCollection(costModel);
                   Navigator.of(context).pop();
                 }
               },

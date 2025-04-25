@@ -37,7 +37,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.detailScheduleCollection,
-      page: () => const DetailScheduleCollectionScreen(),
+      page: () => DetailScheduleCollectionScreen(),
     ),
     GetPage(
       name: AppRoutes.scheduleCollectionArranged,
