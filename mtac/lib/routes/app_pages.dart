@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:mtac/routes/app_routes.dart';
+import 'package:mtac/views/connection/no_connection_middleware_screen.dart';
 import 'package:mtac/views/schedule/detail_schedule_collection_screen.dart';
 import 'package:mtac/views/schedule/schedule_collection_arranged_admin_screen.dart';
 import 'package:mtac/views/schedule/schedule_collection_today_screen.dart';
@@ -11,6 +12,10 @@ import 'package:mtac/views/user/register_screen.dart';
 
 class AppPages {
   static final routes = [
+    GetPage(
+      name: AppRoutes.noConnection,
+      page: () => const NoConnectionMiddlewareScreen(),
+    ),
     GetPage(
       name: AppRoutes.splashScreen,
       page: () => const SplashScreen(),

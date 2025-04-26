@@ -3,13 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:mtac/controllers/connection/connection_controller.dart';
 import 'package:mtac/routes/app_pages.dart';
 import 'package:mtac/routes/app_routes.dart';
+import 'package:mtac/views/connection/connection_middleware_screen.dart';
 import 'package:sizer/sizer.dart';
 
 void main() {
   // only portrait
   WidgetsFlutterBinding.ensureInitialized();
+  Get.put(ConnectionController());
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((_) {
@@ -31,14 +34,22 @@ class MyApp extends StatelessWidget {
     return Sizer(
       builder: (context, orientation, deviceType) {
         return GetMaterialApp(
-            // useInheritedMediaQuery: true,
-            // locale: DevicePreview.locale(context),
-            // builder: DevicePreview.appBuilder,
+          // useInheritedMediaQuery: true,
+          // locale: DevicePreview.locale(context),
+          // builder: DevicePreview.appBuilder,
 
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-            initialRoute: AppRoutes.splashScreen,
-            getPages: AppPages.routes);
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+          initialRoute: AppRoutes.splashScreen,
+          getPages: AppPages.routes,
+          routingCallback: (routing) {
+            final redirectSettings =
+                ConnectionMiddlewareScreen().redirect(routing?.current);
+            if (redirectSettings != null) {
+              Get.offAllNamed(redirectSettings.name!);
+            }
+          },
+        );
       },
     );
   }
