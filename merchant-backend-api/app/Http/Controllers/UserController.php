@@ -105,13 +105,12 @@ class UserController extends Controller
         // get content body
         $body = $response->getContent();
         $data = json_decode($body, true);
-        
+
         if ($response->getStatusCode() === 200) {
             return response()->json($data);
         } else {
             return response()->json(['error' => 'Refresh token failed'], 400);
         }
-        
     }
 
     //
@@ -126,5 +125,25 @@ class UserController extends Controller
         $request->user()->token()->revoke();
 
         return response()->json(['message' => 'Đăng xuất thành công']);
+    }
+
+    // API function to validate email format
+    public function validateEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'is_valid' => false,
+                'message' => 'Email không hợp lệ'
+            ], 200); // Trả về 200 để Flutter dễ xử lý
+        }
+
+        return response()->json([
+            'is_valid' => true,
+            'message' => 'Email hợp lệ'
+        ], 200);
     }
 }

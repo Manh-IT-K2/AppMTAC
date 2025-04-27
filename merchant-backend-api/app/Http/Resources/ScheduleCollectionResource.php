@@ -44,7 +44,7 @@ class ScheduleCollectionResource extends JsonResource
                         'category' => $c->category,
                         'cost' => $c->cost,
                         'quantity' => $c->quantity,
-                        'totalMoney' => $c->total_money,
+                        'total_money' => $c->total_money,
                         'note' => $c->note,
                         'status' => $c->status,
                     ];
