@@ -40,4 +40,23 @@ class RegisterService extends GetxService {
     }
   }
 
+  // Call API from server with check validate email
+  Future<bool> validateEmail(String email) async {
+    final url = Uri.parse("$baseUrl/api/validate-email");
+    final response = await http.post(url, body: {
+      "email": email
+    });
+    if(response.statusCode == 200){
+      final data = jsonEncode(response.body);
+      if (kDebugMode) {
+        print("Email validate: $data");
+      }
+      return true;
+    }
+    if (kDebugMode) {
+      print("Email not validate");
+    }
+    return false;
+  }
+
 }

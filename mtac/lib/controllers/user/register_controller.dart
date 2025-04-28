@@ -4,7 +4,6 @@ import 'package:mtac/routes/app_routes.dart';
 import 'package:mtac/services/user/register_service.dart';
 
 class RegisterController extends GetxController {
-
   // initial variable
   final formKeyRegister = GlobalKey<FormState>();
 
@@ -13,10 +12,15 @@ class RegisterController extends GetxController {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  // preview/behind password
   var obscurePassword = true.obs;
   var obscureConfirmPassword = true.obs;
 
+  //
   final isLoading = false.obs;
+
+  // validate email
+  final isValidateEmail = false.obs;
 
   void togglePasswordVisibility() {
     obscurePassword.value = !obscurePassword.value;
@@ -43,13 +47,23 @@ class RegisterController extends GetxController {
 
     if (success) {
       Get.snackbar("Thành công", "Đăng ký thành công!",
-          snackPosition: SnackPosition.TOP,
-          colorText: Colors.green);
+          snackPosition: SnackPosition.TOP, colorText: Colors.green);
       Get.toNamed(AppRoutes.login);
     } else {
       Get.snackbar("Lỗi", "Đăng ký thất bại. Vui lòng kiểm tra lại.",
           snackPosition: SnackPosition.TOP);
     }
+  }
+
+  // Call check validate email from RegisterService
+  Future<void> validateEmail(String email) async {
+    if (email.isEmpty) {
+      isValidateEmail.value = false;
+      return;
+    }
+
+    final response = await RegisterService().validateEmail(email);
+    isValidateEmail.value = response;
   }
 
   @override

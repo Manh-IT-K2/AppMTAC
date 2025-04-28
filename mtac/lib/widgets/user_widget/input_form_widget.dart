@@ -10,6 +10,7 @@ class InputFormWidget extends StatelessWidget {
       this.iconStart,
       this.suffixIcon,
       this.validator,
+      this.onChanged,
       required this.obscureText});
 
   final TextEditingController controller;
@@ -18,6 +19,7 @@ class InputFormWidget extends StatelessWidget {
   Widget? suffixIcon;
   bool obscureText;
   String? Function(String?)? validator;
+  void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class InputFormWidget extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       validator: validator,
+      onChanged: onChanged,
       cursorColor: kPrimaryColor.withOpacity(0.5),
       decoration: InputDecoration(
         labelText: title,

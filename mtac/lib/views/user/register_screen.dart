@@ -54,18 +54,26 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(height: 5.w),
 
                 // Email
-                InputFormWidget(
-                  title: 'Email',
-                  obscureText: false,
-                  controller: controller.emailController,
-                  iconStart: HugeIcons.strokeRoundedMail01,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter email';
-                    }
-                    if (!value.contains('@')) return 'Email không hợp lệ';
-                    return null;
-                  },
+                Obx(
+                  () => InputFormWidget(
+                    title: 'Email',
+                    obscureText: false,
+                    controller: controller.emailController,
+                    iconStart: HugeIcons.strokeRoundedMail01,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter email';
+                      }
+                      if (!controller.isValidateEmail.value) {
+                        return 'Email đã tồn tại hoặc không hợp lệ';
+                      }
+                      return null;
+                    },
+                    suffixIcon: controller.isValidateEmail.value ? Icon(HugeIcons.strokeRoundedTick01, color: Colors.green, size: 5.w,) : Icon(HugeIcons.strokeRoundedCancel01, color: Colors.red, size: 5.w),
+                    onChanged: (email) {
+                      controller.validateEmail(email);
+                    },
+                  ),
                 ),
                 SizedBox(height: 5.w),
                 // Password
