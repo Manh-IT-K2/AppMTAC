@@ -59,4 +59,23 @@ class RegisterService extends GetxService {
     return false;
   }
 
+  
+  // Call API from server with check validate password
+  Future<bool> validatePassword(String password) async {
+    final url = Uri.parse("$baseUrl/api/validate-password");
+    final response = await http.post(url, body: {
+      "password": password
+    });
+    if(response.statusCode == 200){
+      final data = jsonEncode(response.body);
+      if (kDebugMode) {
+        print("password validate: $data");
+      }
+      return true;
+    }
+    if (kDebugMode) {
+      print("password not validate");
+    }
+    return false;
+  }
 }

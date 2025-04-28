@@ -22,6 +22,9 @@ class RegisterController extends GetxController {
   // validate email
   final isValidateEmail = false.obs;
 
+  // validate email
+  final isValidatePassword = false.obs;
+
   void togglePasswordVisibility() {
     obscurePassword.value = !obscurePassword.value;
   }
@@ -61,9 +64,18 @@ class RegisterController extends GetxController {
       isValidateEmail.value = false;
       return;
     }
-
     final response = await RegisterService().validateEmail(email);
     isValidateEmail.value = response;
+  }
+
+  // Call check validate email from RegisterService
+  Future<void> validatePassword(String password) async {
+    if (password.isEmpty) {
+      isValidatePassword.value = false;
+      return;
+    }
+    final response = await RegisterService().validatePassword(password);
+    isValidatePassword.value = response;
   }
 
   @override

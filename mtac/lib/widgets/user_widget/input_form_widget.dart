@@ -19,7 +19,7 @@ class InputFormWidget extends StatelessWidget {
   Widget? suffixIcon;
   bool obscureText;
   String? Function(String?)? validator;
-  void Function(String)? onChanged;
+  Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {

@@ -93,10 +93,13 @@ class RegisterScreen extends StatelessWidget {
                       if (value == null || value.isEmpty) {
                         return 'Please enter password';
                       }
-                      if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
+                      if (!controller.isValidatePassword.value) {
+                        return 'Password must be at least 8 characters, uppercase, lowercase and special characters';
                       }
                       return null;
+                    },
+                    onChanged: (password) {
+                      controller.validatePassword(password);
                     },
                   ),
                 ),
