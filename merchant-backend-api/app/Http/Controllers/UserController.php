@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Laravel\Passport\HasApiTokens;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Laravel\Passport\Http\Controllers\AccessTokenController;
+use App\Services\FirebaseService;
 
 class UserController extends Controller
 {
@@ -46,10 +47,31 @@ class UserController extends Controller
         try {
             $request->validate([
                 'email' => 'required|email',
-                'password' => 'required'
+                'password' => 'required',
+                'device_id' => 'required|string', // nhận device_id từ client
             ]);
 
-            // Create fake request to call internal AccessTokenController
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'message' => 'Email hoặc mật khẩu không đúng'
+                ], 401);
+            }
+
+            $deviceId = $request->device_id;
+
+            // 1. Kiểm tra và revoke tất cả các token khác
+            $userTokens = $user->tokens()->where('revoked', false)->get();
+
+            // Nếu có token nào active thì revoke
+            foreach ($userTokens as $token) {
+                if ($token->device_id !== $deviceId) {
+                    $token->revoke(); // revoke tất cả token khác device_id hiện tại
+                }
+            }
+
+            // 2. Tạo fake request để lấy token mới
             $serverRequest = (new Psr17Factory)->createServerRequest('POST', '/oauth/token')
                 ->withParsedBody([
                     'grant_type' => 'password',
@@ -63,9 +85,23 @@ class UserController extends Controller
             $tokenController = app()->make(AccessTokenController::class);
             $response = $tokenController->issueToken($serverRequest);
 
-            // get content body
             $body = $response->getContent();
             $data = json_decode($body, true);
+
+            // 3. Update device_id cho token mới
+            if (isset($data['access_token'])) {
+                $accessTokenId = \Laravel\Passport\Token::where('user_id', $user->id)
+                    ->latest()
+                    ->first();
+
+                if ($accessTokenId) {
+                    $accessTokenId->device_id = $deviceId; // gán device_id cho token mới
+                    $accessTokenId->save();
+                }
+            }
+
+            // Update device_id lên Firebase
+            app(FirebaseService::class)->updateDeviceStatus($user->id, $deviceId);
 
             return response()->json([
                 'message' => 'Login success',
