@@ -131,19 +131,90 @@ class UserController extends Controller
     public function validateEmail(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email'
+            'email'    => 'required|email|unique:users,email',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'is_valid' => false,
                 'message' => 'Email không hợp lệ'
-            ], 200); // Trả về 200 để Flutter dễ xử lý
+            ], 404);
         }
 
         return response()->json([
             'is_valid' => true,
             'message' => 'Email hợp lệ'
+        ], 200);
+    }
+
+    // check password is strong
+    private function isStrongPassword($password)
+    {
+        if (strlen($password) < 8) {
+            return false;
+        }
+
+        if (!preg_match('/[A-Z]/', $password)) {
+            return false;
+        }
+
+        if (!preg_match('/[a-z]/', $password)) {
+            return false;
+        }
+
+        if (!preg_match('/[0-9]/', $password)) {
+            return false;
+        }
+
+        if (!preg_match('/[\W]/', $password)) {
+            return false;
+        }
+
+        $commonPasswords = [
+            '123456',
+            'password',
+            '12345678',
+            'qwerty',
+            '123456789',
+            '12345',
+            '1234',
+            '111111',
+            '1234567',
+            'dragon'
+        ];
+        if (in_array(strtolower($password), $commonPasswords)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // API check password validate
+    public function validatePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:8',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'is_strong' => false,
+                'message' => 'Password phải có ít nhất 8 ký tự.'
+            ], 422);
+        }
+
+        $password = $request->password;
+
+        if (!$this->isStrongPassword($password)) {
+            return response()->json([
+                'is_strong' => false,
+                'message' => 'Password phải chứa chữ hoa, chữ thường, số, ký tự đặc biệt và không quá đơn giản.'
+            ], 422);
+        }
+
+        return response()->json([
+            'is_strong' => true,
+            'message' => 'Password đủ mạnh.'
         ], 200);
     }
 }
